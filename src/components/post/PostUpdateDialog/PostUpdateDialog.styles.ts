@@ -1,0 +1,1 @@
+export const dialogContent = "space-y-4 max-h-[90vh] overflow-y-auto p-0";

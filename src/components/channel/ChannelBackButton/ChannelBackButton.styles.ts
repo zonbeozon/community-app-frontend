@@ -1,0 +1,1 @@
+export const goBackButton = "flex items-center cursor-pointer justify-center w-8 h-8 mr-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700";

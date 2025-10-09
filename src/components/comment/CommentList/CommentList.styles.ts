@@ -1,0 +1,1 @@
+export const emptyMessage = "text-center text-gray-500 py-4";

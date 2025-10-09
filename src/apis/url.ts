@@ -1,0 +1,52 @@
+import { API_URL } from "@/apis/config";
+import { BINANCE_URL } from "@/apis/config";
+
+export const BASE_URL = API_URL;
+export const PRICE_URL = BINANCE_URL;
+
+export const ENDPOINT = {
+  //Channel
+  CHANNEL: `/channels`,
+  CHANNEL_COMMUNITY: `/channels/community`,
+  CHANNEL_BY_ID: (channelId: number) => `/channels/${channelId}`,
+  CHANNEL_JOINED: `/channels/joined`,
+  CHANNEL_JOINED_BY_ID: (channelId: number) => `/channels/joined/${channelId}`,
+
+  //ChannelMember
+  CHANNELMEMBER: (channelId: number) => `/channels/${channelId}/members`,
+  CHANNELMEMBER_DENY: (channelId: number, memberId: number) => `/channels/${channelId}/members/${memberId}/deny`,
+  CHANNELMEMBER_BAN: (channelId: number, memberId: number) => `/channels/${channelId}/members/${memberId}/ban`,
+  CHANNELMEMBER_APPROVE: (channelId: number, memberId: number) => `/channels/${channelId}/members/${memberId}/approve`,
+  CHANNELMEMBER_ROLE: (channelId: number, memberId: number) => `/channels/${channelId}/members/${memberId}/role`,
+  CHANNELMEMBER_PENDING: (channelId: number) => `/channels/${channelId}/members/pending`,  
+  CHANNELMEMBER_BANNED: (channelId: number) => `/channels/${channelId}/members/ban`,
+
+  //Post
+  POST: (channelId: number) => `/channels/${channelId}/posts`,
+  POST_BY_ID: (postId: number) => `/posts/${postId}`,
+  POST_VIEWCOUNT: `/posts/view-count`,
+
+  //Comment
+  COMMENT: (postId: number) => `/posts/${postId}/comments`,
+  COMMENT_BY_ID: (commentId: number) => `/comments/${commentId}`,
+
+  //Reaction
+  REACTION: (postId: number) => `/posts/${postId}/reactions`,
+
+  //Notificatiion
+  NOTIFICATION: `/notifications`,
+  NOTIFICATION_READ: `/notifications/mark-as-read`,
+
+  //ServerMember
+  SERVERMEMBER: `/members`,
+  SERVERMEMBER_USERNAME: `/members/username`,
+  SERVERMEMBER_PROFILE: `/members/profile`,
+  SERVERMEMBER_BY_ID: (memberId: number) => `/members/${memberId}`,
+
+  //Auth
+  REISSUE: `/auth/reissue`,
+  SIGNOUT: `/auth/logout`,
+
+  //Image
+  IMAGE: `/images`
+};
