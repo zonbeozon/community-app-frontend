@@ -37,8 +37,6 @@ const ChannelHeader = ({ showBackButton }: ChannelHeaderProps) => {
   const isMember = !!selectedChannel.membership;
   const canCreatePost = isMember && ChannelRoleManager.isAdmin(selectedChannel.membership.channelRole);
 
-  console.log(isMember)
-
   return (
     <div className={S.wrapper}>
       <div className={S.goBackButtonWrapper}>

@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Pencil, Check, Loader2 } from "lucide-react";
 import * as S from "./ServerMemberName.styles"
 
-
 const ServerMemberName = () => {
   const [serverMember, setServerMember] = useAtom(serverMemberAtom);
   const { mutate: updateUsername, isPending: isUpdatingUsername } = useUpdateServerMemberUsername();
@@ -45,8 +44,6 @@ const ServerMemberName = () => {
     setError(null);
     if (serverMember) setNewUsername(serverMember.username);
   };
-
-  console.log("체크크크",serverMember)
 
   return (
     <div className={S.usernameContainer}>

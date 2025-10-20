@@ -21,5 +21,5 @@ export interface FormProps<T, P = null> {
   isValid: boolean;
   isSubmitting: boolean;
   imagePreview: P;
-  onSubmit: (data: T, imageFile?: File | null) => void; 
+  onSubmit: (data: T) => void; 
 }

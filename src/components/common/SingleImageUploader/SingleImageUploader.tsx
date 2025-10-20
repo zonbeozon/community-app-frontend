@@ -1,32 +1,57 @@
 import { useEffect } from 'react';
 import { ImageIcon, XIcon } from "lucide-react";
 import { useImageHandler } from '@/hooks/common/image/useImageHandler';
+import useUploadImage from '@/hooks/common/image/useUploadImage';
 
 interface ImageUploaderInputProps {
   initialImageUrl?: string | null;
-  isUploading: boolean;
-  error?: string | null;
-  onFileSelect: (file: File | null) => void;
+  isUploading?: boolean; 
+  onUploadSuccess: (imageId: number | null) => void;
 }
 
 export const SingleImageUploader = ({
   initialImageUrl,
-  isUploading,
-  error,
-  onFileSelect,
+  isUploading: isFormSubmitting,
+  onUploadSuccess,
 }: ImageUploaderInputProps) => {
+  const { upload, isUploading: isImageUploading } = useUploadImage(); 
+
   const {
     imageFile,
     previewUrl,
     handleImageChange,
-    handleRemoveImage,
+    handleRemoveImage: baseHandleRemoveImage, 
   } = useImageHandler({ 
     initialImageUrl, 
   });
   
   useEffect(() => {
-    onFileSelect(imageFile);
-  }, [imageFile, onFileSelect]);
+    if (!imageFile) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    const performUpload = async () => {
+      try {
+        const uploadedImage = await upload(formData);
+        onUploadSuccess(uploadedImage.imageId); 
+      } catch (error) {
+        console.error("Upload failed:", error);
+      }
+    };
+
+    performUpload();
+    
+  }, [imageFile, upload, onUploadSuccess]);
+
+  const handleRemoveImage = () => {
+    baseHandleRemoveImage();
+    onUploadSuccess(null);
+  };
+
+  const isDisabled = isFormSubmitting || isImageUploading;
 
   return (
     <>
@@ -37,15 +62,15 @@ export const SingleImageUploader = ({
           accept="image/*"
           className="hidden"
           onChange={handleImageChange}
-          disabled={isUploading}
+          disabled={isDisabled}
         />
         <label
           htmlFor="profileImage"
           className={`px-4 py-2 bg-white border border-gray-300 text-sm rounded-md ${
-            isUploading ? "cursor-not-allowed opacity-60" : "cursor-pointer"
+            isDisabled ? "cursor-not-allowed opacity-60" : "cursor-pointer" 
           } hover:bg-gray-50 transition`}
         >
-          {isUploading ? "업로드 중..." : "이미지 업로드"}
+          {isImageUploading ? "업로드 중..." : "이미지 업로드"} 
         </label>
 
         {previewUrl ? (
@@ -61,6 +86,7 @@ export const SingleImageUploader = ({
               type="button"
               onClick={handleRemoveImage}
               aria-label="이미지 제거"
+              disabled={isDisabled}
               className="absolute -right-1 -top-1 rounded-full bg-gray-700 p-0.5 text-white hover:bg-black"
             >
               <XIcon size={12} />
@@ -72,7 +98,6 @@ export const SingleImageUploader = ({
           </div>
         )}
       </div>
-      {error && <p className="text-red-600 mt-1 text-sm">{error}</p>}
     </>
   );
 };

@@ -42,7 +42,7 @@ const ChannelCreateDialog = ({ open, onOpenChange }: DialogProps) => {
           isEdit={false}
           isValid={isFormValid}
           isSubmitting={isSubmitting}
-          onSubmit={handleSubmit} // 2. 여기서 전달하는 이름도 'handleSubmit'으로 수정합니다.
+          onSubmit={handleSubmit} 
         />
       </DialogContent>
     </Dialog>

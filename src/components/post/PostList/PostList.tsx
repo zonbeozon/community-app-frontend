@@ -112,8 +112,6 @@ if (isLoadingPosts || !postsData) {
   const posts = postsData?.posts || [];
   const authors = postsData?.authors || {};
 
-  console.log(authors)
-
   if (posts.length === 0) {
     return (
       <div className={S.statusContainer}>
@@ -126,17 +124,14 @@ if (isLoadingPosts || !postsData) {
     <>
       <div ref={scrollRef} id="main-content" style={{ overflowY: 'auto', height: '100%' }}>
         {posts.map((post) => {
-  // 디버깅을 위해 map 내부에서 로그를 찍어봅니다.
-  console.log(`Trying to find author for authorId: ${post.authorId} (type: ${typeof post.authorId})`);
-  const authorInfo = authors[String(post.authorId)]; // authorId를 문자열로 변환!
-  console.log('Found author info:', authorInfo);
+  
+  const authorInfo = authors[String(post.authorId)]; 
 
   return (
     <PostItem
       channelId={numericChannelId}
       key={post.postId} 
       post={post}
-      // String()으로 감싸서 키 타입을 일치시킵니다.
       author={authors[String(post.authorId)] ?? { memberId: 0, username: "알 수 없는 사용자", profile: null, serverRole: "USER", channelRole: "NONE" }} 
       onCommentClick={handleCommentClick} 
     />
