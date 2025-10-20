@@ -42,9 +42,8 @@ const useForm = <T extends object | string>(
 
   const handleSubmit = useCallback(
     (onSubmit: (values: T) => Promise<void> | void) => 
-    async (e?: React.FormEvent<HTMLFormElement>) => {
-      e?.preventDefault();
-      
+    async () => {
+
       const currentErrors = validate(values);
       setErrors(currentErrors);
 

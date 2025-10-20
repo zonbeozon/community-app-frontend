@@ -92,7 +92,6 @@ const ChannelForm = ({
             placeholder="채널 설명을 입력해주세요."
             value={content.description}
             onChange={(e) => onChange("description", e.target.value)}
-            required
             maxHeight={180}
             className="resize-none mt-3"
           />
