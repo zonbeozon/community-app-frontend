@@ -1,28 +1,14 @@
 import { Link, useParams } from "react-router-dom";
-import { useAtomValue } from "jotai";
-import { selectAtom } from "jotai/utils";
-import { useMemo } from "react";
 import ChannelDropdown from "@/components/channel/ChannelDropdown/ChannelDropdown";
 import ChannelProfileImage from "../ChannelProfileImage/ChannelProfileImage";
-import { latestPostByChannelAtom } from "@/atoms/postAtoms";
+import { useLatestPost } from "@/hooks/post/useLatestPost";
 import { Channel } from "@/types/channel.type";
 import * as S from "./ChannelItem.styles";
 
-interface ChannelItemProps {
-  channel: Channel;
-}
-
-const ChannelItem = ({ channel }: ChannelItemProps) => {
+const ChannelItem = ({ channel }: { channel: Channel }) => {
   const { channelId: currentUrlChannelId } = useParams<{ channelId: string }>();
-
-  const latestPost = useAtomValue(
-    useMemo(
-      () => selectAtom(latestPostByChannelAtom, (postsMap) => postsMap[channel.channelInfo.channelId] || null),
-      [channel.channelInfo.channelId]
-    )
-  );
-
   const { channelInfo } = channel;
+  const latestPost = useLatestPost(channelInfo.channelId);
 
   if (!channelInfo) {
     return null;
@@ -36,7 +22,7 @@ const ChannelItem = ({ channel }: ChannelItemProps) => {
         to={`/channels/${channelInfo.channelId}`}
         className={S.itemWrapper(isSelected)}
       >
-        <ChannelProfileImage size={'sm'} channelInfo={channelInfo}/>
+        <ChannelProfileImage size={'sm'} channelInfo={channelInfo} />
         <div className={S.contentWrapper}>
           <p className={S.title}>{channelInfo.title}</p>
           {latestPost ? (
