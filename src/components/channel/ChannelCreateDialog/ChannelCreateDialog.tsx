@@ -29,8 +29,8 @@ const ChannelCreateDialog = ({ open, onOpenChange }: DialogProps) => {
       </DialogTrigger>
 
       <DialogContent className={S.dialog}>
-        <DialogTitle className="sr-only">새 채널 만들기</DialogTitle>
-        <DialogDescription className="sr-only">
+        <DialogTitle className={S.srOnly}>새 채널 만들기</DialogTitle>
+        <DialogDescription className={S.srOnly}>
           새로운 채널을 만들기 위한 양식입니다. 채널 이름, 설명, 프로필 이미지를 설정하고 '생성하기' 버튼을 누르세요.
         </DialogDescription>
 
