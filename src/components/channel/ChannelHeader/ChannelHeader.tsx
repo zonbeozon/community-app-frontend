@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from 'react'; 
 import NewPostDialog from '@/components/post/PostCreateDialog/PostCreateDialog';
 import ChannelDropdown from '@/components/channel/ChannelDropdown/ChannelDropdown';
 import ChannelInfoDialog from '@/components/channel/ChannelInfoDialog/ChannelInfoDialog';
