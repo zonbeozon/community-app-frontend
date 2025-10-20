@@ -1,13 +1,8 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import ChannelJoinDialog from '@/components/channel/ChannelJoinDialog/ChannelJoinDialog';
-import { ChannelSearchResultTemp } from '@/types/channel.type';
+import { ChannelJoinButtonProps } from '@/types/channel.type';
 import * as S from "./ChannelJoinButton.styles"
-
-interface ChannelJoinButtonProps {
-  channel: ChannelSearchResultTemp;
-  onJoinSuccess: () => void;
-}
 
 const ChannelJoinButton = ({ channel, onJoinSuccess }: ChannelJoinButtonProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

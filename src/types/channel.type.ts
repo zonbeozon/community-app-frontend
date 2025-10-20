@@ -67,3 +67,8 @@ export interface ChannelSearchResultTemp {
   memberCount: number;
   }
 }
+
+export interface ChannelJoinButtonProps {
+  channel: ChannelSearchResultTemp;
+  onJoinSuccess: () => void;
+}
