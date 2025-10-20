@@ -57,7 +57,6 @@ export interface ChannelHeaderProps {
 }
 
 export interface ChannelSearchResultTemp {
-  channelInfo: {
   channelId: number;
   channelType: ChannelType;
   title: string;
@@ -65,7 +64,6 @@ export interface ChannelSearchResultTemp {
   profile: Image | null;
   settings: ChannelSettings;
   memberCount: number;
-  }
 }
 
 export interface ChannelJoinButtonProps {

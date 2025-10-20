@@ -22,7 +22,7 @@ const useSignOut = () => {
 
       queryClient.clear();
 
-      navigate(ROUTE_PATH.main);
+      navigate(ROUTE_PATH.root);
       toast.success(SUCCESS_MESSAGES.SIGNOUT_SUCCESS);
     },
 

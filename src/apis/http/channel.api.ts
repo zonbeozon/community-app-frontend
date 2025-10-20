@@ -3,11 +3,17 @@ import { BASE_URL, ENDPOINT } from "@/apis/url";
 import { Channel, ChannelRequest, ChannelsResponse } from "@/types/channel.type";
 import { ChannelSearchResultTemp } from "@/types/channel.type";
 
-export const getChannels = async (): Promise<ChannelSearchResultTemp[]> => {
+export const getAllChannels = async (): Promise<ChannelSearchResultTemp[]> => {
   return fetcher.get<ChannelSearchResultTemp[]>({
     url: BASE_URL + ENDPOINT.CHANNEL
   });
 };
+
+export const getChannelById = async (channelId: number): Promise<Channel> => {
+  return fetcher.get<Channel>({
+    url: BASE_URL + ENDPOINT.CHANNEL_BY_ID(channelId)
+  });
+}
 
 export const getJoinedChannels = async (): Promise<ChannelsResponse> => {
   return fetcher.get<ChannelsResponse>({
@@ -15,11 +21,11 @@ export const getJoinedChannels = async (): Promise<ChannelsResponse> => {
   });
 };
 
-export const getJoinedChannel = async (channelId: number): Promise<Channel> => {
+export const getJoinedChannelById = async (channelId: number): Promise<Channel> => {
   return fetcher.get<Channel>({
     url: BASE_URL + ENDPOINT.CHANNEL_JOINED_BY_ID(channelId)
   });
-}; 
+};
 
 export const createChannel = async (payload: ChannelRequest): Promise<Channel> => {
   return fetcher.post<Channel>({

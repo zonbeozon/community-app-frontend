@@ -16,10 +16,7 @@ const useJoinChannel = () => {
     },
 
     onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message || 
-          SERVER_ERROR_MESSAGES.CHANNELMEMBER_JOIN_FAILED 
-      );
+      toast.error(error.response?.data?.message || SERVER_ERROR_MESSAGES.CHANNELMEMBER_JOIN_FAILED);
     },
   });
 };
