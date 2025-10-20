@@ -23,7 +23,7 @@ interface PostCreateDialogProps {
 
 const PostCreateDialog = ({ open, onOpenChange }: PostCreateDialogProps) => {
   const selectedChannelId = useAtomValue(selectedChannelIdAtom);
-  const { mutate: createPost, isPending } = useCreatePost();
+  const { mutate: createPost } = useCreatePost();
 
   const {
     values,

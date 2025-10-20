@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Comment } from "@/types/comment.type";
 import { ChannelMember } from "@/types/channelMember.type";
-import ChannelMemberInfoDialog from "@/components/channelMember/ChannelMemberInfoDialog/ChannelMemberInfoDialog";
-import ServerMemberInfoDialog from "@/components/serverMember/ServerMemberInfoDialog/ServerMemberInfoDialog";
+import ChannelMemberInfoDialog from "@/components/channelmember/ChannelMemberInfoDialog/ChannelMemberInfoDialog";
+import ServerMemberInfoDialog from "@/components/servermember/ServerMemberInfoDialog/ServerMemberInfoDialog";
 import CommentDropdown from "../CommentDropdown/CommentDropdown";
 import TimeDisplay from "@/components/common/TimeDisplay/TimeDisplay";
 import * as S from "./CommentItem.styles";

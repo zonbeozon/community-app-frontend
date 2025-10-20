@@ -1,11 +1,10 @@
-import { useState } from "react";
 import useGetBannedChannelMembers from "@/queries/useGetBannedChannelMembers.ts";
 import ChannelMemberItem from "../ChannelMemberItem/ChannelMemberItem";
 import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
 import * as S from "./ChannelBannedMemberList.styles";
 
 const ChannelBannedMemberList = ({ channelId }: { channelId: number }) => {
-  const [pageRequest, setPageRequest] = useState({ page: 0, size: 20 });
+  const pageRequest = { page: 0, size: 20 };
   const { data, isLoading, isError } = useGetBannedChannelMembers(channelId, pageRequest);
 
   const bannedMembers = data?.members || [];

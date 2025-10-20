@@ -4,7 +4,6 @@ import ChannelItem from "@/components/channel/ChannelItem/ChannelItem";
 import * as S from "./ChannelGroup.styles";
 
 const ChannelGroup = ({ title, channels }: ChannelGroupProps) => {
-  
   if (!channels || channels.length === 0) {
     return (
       <div>
@@ -21,7 +20,7 @@ const ChannelGroup = ({ title, channels }: ChannelGroupProps) => {
         {channels.map((channel) => (
           <ChannelItem
             key={channel.channelInfo.channelId}
-            channelId={channel.channelInfo.channelId}
+            channel={channel}
           />
         ))}
       </ul>

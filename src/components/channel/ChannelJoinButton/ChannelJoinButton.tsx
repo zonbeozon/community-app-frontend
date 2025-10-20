@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import ChannelJoinDialog from '@/components/channel/ChannelJoinDialog/ChannelJoinDialog';
-import { ChannelSearchResultTemp } from '@/components/channel/ChannelSearchbar/ChannelSearchbar';
+import { ChannelSearchResultTemp } from '@/types/channel.type';
+import * as S from "./ChannelJoinButton.styles"
 
 interface ChannelJoinButtonProps {
   channel: ChannelSearchResultTemp;
@@ -8,18 +10,35 @@ interface ChannelJoinButtonProps {
 }
 
 const ChannelJoinButton = ({ channel, onJoinSuccess }: ChannelJoinButtonProps) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleJoinSuccess = () => {
+    setIsDialogOpen(false);
+    onJoinSuccess();
+  };
+
+   if (!channel) {
+    return null;
+  }
   
   return (
-    <ChannelJoinDialog channel={channel} onJoinSuccess={onJoinSuccess}>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={(e) => e.stopPropagation()}
-        className="h-7 px-2" 
+    <>
+      <Button className={S.button}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsDialogOpen(true);
+        }}
       >
         참여
       </Button>
-    </ChannelJoinDialog>
+
+      <ChannelJoinDialog 
+        channel={channel} 
+        onJoinSuccess={handleJoinSuccess}
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+      />
+    </>
   );
 };
 

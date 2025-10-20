@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Loader2 } from "lucide-react";
 import useUpdateChannelMemberRole from "@/hooks/channelMember/useUpdateChannelMemberRole";
 import { ChannelMember, ChannelRole } from "@/types/channelMember.type";
 import * as S from "./ChannelMemberRoleChangeDialog.styles";
@@ -16,13 +17,14 @@ interface ChannelMemberDialogProps {
 
 const ChannelMemberRoleChangeDialog = ({ open, onOpenChange, channelId, targetMember }: ChannelMemberDialogProps) => {
   const [newRole, setNewRole] = useState<ChannelRole>(targetMember.channelRole);
-  const updateChannelMemberRoleHandler = useUpdateChannelMemberRole();
+  const { mutateAsync: updateRole, isPending: isUpdating } = useUpdateChannelMemberRole();
 
   const handleChangeRole = async () => {
     try {
-      await updateChannelMemberRoleHandler(channelId, targetMember.memberId, newRole);
-    } finally {
+      await updateRole({ channelId, targetMemberId: targetMember.memberId, newRole });
       onOpenChange(false);
+    } catch (error) {
+      console.error("Failed to update member role:", error);
     }
   };
 
@@ -64,8 +66,9 @@ const ChannelMemberRoleChangeDialog = ({ open, onOpenChange, channelId, targetMe
             type="button"
             variant="destructive"
             onClick={handleChangeRole}
-            disabled={isRoleUnchanged}
+            disabled={isRoleUnchanged || isUpdating}
           >
+            {isUpdating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             권한 수정
           </Button>
         </DialogFooter>

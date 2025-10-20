@@ -13,12 +13,13 @@ const processQueue = (newToken: string | null) => {
 };
 
 const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true,
 });
 
 api.interceptors.request.use(
   (config) => {
-    const token = jotaiStore.get(accessTokenAtom);
+    const token = localStorage.getItem('accessToken');
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -50,14 +51,10 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const expiredToken = jotaiStore.get(accessTokenAtom);
-        const reissueResponse = await axios.post(
+        const reissueResponse = await api.post(
           ENDPOINT.REISSUE,
           {},
-          {
-            withCredentials: true,
-            headers: { Authorization: `Bearer ${expiredToken}` },
-          }
+          { headers: { Authorization: null } }
         );
 
         const newAccessToken = reissueResponse.data?.accessToken;
@@ -66,6 +63,7 @@ api.interceptors.response.use(
           throw new Error("새로운 액세스 토큰이 없습니다.");
         }
 
+        localStorage.setItem('accessToken', newAccessToken);
         jotaiStore.set(accessTokenAtom, newAccessToken);
         processQueue(newAccessToken);
         
@@ -77,7 +75,8 @@ api.interceptors.response.use(
       } catch (reissueError) {
         processQueue(null);
         Sentry.captureException(reissueError);
-
+        
+        localStorage.removeItem('accessToken');
         jotaiStore.set(accessTokenAtom, null);
         window.location.assign('/');
 

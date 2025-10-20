@@ -6,7 +6,6 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/h
 import { MAX_POST_CONTENT_LENGTH } from "@/constants/config";
 import type { FormProps } from "@/types/form.type";
 import { PostRequest } from "@/types/post.type";
-import useUploadImage from "@/hooks/common/useUploadImage";
 import * as S from "../PostForm/PostForm.styles";
 
 const PostForm = ({
@@ -19,7 +18,6 @@ const PostForm = ({
     imagePreview,
 }: FormProps<PostRequest, string[] | null>) => {
     const { onChange } = handler;
-    const { upload } = useUploadImage();
 
     const [imageUrls, setImageUrls] = useState<string[] | null>(imagePreview ?? null);
     const [uploading, setUploading] = useState(false);

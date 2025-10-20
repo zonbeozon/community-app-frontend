@@ -6,6 +6,7 @@ export interface PostsParams {
   cursorPostId?: number | null;
   size?: number;
   inverted?: boolean;
+  page?: number;
 } 
 
 export interface PostRequest {
@@ -37,20 +38,6 @@ export interface PostsResponse {
   isLast: boolean;
   isInverted: boolean;
 };
-
-export interface PostStore {
-  posts: { [postId: number]: Post };
-  authors: { [authorId: number]: ChannelMember };
-  postIdsByChannel: { [channelId: number]: number[] };
-  selectedPostId: number | null;
-  upsertPostsAndAuthors: (channelId: number | null, data: any, options?: { prepend?: boolean }) => void;
-  removePost: (postId: number) => void;
-  patchPost: (postId: number, updatedData: Partial<Post>) => void;
-  setSelectedPostId: (postId: number | null) => void;
-  updateReaction: (postId: number, reactionType: 'LIKE' | 'DISLIKE') => void;
-  clearChannelPosts: (channelId: number) => void;
-  setCommentCount: (postId: number, count: number) => void;
-}
 
 export interface PostDialogProps {
   open: boolean;

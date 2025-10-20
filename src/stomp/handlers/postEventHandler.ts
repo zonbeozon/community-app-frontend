@@ -4,17 +4,9 @@ import { channelActivityMapAtom } from '@/atoms/channelAtoms';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { Post } from '@/types/post.type';
 import { Page } from '@/types/common.type';
+import { PostEvent } from '@/types/stompEvent.type';
 
-interface PostEventBody {
-  type: "CREATED" | "UPDATED" | "DELETED";
-  postId: number;
-  content?: string;
-  images?: any[]; 
-  updatedAt?: string;
-  [key: string]: any;
-}
-
-export const handlePostEvent = (channelId: number, eventBody: PostEventBody) => {
+export const handlePostEvent = (channelId: number, eventBody: PostEvent) => {
   if (!eventBody) return;
 
   const { type, postId } = eventBody;
@@ -33,18 +25,15 @@ export const handlePostEvent = (channelId: number, eventBody: PostEventBody) => 
     }
 
     case "UPDATED": {
+      const { type, ...newPostData } = eventBody;
+
       queryClient.setQueryData<Page<Post>>(postListQueryKey, (oldData) => {
         if (!oldData) return;
         return {
           ...oldData,
           content: oldData.content.map(post =>
-            post.id === postId
-              ? { 
-                  ...post, 
-                  content: eventBody.content, 
-                  images: eventBody.images, 
-                  updatedAt: eventBody.updatedAt 
-                }
+            post.postId === postId
+              ? { ...post, ...newPostData } 
               : post
           ),
         };
@@ -52,12 +41,7 @@ export const handlePostEvent = (channelId: number, eventBody: PostEventBody) => 
       
       queryClient.setQueryData<Post>(postDetailQueryKey, (oldData) => {
         if (!oldData) return;
-        return {
-          ...oldData,
-          content: eventBody.content,
-          images: eventBody.images,
-          updatedAt: eventBody.updatedAt,
-        };
+        return { ...oldData, ...newPostData };
       });
       break;
     }
@@ -67,7 +51,7 @@ export const handlePostEvent = (channelId: number, eventBody: PostEventBody) => 
         if (!oldData) return;
         return {
           ...oldData,
-          content: oldData.content.filter(post => post.id !== postId),
+          content: oldData.content.filter(post => post.postId !== postId),
         };
       });
       queryClient.removeQueries({ queryKey: postDetailQueryKey });

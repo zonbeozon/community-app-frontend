@@ -6,13 +6,12 @@ import { useSetAtom } from 'jotai';
 
 import useInfinitePosts from '@/hooks/post/useInfinitePosts';
 import useGetJoinedChannels from '@/queries/useGetJoinedChannel';
-import { selectedPostIdAtom } from '@/atoms/postAtoms'; // Assumes you create this atom
+import { selectedPostIdAtom } from '@/atoms/postAtoms';
 
 import PostItem from '../PostItem/PostItem';
 import ItemSkeleton from '@/components/common/ItemSkeleton/ItemSkeleton';
 import { MESSAGES } from '@/constants/message';
 import * as S from './PostList.styles';
-import ChartComponent from '@/components/chart/Chart/Chart';
 
 const SCROLL_POSITION_KEY = 'post_list_scroll_position';
 
@@ -22,7 +21,7 @@ const PostList = () => {
   const numericChannelId = Number(channelId);
 
   const setSelectedPostId = useSetAtom(selectedPostIdAtom);
-  const { data: myChannels, isLoading: isLoadingChannels } = useGetMyChannels();
+  const { data: myChannels, isLoading: isLoadingChannels } = useGetJoinedChannels();
 
   const currentChannel = useMemo(() => {
     if (!myChannels) return null;
@@ -31,7 +30,7 @@ const PostList = () => {
 
   const canViewChannel = useMemo(() => {
     if (isLoadingChannels || !currentChannel) return false;
-    if (currentChannel.channelInfo.settings.contentVisibility === "PRIVATE" && !currentChannel.requester) {
+    if (currentChannel.channelInfo.settings.contentVisibility === "PRIVATE" && !currentChannel.membership) {
       return false;
     }
     return true;
@@ -86,29 +85,34 @@ const PostList = () => {
     };
   }, [numericChannelId]);
 
-  const handleCommentClick = (postId: number) => {
-    setSelectedPostId(postId);
-    navigate(`/channels/${numericChannelId}/posts/${postId}`);
-  };
+  // 수정된 코드
+const handleCommentClick = (postId: number) => {
+  setSelectedPostId(postId);
+  // 경로 맨 앞에 슬래시(/)를 추가하여 절대 경로로 만듭니다.
+  navigate(`/channels/${numericChannelId}/posts/${postId}`);
+};
 
   if (isLoadingChannels) {
-    return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
-  }
+  return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
+}
 
-  if (!canViewChannel) {
-    return (
-      <div className={S.statusContainer}>
-        <p className={S.emptyMessage}>🔒 비공개 채널이거나 접근할 수 없습니다.</p>
-      </div>
-    );
-  }
-  
-  if (isLoadingPosts) {
-    return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
-  }
+if (!canViewChannel) {
+  return (
+    <div className={S.statusContainer}>
+      <p className={S.emptyMessage}>🔒 비공개 채널이거나 접근할 수 없습니다.</p>
+    </div>
+  );
+}
+
+if (isLoadingPosts || !postsData) { 
+  return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
+}
+
   
   const posts = postsData?.posts || [];
   const authors = postsData?.authors || {};
+
+  console.log(authors)
 
   if (posts.length === 0) {
     return (
@@ -120,18 +124,24 @@ const PostList = () => {
 
   return (
     <>
-      <div>
-        <ChartComponent />
-      </div>
       <div ref={scrollRef} id="main-content" style={{ overflowY: 'auto', height: '100%' }}>
-        {posts.map((post) => (
-          <PostItem 
-            key={post.id} 
-            post={post}
-            author={authors[post.authorId]}
-            onCommentClick={handleCommentClick} 
-          />
-        ))}
+        {posts.map((post) => {
+  // 디버깅을 위해 map 내부에서 로그를 찍어봅니다.
+  console.log(`Trying to find author for authorId: ${post.authorId} (type: ${typeof post.authorId})`);
+  const authorInfo = authors[String(post.authorId)]; // authorId를 문자열로 변환!
+  console.log('Found author info:', authorInfo);
+
+  return (
+    <PostItem
+      channelId={numericChannelId}
+      key={post.postId} 
+      post={post}
+      // String()으로 감싸서 키 타입을 일치시킵니다.
+      author={authors[String(post.authorId)] ?? { memberId: 0, username: "알 수 없는 사용자", profile: null, serverRole: "USER", channelRole: "NONE" }} 
+      onCommentClick={handleCommentClick} 
+    />
+  );
+})}
 
         {hasNextPage && !isFetchingNextPage && (
           <div ref={inViewRef} style={{ height: '1px' }} />

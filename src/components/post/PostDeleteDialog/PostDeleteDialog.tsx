@@ -7,17 +7,22 @@ import {
   DialogDescription
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import { PostDialogProps } from "@/types/post.type"; 
 import useDeletePost from "@/hooks/post/useDeletePost";
 import * as S from "./PostDeleteDialog.styles";
 
 const PostDeleteDialog = ({ open, onOpenChange, post }: PostDialogProps) => {
-  const deletePostHandler = useDeletePost();
+  const { mutateAsync: deletePost, isPending } = useDeletePost();
   const postId = post.postId;
 
   const handleDeletePost = async () => {
-    await deletePostHandler(postId);
-    onOpenChange(false); 
+    try {
+      await deletePost(postId);
+      onOpenChange(false); 
+    } catch (error) {
+      console.error("포스트 삭제 실패:", error);
+    }
   };
 
   return (
@@ -33,7 +38,12 @@ const PostDeleteDialog = ({ open, onOpenChange, post }: PostDialogProps) => {
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             취소
           </Button>
-          <Button variant="destructive" onClick={handleDeletePost}>
+          <Button
+            variant="destructive"
+            onClick={handleDeletePost}
+            disabled={isPending}
+          >
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             삭제
           </Button>
         </DialogFooter>

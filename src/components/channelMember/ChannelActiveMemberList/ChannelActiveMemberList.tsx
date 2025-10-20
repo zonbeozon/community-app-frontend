@@ -1,11 +1,10 @@
-import { useState } from "react";
 import useGetChannelMembers from "@/queries/useGetChannelMembers";
 import ChannelMemberItem from "../ChannelMemberItem/ChannelMemberItem";
 import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
 import * as S from "./ChannelActiveMemberList.styles";
 
 const ChannelActiveMemberList = ({ channelId }: { channelId: number }) => {
-  const [pageRequest, setPageRequest] = useState({ page: 0, size: 20 });
+  const pageRequest = { page: 0, size: 20 };
   const { data, isLoading, isError } = useGetChannelMembers(channelId, pageRequest);
 
   const members = data?.members || [];

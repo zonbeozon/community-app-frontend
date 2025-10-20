@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useQueryClient } from '@tanstack/react-query';
 
-import useGetJoinedChannels from "@/hooks/channel/useGetJoinedChannels";
+import useGetJoinedChannels from "@/queries/useGetJoinedChannel";
 import { QUERY_KEYS } from "@/constants/queryKeys";
-import useGetPosts from "@/hooks/post/useGetPosts";
+import useGetPosts from "@/queries/useGetPosts";
 import * as S from "@/pages/Main/Main.styles";
 import ChannelSidebar from "@/components/channel/ChannelSidebar/ChannelSidebar";
 

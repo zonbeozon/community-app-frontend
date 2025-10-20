@@ -8,7 +8,7 @@ const ChannelPendingMemberList = ({ channelId }: { channelId: number }) => {
   const [pageRequest, setPageRequest] = useState({ page: 0, size: 20 });
   const { data, isLoading, isError } = useGetPendingChannelMembers(channelId, pageRequest);
 
-  const pendingMembers = data?.pendingMembers || [];
+  const pendingMembers = data?.members || [];
 
   if (isLoading) {
     return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;

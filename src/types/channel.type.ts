@@ -2,7 +2,6 @@ import { Image } from "./common.type";
 import { ChannelMember } from "./channelMember.type";
 
 export type ChannelType = "BLOG" | "CHAT";
-export type CreatorType = "COMMUNITY" | "SYSTEM";
 export type ContentVisibility = "PUBLIC" | "PRIVATE";
 export type JoinPolicy = "OPEN" | "APPROVAL" | "DENY" ;
 
@@ -15,14 +14,13 @@ export interface Channel {
   channelInfo: {
     channelId: number;
     channelType: ChannelType;
-    creatorType: CreatorType;
     title: string;
     description: string;
     profile: Image | null;
     settings: ChannelSettings;
     memberCount: number;
   };
-  requester: ChannelMember;
+  membership: ChannelMember;
 };
 
 export interface ChannelRequest {
@@ -59,12 +57,13 @@ export interface ChannelHeaderProps {
 }
 
 export interface ChannelSearchResultTemp {
+  channelInfo: {
   channelId: number;
   channelType: ChannelType;
-  creatorType: CreatorType;
   title: string;
   description: string;
   profile: Image | null;
   settings: ChannelSettings;
   memberCount: number;
+  }
 }

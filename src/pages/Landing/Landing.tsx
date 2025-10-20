@@ -1,8 +1,9 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { GOOGLE_AUTH_URL } from "@/constants/oAuth";
+import { serverMemberAtom } from "@/atoms/authAtoms";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useAtomValue } from 'jotai';
 import { ROUTE_PATH } from "@/constants/routePath";
-import useGetMyServerMember from "@/queries/useGetServerMemberById";
 import * as S from "./Landing.styles";
 
 const GoogleIcon = () => (
@@ -19,20 +20,19 @@ const GoogleIcon = () => (
 
 const Landing = () => {
   const navigate = useNavigate();
-  const { data: myInfo, isSuccess } = useGetMyServerMember();
-  const isAuthenticated = isSuccess && !!myInfo;
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate(ROUTE_PATH.main, { replace: true });
-    }
-  }, [isAuthenticated, navigate]);
+  const serverMember = useAtomValue(serverMemberAtom);
 
   const handleGoogleLogin = () => {
     window.location.href = GOOGLE_AUTH_URL;
   };
 
-  if (isAuthenticated) {
+  useEffect(() => {
+    if (serverMember) {
+      navigate(ROUTE_PATH.main, { replace: true });
+    }
+  }, [serverMember, navigate]);
+
+  if (serverMember) {
     return null;
   }
 

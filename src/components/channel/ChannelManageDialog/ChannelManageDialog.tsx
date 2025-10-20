@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ChannelActiveMemberList from "@/components/channelMember/ChannelActiveMemberList/ChannelActiveMemberList";
-import ChannelPendingMemberList from "@/components/channelMember/ChannelPendingMemberList/ChannelPendingMemberList";
-import ChannelBannedMemberList from "@/components/channelMember/ChannelBannedMemberList/ChannelBannedMemberList";
+import ChannelActiveMemberList from "@/components/channelmember/ChannelActiveMemberList/ChannelActiveMemberList";
+import ChannelPendingMemberList from "@/components/channelmember/ChannelPendingMemberList/ChannelPendingMemberList";
+import ChannelBannedMemberList from "@/components/channelmember/ChannelBannedMemberList/ChannelBannedMemberList";
 import { ChannelDialogProps } from "@/types/channel.type";
 import * as S from "./ChannelManageDialog.styles";
 

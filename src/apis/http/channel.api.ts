@@ -1,7 +1,7 @@
 import fetcher from "@/apis/fetcher";
 import { BASE_URL, ENDPOINT } from "@/apis/url";
 import { Channel, ChannelRequest, ChannelsResponse } from "@/types/channel.type";
-import { ChannelSearchResultTemp } from "@/components/channel/ChannelSearchbar/ChannelSearchbar";
+import { ChannelSearchResultTemp } from "@/types/channel.type";
 
 export const getChannels = async (): Promise<ChannelSearchResultTemp[]> => {
   return fetcher.get<ChannelSearchResultTemp[]>({

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChannelMember } from "@/types/channelMember.type";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import ChannelMemberDropdown from "../ChannelMemberDropdown/ChannelMemberDropdown";
 import useApproveChannelMember from "@/hooks/channelMember/useApproveChannelMember";
 import useDenyChannelMember from "@/hooks/channelMember/useDenyChannelMember";
@@ -17,9 +18,9 @@ interface ChannelMemberItemProps {
 const ChannelMemberItem = ({ channelId, member, type }: ChannelMemberItemProps) => {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
   
-  const acceptMember = useApproveChannelMember();
-  const declineMember = useDenyChannelMember();
-  const unbanMember = useUnbanChannelMember();
+  const { mutate: approveMember, isPending: isApproving } = useApproveChannelMember();
+  const { mutate: denyMember, isPending: isDenying } = useDenyChannelMember();
+  const { mutate: unbanMember, isPending: isUnbanning } = useUnbanChannelMember();
 
   const hasImage = member.profile && member.profile.imageUrl;
   const firstLetter = member.username ? member.username[0].toUpperCase() : "?";
@@ -27,19 +28,28 @@ const ChannelMemberItem = ({ channelId, member, type }: ChannelMemberItemProps) 
   const renderActions = () => {
     switch (type) {
       case 'pending':
-        const handleAccept = () => acceptMember(channelId, member.memberId);
-        const handleDecline = () => declineMember(channelId, member.memberId);
+        const handleAccept = () => approveMember({ channelId, targetMemberId: member.memberId });
+        const handleDecline = () => denyMember({ channelId, targetMemberId: member.memberId });
         return (
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={handleAccept}>수락</Button>
-            <Button variant="destructive" size="sm" onClick={handleDecline}>거절</Button>
+            <Button variant="outline" size="sm" onClick={handleAccept} disabled={isApproving || isDenying}>
+              {isApproving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              수락
+            </Button>
+            <Button variant="destructive" size="sm" onClick={handleDecline} disabled={isApproving || isDenying}>
+              {isDenying && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              거절
+            </Button>
           </div>
         );
       
       case 'banned':
-        const handleUnban = () => unbanMember(channelId, member.memberId);
+        const handleUnban = () => unbanMember({ channelId, targetMemberId: member.memberId });
         return (
-          <Button variant="secondary" size="sm" onClick={handleUnban}>밴 해제</Button>
+          <Button variant="secondary" size="sm" onClick={handleUnban} disabled={isUnbanning}>
+            {isUnbanning && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            밴 해제
+          </Button>
         );
 
       case 'active':

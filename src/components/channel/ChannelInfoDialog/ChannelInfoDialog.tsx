@@ -2,7 +2,8 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { Button } from "@/components/ui/button";
 import { Channel } from "@/types/channel.type";
 import useDialog from "@/hooks/common/useDialog";
-import ChannelMemberList from "@/components/channelMember/ChannelActiveMemberList/ChannelActiveMemberList";
+import ChannelMemberList from "@/components/channelmember/ChannelActiveMemberList/ChannelActiveMemberList";
+import ChannelProfileImage from "../ChannelProfileImage/ChannelProfileImage";
 import * as S from "./ChannelInfoDialog.styles";
 
 const ChannelInfoDialog = ({ channel }: { channel: Channel }) => {
@@ -10,23 +11,10 @@ const ChannelInfoDialog = ({ channel }: { channel: Channel }) => {
 
   if (!channel) return null;
 
-  const hasImage = channel.channelInfo.profile && channel.channelInfo.profile.imageUrl;
-  const firstLetter = channel.channelInfo.title ? channel.channelInfo.title[0].toUpperCase() : "?";
-
   return (
     <Dialog {...dialogProps}>
       <DialogTrigger asChild>
-        <div className={S.trigger.wrapper}>
-          {hasImage ? (
-            <img
-              src={channel.channelInfo.profile!.imageUrl}
-              alt={`${channel.channelInfo.title} 채널의 프로필`}
-              className={S.trigger.image}
-            />
-          ) : (
-            <div className={S.trigger.fallback}>{firstLetter}</div>
-          )}
-        </div>
+        <ChannelProfileImage channelInfo={channel.channelInfo} size="sm" />
       </DialogTrigger>
       <DialogContent className={S.dialogContent}>
         <DialogHeader>
@@ -38,15 +26,7 @@ const ChannelInfoDialog = ({ channel }: { channel: Channel }) => {
 
         <div className={S.scrollableArea}>
           <div className={S.profileSection.wrapper}>
-            {hasImage ? (
-              <img
-                src={channel.channelInfo.profile!.imageUrl}
-                alt={`${channel.channelInfo.title}의 프로필`}
-                className={S.profileSection.image}
-              />
-            ) : (
-              <div className={S.profileSection.fallback}>{firstLetter}</div>
-            )}
+            <ChannelProfileImage channelInfo={channel.channelInfo} size="lg" />
           </div>
           <div className={S.divider} />
           <div>

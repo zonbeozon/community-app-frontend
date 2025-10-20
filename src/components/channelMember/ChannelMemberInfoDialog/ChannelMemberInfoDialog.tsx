@@ -6,9 +6,10 @@ import {
   DialogTrigger,
   DialogClose
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { ChannelMember } from "@/types/channelMember.type";
+import ChannelMemberProfileImage from "../ChannelMemberProfileImage/ChannelMemberProfileImage";
 import * as S from "./ChannelMemberInfoDialog.styles";
-import { Button } from "@/components/ui/button"; 
 
 interface ChannelMemberInfoDialogProps {
   open: boolean;
@@ -32,10 +33,10 @@ const ChannelMemberInfoDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button className={S.createButton}>
-          <img
-            src={profile?.imageUrl}
-            alt={`${username || "알 수 없는 사용자"}의 프로필 사진`}
-            className={S.avatar}
+          <ChannelMemberProfileImage
+            profile={profile} 
+            username={username} 
+            className={S.avatar} 
           />
         </Button>
       </DialogTrigger>
@@ -44,10 +45,10 @@ const ChannelMemberInfoDialog = ({
           <DialogTitle>유저 프로필</DialogTitle>
         </DialogHeader>
         <div className={S.content}>
-          <img
-            src={profile?.imageUrl}
-            alt={`${username || "알 수 없는 사용자"}의 프로필 사진`}
-            className={S.avatar}
+          <ChannelMemberProfileImage
+            profile={profile} 
+            username={username} 
+            className={S.avatar} 
           />
           <h2 className={S.username}>{username || "알 수 없는 사용자"}</h2>
           <div>

@@ -1,13 +1,14 @@
 import { useRef, useEffect } from "react";
+import { useAtomValue } from "jotai"; 
+import { serverMemberAtom } from "@/atoms/authAtoms";
 import { Post } from "@/types/post.type";
 import { ChannelMember } from "@/types/channelMember.type";
-import useGetMyServerMember from "@/queries/useGetServerMemberById";
 import useCreateReaction from "@/hooks/reaction/useCreateReaction";
 import useDeleteReaction from "@/hooks/reaction/useDeleteReaction";
 import usePostViewLogger from "@/hooks/viewLogger/usePostViewLogger";
 import PostDropdown from "@/components/post/PostDropdown/PostDropdown";
-import ServerMemberInfoDialog from "@/components/serverMember/ServerMemberInfoDialog/ServerMemberInfoDialog";
-import ChannelMemberInfoDialog from "@/components/channelMember/ChannelMemberInfoDialog/ChannelMemberInfoDialog";
+import ServerMemberInfoDialog from "@/components/servermember/ServerMemberInfoDialog/ServerMemberInfoDialog";
+import ChannelMemberInfoDialog from "@/components/channelmember/ChannelMemberInfoDialog/ChannelMemberInfoDialog";
 import TimeDisplay from "@/components/common/TimeDisplay/TimeDisplay";
 import ThumbsUpIcon from "../../reaction/LikeButton/LikeButton";
 import ThumbsDownIcon from "../../reaction/DislikeButton/DislikeButton";
@@ -28,7 +29,7 @@ const VIEW_THRESHOLD_PERCENT = 0.5;
 const VIEW_DEBOUNCE_TIME_MS = 500;
 
 const PostItem = ({ post, author, channelId, onCommentClick }: PostItemProps) => {
-  const { data: myInfo } = useGetMyServerMember();
+  const myInfo = useAtomValue(serverMemberAtom);
   const { mutate: createReaction } = useCreateReaction();
   const { mutate: deleteReaction } = useDeleteReaction();
   const { logView } = usePostViewLogger();
@@ -43,7 +44,7 @@ const PostItem = ({ post, author, channelId, onCommentClick }: PostItemProps) =>
           if (entry.isIntersecting && entry.intersectionRatio >= VIEW_THRESHOLD_PERCENT) {
             if (!viewTimer.current) {
               viewTimer.current = setTimeout(() => {
-                logView(post.id);
+                logView(post.postId);
                 viewTimer.current = null;
                 observer.unobserve(entry.target);
               }, VIEW_DEBOUNCE_TIME_MS);
@@ -68,7 +69,7 @@ const PostItem = ({ post, author, channelId, onCommentClick }: PostItemProps) =>
       if (currentRef) observer.unobserve(currentRef);
       if (viewTimer.current) clearTimeout(viewTimer.current);
     };
-  }, [post.id, logView]);
+  }, [post.postId, logView]);
 
   if (!post || !author) {
     return <ItemSkeleton />;
@@ -81,15 +82,16 @@ const PostItem = ({ post, author, channelId, onCommentClick }: PostItemProps) =>
   const dislikeCount = reaction?.dislikeCount ?? 0;
 
   const handleLikeClick = () => {
-    const variables = { postId: post.id, channelId, reactionType: 'LIKE' as const };
+    const variables = { postId: post.postId, channelId, reactionType: 'LIKE' as const };
     isLiked ? deleteReaction(variables) : createReaction(variables);
   };
 
   const handleDislikeClick = () => {
-    const variables = { postId: post.id, channelId, reactionType: 'DISLIKE' as const };
+    const variables = { postId: post.postId, channelId, reactionType: 'DISLIKE' as const };
     isDisliked ? deleteReaction(variables) : createReaction(variables);
   };
 
+  // 2. isMyPost 비교 로직이 Jotai로부터 온 정보로 정상적으로 동작합니다.
   const isMyPost = author.memberId === myInfo?.memberId;
 
   return (
@@ -137,14 +139,15 @@ const PostItem = ({ post, author, channelId, onCommentClick }: PostItemProps) =>
               count={dislikeCount} 
               onClick={handleDislikeClick} 
             />
-            <CommentButton post={post} onClick={() => onCommentClick(post.id)} />
+            <CommentButton post={post} onClick={() => onCommentClick(post.postId)} />
             <ViewCount post={post} />
           </div>
         </div>
       </div>
       <div className={S.dropdownContainer}>
         <div className={S.dropdownButtonWrapper}>
-          <PostDropdown post={post} channelId={channelId} />
+          {/* PostDropdown은 이미 수정되었으므로, 올바르게 동작할 것입니다. */}
+          <PostDropdown post={post} author={author} channelId={channelId} />
         </div>
       </div>
     </div>

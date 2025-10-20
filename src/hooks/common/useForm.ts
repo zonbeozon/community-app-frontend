@@ -7,6 +7,8 @@ const useForm = <T extends object | string>(
 ) => {
   const [values, setValues] = useState<T>(initialState);
   const [errors, setErrors] = useState<Errors<T>>(() => validate(initialState));
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const isValid = useMemo(() => Object.keys(errors).length === 0, [errors]);
 
@@ -35,7 +37,30 @@ const useForm = <T extends object | string>(
   const reset = useCallback(() => {
     setValues(initialState);
     setErrors(validate(initialState));
+    setIsSubmitting(false); 
   }, [initialState, validate]);
+
+  const handleSubmit = useCallback(
+    (onSubmit: (values: T) => Promise<void> | void) => 
+    async (e?: React.FormEvent<HTMLFormElement>) => {
+      e?.preventDefault();
+      
+      const currentErrors = validate(values);
+      setErrors(currentErrors);
+
+      if (Object.keys(currentErrors).length === 0) {
+        setIsSubmitting(true);
+        try {
+          await onSubmit(values); 
+        } catch (error) {
+          console.error("폼 제풀 에러:", error);
+        } finally {
+          setIsSubmitting(false);
+        }
+      }
+    },
+    [validate, values]
+  );
 
   const setValuesDirectly = useCallback((newValues: T) => {
     setValues(newValues);
@@ -50,6 +75,8 @@ const useForm = <T extends object | string>(
     isValid,
     setValues: setValuesDirectly,
     setErrors,
+    isSubmitting,
+    handleSubmit,
   };
 };
 

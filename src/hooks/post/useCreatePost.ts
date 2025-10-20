@@ -8,7 +8,7 @@ import { PostRequest } from '@/types/post.type';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { serverMemberAtom } from '@/atoms/authAtoms';
 import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/message";
-import { ROUTE_PATH } from '@/constants/routePath';
+
 
 // mutate 함수에 전달될 인자의 타입을 명확하게 정의합니다.
 interface CreatePostVariables {
@@ -18,7 +18,7 @@ interface CreatePostVariables {
 
 const useCreatePost = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
+
   const myInfo = useAtomValue(serverMemberAtom);
 
   return useMutation({
@@ -36,7 +36,7 @@ const useCreatePost = () => {
     },
 
     // 3. 작업이 성공했을 때 실행될 콜백입니다.
-    onSuccess: (newPostId, { channelId }) => {
+    onSuccess: () => {
       // (핵심) 게시글이 생성되었으므로, 해당 채널의 '게시글 목록' 쿼리를 무효화합니다.
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.posts.lists() });
       // 정확히는 특정 채널의 목록만 무효화하는 것이 더 좋습니다.
@@ -45,11 +45,6 @@ const useCreatePost = () => {
       toast.success(SUCCESS_MESSAGES.POST_CREATE_SUCCESS);
 
       // (UX 개선) 생성된 게시글 상세 페이지로 바로 이동시킵니다.
-      if (newPostId) {
-        const postDetailPath = ROUTE_PATH.postId.replace(':postId', String(newPostId));
-        const channelPath = ROUTE_PATH.channelId.replace(':channelId', String(channelId));
-        navigate(`${channelPath}/${postDetailPath}`);
-      }
     },
 
     // 4. 작업이 실패했을 때 실행될 콜백 (에러 처리)

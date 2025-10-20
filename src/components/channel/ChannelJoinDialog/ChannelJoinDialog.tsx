@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -10,12 +10,9 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
 import useJoinChannel from '@/hooks/channelMember/useJoinChannel';
-import { ChannelSearchResultTemp } from '../ChannelSearchbar/ChannelSearchbar'; // 경로는 실제 위치에 맞게 조정해주세요.
+import { ChannelSearchResultTemp } from '@/types/channel.type';
 
-// --- 1. Prop 타입 정의 수정 ---
-// 'children'을 제거하고, 외부에서 상태를 제어하기 위한 'open'과 'onOpenChange'를 추가합니다.
 interface ChannelJoinDialogProps {
   channel: ChannelSearchResultTemp;
   onJoinSuccess?: () => void;
@@ -29,14 +26,13 @@ const ChannelJoinDialog = ({
   open,
   onOpenChange,
 }: ChannelJoinDialogProps) => {
-  // 내부 상태 'isOpen'을 제거하고, props로 받은 'open'과 'onOpenChange'를 사용합니다.
-  const [isLoading, setIsLoading] = useState(false);
+
+  const { mutateAsync: joinChannel, isPending: isLoading } = useJoinChannel();
   
-  const joinChannelHandler = useJoinChannel();
-  const { title, settings: { joinPolicy } } = channel;
+  const { channelInfo } = channel;
+  const { title, settings: { joinPolicy } } = channelInfo;
 
   const dialogContent = useMemo(() => {
-    // ... (내용은 동일하므로 생략)
     switch (joinPolicy) {
       case 'OPEN':
         return {
@@ -61,19 +57,15 @@ const ChannelJoinDialog = ({
   }, [joinPolicy, title]);
 
   const handleJoin = async () => {
-    setIsLoading(true);
     try {
-      await joinChannelHandler(channel.channelId);
+      await joinChannel(channel.channelInfo.channelId);
       onJoinSuccess?.();
-      onOpenChange(false); // 상태를 직접 바꾸는 대신, 부모에게 닫아달라고 요청합니다.
+      onOpenChange(false);
     } catch (error) {
       console.error(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  // --- 2. DialogTrigger를 제거하고 Dialog 컴포넌트에 직접 props를 전달 ---
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -82,7 +74,6 @@ const ChannelJoinDialog = ({
           <DialogDescription>{dialogContent.description}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          {/* DialogClose는 내부적으로 onOpenChange(false)를 호출하므로 그대로 사용 가능합니다. */}
           <DialogClose asChild>
             <Button variant="ghost">취소</Button>
           </DialogClose>
@@ -93,7 +84,6 @@ const ChannelJoinDialog = ({
               {dialogContent.buttonText}
             </Button>
           ) : (
-            // '확인' 버튼 클릭 시에도 부모에게 닫아달라고 요청합니다.
             <Button onClick={() => onOpenChange(false)}>
               {dialogContent.buttonText}
             </Button>
