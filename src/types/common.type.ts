@@ -3,11 +3,12 @@ export interface Image {
   imageUrl: string;
 };
 
-export interface JwtCode {
-  sub: number;
-  exp: number;
+export interface JwtPayload {
+  sub: string;
+  role: string;
   iat: number;
-};
+  exp: number;
+}
 
 interface Sorted {
   sorted: boolean;

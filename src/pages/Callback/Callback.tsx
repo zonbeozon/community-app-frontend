@@ -1,5 +1,3 @@
-// src/pages/Callback/Callback.tsx (디버깅용으로 수정)
-
 import { useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import useSignIn from '@/hooks/auth/useSignIn';
@@ -13,10 +11,6 @@ const Callback = () => {
 
   useEffect(() => {
     const token = searchParams.get('accessToken');
-
-    // 👇 ================== 이 부분을 추가해주세요 ================== 👇
-    console.log("백엔드로부터 받은 토큰:", token); 
-    // 👆 ======================================================== 👆
 
     if (token) {
       signIn(token);

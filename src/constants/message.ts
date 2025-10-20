@@ -1,5 +1,8 @@
 export const SERVER_ERROR_MESSAGES = {
   //Auth
+  TOKEN_MISSING: "토큰이 제공되지 않았습니다. 다시 로그인해 주세요.",
+  TOKEN_INVALID: "유효하지 않은 토큰입니다. 다시 로그인해 주세요.",
+  USER_INVALID: "토큰에서 사용자 정보를 찾을 수 없습니다.",
   AUTH_EXPIRED: "인증이 만료되었습니다. 다시 로그인해 주세요.",
   AUTHENTICATION_FAILED: "인증에 실패했습니다. 아이디나 비밀번호를 확인해 주세요.",
   INSUFFICIENT_PERMISSION: "이 작업을 수행할 권한이 없습니다.",

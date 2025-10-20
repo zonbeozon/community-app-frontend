@@ -1,12 +1,16 @@
 import { jwtDecode } from "jwt-decode";
-import { JwtCode } from "@/types/common.type";
+import { JwtPayload } from "@/types/common.type";
+import { SERVER_ERROR_MESSAGES } from "@/constants/message";
 
-export const decodeToken = (token: string): number | null => {
+export const decodeToken = (token: string) => {
+  if (!token) {
+    throw new Error(SERVER_ERROR_MESSAGES.TOKEN_MISSING);
+  }
   try {
-    const decoded = jwtDecode<JwtCode>(token);
+    const decoded = jwtDecode<JwtPayload>(token);
     return decoded?.sub ? Number(decoded.sub) : null;
   } catch (error) {
-    console.error("토큰이 유효하지 않습니다:", error);
+    console.error(SERVER_ERROR_MESSAGES.TOKEN_INVALID, error);
     return null;
   }
 };
