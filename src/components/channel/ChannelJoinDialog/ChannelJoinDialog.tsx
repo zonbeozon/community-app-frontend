@@ -11,14 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import useJoinChannel from '@/hooks/channelMember/useJoinChannel';
-import { ChannelSearchResultTemp } from '@/types/channel.type';
-
-interface ChannelJoinDialogProps {
-  channel: ChannelSearchResultTemp;
-  onJoinSuccess?: () => void;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
+import { ChannelJoinDialogProps } from '@/types/channel.type';
 
 const ChannelJoinDialog = ({
   channel,
@@ -28,7 +21,6 @@ const ChannelJoinDialog = ({
 }: ChannelJoinDialogProps) => {
 
   const { mutateAsync: joinChannel, isPending: isLoading } = useJoinChannel();
-  
   const { channelInfo } = channel;
   const { title, settings: { joinPolicy } } = channelInfo;
 

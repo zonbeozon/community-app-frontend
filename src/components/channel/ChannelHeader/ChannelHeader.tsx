@@ -4,20 +4,13 @@ import ChannelDropdown from '@/components/channel/ChannelDropdown/ChannelDropdow
 import ChannelInfoDialog from '@/components/channel/ChannelInfoDialog/ChannelInfoDialog';
 import ChannelBackButton from '../ChannelBackButton/ChannelBackButton';
 import ChannelJoinButton from '@/components/channel/ChannelJoinButton/ChannelJoinButton';
-import { Channel } from '@/types/channel.type';
-import ChannelRoleManager from '@/utils/channelRoleManager';
+import { ChannelHeaderProps } from '@/types/channel.type';
+import { useSelectedChannel } from '@/hooks/channel/useSelectedChannel';
 import * as S from "@/components/channel/ChannelHeader/ChannelHeader.styles";
-
-interface ChannelHeaderProps {
-  showBackButton: boolean;
-  channelData: Channel;
-  isMember: boolean;
-}
 
 const ChannelHeader = ({ showBackButton, channelData, isMember }: ChannelHeaderProps) => {
   const [isPostDialogOpen, setPostDialogOpen] = useState(false);
-
-  const canCreatePost = isMember && channelData.membership && ChannelRoleManager.isAdmin(channelData.membership.channelRole);
+  const canCreatePost = useSelectedChannel();
 
   return (
     <div className={S.wrapper}>
@@ -49,7 +42,10 @@ const ChannelHeader = ({ showBackButton, channelData, isMember }: ChannelHeaderP
         </>
       ) : (
         <div className={S.button}>
-          <ChannelJoinButton channel={channelData} onJoinSuccess={() => {}} />
+          <ChannelJoinButton 
+            channel={{ ...channelData, isJoined: false }} 
+            onJoinSuccess={() => {}} 
+          />
         </div>
       )}
     </div>

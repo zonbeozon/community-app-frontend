@@ -3,7 +3,7 @@ import { ChannelMember } from "./channelMember.type";
 
 export type ChannelType = "BLOG" | "CHAT";
 export type ContentVisibility = "PUBLIC" | "PRIVATE";
-export type JoinPolicy = "OPEN" | "APPROVAL" | "DENY" ;
+export type JoinPolicy = "OPEN" | "APPROVAL" | "DENY";
 
 export interface ChannelSettings {
   contentVisibility: ContentVisibility;
@@ -20,6 +20,7 @@ export interface Channel {
     settings: ChannelSettings;
     memberCount: number;
   };
+  isJoined?: boolean;
   membership: ChannelMember;
 };
 
@@ -31,7 +32,7 @@ export interface ChannelRequest {
   settings: ChannelSettings;
 };
 
-export interface ChannelsResponse {
+export interface JoinedChannelsResponse {
   channels: Channel[]; 
   totalElements: number;
 };
@@ -39,7 +40,23 @@ export interface ChannelsResponse {
 export interface UpdatechannelVariables {
   channelId: number;
   payload: ChannelRequest;
-}
+};
+
+export interface ChannelProfileImageProps extends React.ComponentPropsWithoutRef<'div'> {
+  channelInfo: {
+    title: string;
+    profile: {
+      imageUrl: string | null;
+    } | null;
+  };
+  size: 'sm' | 'lg';
+};
+
+export interface ChannelHeaderProps {
+  showBackButton: boolean;
+  channelData: Channel;
+  isMember: boolean;
+};
 
 export interface ChannelDialogProps {
   open: boolean;
@@ -47,14 +64,22 @@ export interface ChannelDialogProps {
   channelId: number;
 };
 
+export interface ChannelJoinDialogProps {
+  channel: Channel;
+  onJoinSuccess?: () => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+};
+
 export interface ChannelGroupProps {
   title: string;
   channels: Channel[];
 };
 
-export interface ChannelHeaderProps {
-  showBackButton: boolean;
-}
+export interface ChannelJoinButtonProps {
+  channel: Channel;
+  onJoinSuccess: () => void;
+};
 
 export interface ChannelSearchResultTemp {
   channelId: number;
@@ -64,9 +89,4 @@ export interface ChannelSearchResultTemp {
   profile: Image | null;
   settings: ChannelSettings;
   memberCount: number;
-}
-
-export interface ChannelJoinButtonProps {
-  channel: ChannelSearchResultTemp;
-  onJoinSuccess: () => void;
-}
+};

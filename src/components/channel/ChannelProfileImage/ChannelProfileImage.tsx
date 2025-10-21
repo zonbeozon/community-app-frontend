@@ -1,19 +1,10 @@
 import React from 'react';
+import { ChannelProfileImageProps } from '@/types/channel.type';  
 import * as S from "./ChannelProfileImage.styles";
-
-interface ChannelProfileImageProps extends React.ComponentPropsWithoutRef<'div'> {
-  channelInfo: {
-    title: string;
-    profile: {
-      imageUrl: string | null;
-    } | null;
-  };
-  size: 'sm' | 'lg';
-}
 
 const ChannelProfileImage = React.forwardRef<HTMLDivElement, ChannelProfileImageProps>(
   ({ channelInfo, size, className, ...props }, ref) => {
-    const firstLetter = channelInfo.title ? channelInfo.title[0].toUpperCase() : "?";
+    const firstLetter = channelInfo.title[0].toUpperCase();
     const wrapperClass = size === 'sm' ? S.trigger.wrapper : undefined;
     const imageClass = size === 'sm' ? S.trigger.image : S.profileSection.image;
     const fallbackClass = size === 'sm' ? S.trigger.fallback : S.profileSection.fallback;

@@ -29,7 +29,7 @@ export const useChannelMemberDropdown = ({ channelId, targetMember }: UseChannel
       return false;
     }
     if (currentServerMember.memberId === targetMember.memberId) {
-      return false; // Can't act on self
+      return false;
     }
     return ChannelRoleManager.isRoleHigher(
       myRequesterInfo.channelRole,
