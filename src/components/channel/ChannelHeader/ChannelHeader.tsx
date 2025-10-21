@@ -1,33 +1,36 @@
-import { useState } from 'react'; 
+import { useState } from 'react';
 import NewPostDialog from '@/components/post/PostCreateDialog/PostCreateDialog';
 import ChannelDropdown from '@/components/channel/ChannelDropdown/ChannelDropdown';
 import ChannelInfoDialog from '@/components/channel/ChannelInfoDialog/ChannelInfoDialog';
 import ChannelBackButton from '../ChannelBackButton/ChannelBackButton';
 import ChannelJoinButton from '@/components/channel/ChannelJoinButton/ChannelJoinButton';
-import { ChannelHeaderProps } from '@/types/channel.type';
-import { useSelectedChannel } from '@/hooks/channel/useSelectedChannel';
+import { Channel } from '@/types/channel.type';
+import ChannelRoleManager from '@/utils/channelRoleManager';
 import * as S from "@/components/channel/ChannelHeader/ChannelHeader.styles";
 
-const ChannelHeader = ({ showBackButton }: ChannelHeaderProps) => {
-  const { selectedChannel, isLoading, isMember, canCreatePost } = useSelectedChannel();
+interface ChannelHeaderProps {
+  showBackButton: boolean;
+  channelData: Channel;
+  isMember: boolean;
+}
+
+const ChannelHeader = ({ showBackButton, channelData, isMember }: ChannelHeaderProps) => {
   const [isPostDialogOpen, setPostDialogOpen] = useState(false);
 
-  if (isLoading || !selectedChannel) {
-    return null
-  }
+  const canCreatePost = isMember && channelData.membership && ChannelRoleManager.isAdmin(channelData.membership.channelRole);
 
   return (
     <div className={S.wrapper}>
       <div className={S.goBackButtonWrapper}>
-        {showBackButton && <ChannelBackButton channel={selectedChannel} />}
+        {showBackButton && <ChannelBackButton channel={channelData} />}
         
         <div className={S.image}>
-          <ChannelInfoDialog channel={selectedChannel} />
+          <ChannelInfoDialog channel={channelData} />
         </div>
       </div>
 
       <div className={S.titleWrapper}>
-        <span className={S.name}>{selectedChannel.channelInfo.title}</span>
+        <span className={S.name}>{channelData.channelInfo.title}</span>
       </div>
 
       {isMember ? (
@@ -41,12 +44,12 @@ const ChannelHeader = ({ showBackButton }: ChannelHeaderProps) => {
             )}
           </div>
           <div className={S.dropdownButton}>
-            <ChannelDropdown channel={selectedChannel} />
+            <ChannelDropdown channel={channelData} />
           </div>
         </>
       ) : (
         <div className={S.button}>
-          <ChannelJoinButton channel={selectedChannel} onJoinSuccess={() => {}} />
+          <ChannelJoinButton channel={channelData} onJoinSuccess={() => {}} />
         </div>
       )}
     </div>

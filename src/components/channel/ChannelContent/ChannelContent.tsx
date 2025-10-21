@@ -4,16 +4,24 @@ import { useChannelLogic } from "@/hooks/channel/useChannelLogic";
 import * as S from "./ChannelContent.styles";
 
 const ChannelContent = () => {
-  const { currentChannel, showBackButton } = useChannelLogic();
+  const { showBackButton, channelData, isMember, isLoading } = useChannelLogic();
 
-  if (!currentChannel) {
+  if (isLoading) {
+    return null;
+  }
+
+  if (!channelData) {
     return <div>❓ 요청한 채널을 찾을 수 없습니다.</div>;
   }
 
   return (
     <div className={S.layout}>
       <div className={S.headerWrapper}>
-        <ChannelHeader showBackButton={showBackButton} />
+        <ChannelHeader
+          showBackButton={showBackButton}
+          channelData={channelData}
+          isMember={isMember}
+        />
       </div>
       <div className={S.contentWrapper}>
         <Outlet />

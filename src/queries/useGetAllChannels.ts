@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { getChannels } from "@/apis/http/channel.api";
+import { getAllChannels } from "@/apis/http/channel.api";
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { ChannelSearchResultTemp } from '@/types/channel.type';
 
 const useGetAllChannels = () => {
   return useQuery<ChannelSearchResultTemp[], Error>({
     queryKey: QUERY_KEYS.channels.lists(), 
-    queryFn: getChannels, 
+    queryFn: getAllChannels, 
     staleTime: 1000 * 60 * 5,
   });
 };

@@ -27,14 +27,6 @@ const PostList = () => {
     if (!myChannels) return null;
     return myChannels.find(c => c.channelInfo.channelId === numericChannelId);
   }, [myChannels, numericChannelId]);
-
-  const canViewChannel = useMemo(() => {
-    if (isLoadingChannels || !currentChannel) return false;
-    if (currentChannel.channelInfo.settings.contentVisibility === "PRIVATE" && !currentChannel.membership) {
-      return false;
-    }
-    return true;
-  }, [isLoadingChannels, currentChannel]);
   
   const {
     data: postsData,
@@ -43,7 +35,7 @@ const PostList = () => {
     isFetchingNextPage,
     isLoading: isLoadingPosts,
   } = useInfinitePosts(numericChannelId, {
-    enabled: !!numericChannelId && canViewChannel,
+    enabled: !!numericChannelId
   });
   
   const { ref: inViewRef } = useInView({
@@ -85,23 +77,13 @@ const PostList = () => {
     };
   }, [numericChannelId]);
 
-  // 수정된 코드
 const handleCommentClick = (postId: number) => {
   setSelectedPostId(postId);
-  // 경로 맨 앞에 슬래시(/)를 추가하여 절대 경로로 만듭니다.
   navigate(`/channels/${numericChannelId}/posts/${postId}`);
 };
 
   if (isLoadingChannels) {
   return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
-}
-
-if (!canViewChannel) {
-  return (
-    <div className={S.statusContainer}>
-      <p className={S.emptyMessage}>🔒 비공개 채널이거나 접근할 수 없습니다.</p>
-    </div>
-  );
 }
 
 if (isLoadingPosts || !postsData) { 
@@ -130,7 +112,7 @@ if (isLoadingPosts || !postsData) {
   return (
     <PostItem
       channelId={numericChannelId}
-      key={post.postId} 
+      key={post.postId}                        
       post={post}
       author={authors[String(post.authorId)] ?? { memberId: 0, username: "알 수 없는 사용자", profile: null, serverRole: "USER", channelRole: "NONE" }} 
       onCommentClick={handleCommentClick} 
