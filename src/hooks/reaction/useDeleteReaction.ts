@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 
 import { deleteReaction } from '@/apis/http/reaction.api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { SERVER_ERROR_MESSAGES } from '@/constants/message';
+import { SERVER_ERROR_MESSAGES } from '@/constants/messages';
 
 // mutate 함수에 전달될 인자의 타입을 명확하게 정의합니다.
 // 게시글 목록과 상세 정보를 모두 갱신하기 위해 postId와 channelId가 필요합니다.

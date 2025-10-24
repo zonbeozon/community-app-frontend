@@ -8,7 +8,7 @@ import { Comment } from "@/types/comment.type";
 import { ChannelMember } from "@/types/channelMember.type";
 import CommentItem from "@/components/comment/CommentItem/CommentItem";
 import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
-import { MESSAGES } from "@/constants/message";
+import { MESSAGES } from "@/constants/messages";
 import * as S from "./CommentList.styles";
 
 interface CommentListProps {

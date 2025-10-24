@@ -4,8 +4,8 @@ import { toast } from 'sonner';
 import { createChannel } from '@/apis/http/channel.api';
 import { Channel, ChannelRequest } from '@/types/channel.type';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { ROUTE_PATH } from '@/constants/routePath';
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/message";
+import { ROUTE_PATH } from '@/constants/routePaths';
+import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/messages";
 
 const useChannelCreate = () => {
   const queryClient = useQueryClient();

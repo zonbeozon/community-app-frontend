@@ -8,7 +8,7 @@ import ServerMemberInfoDialog from "@/components/servermember/ServerMemberInfoDi
 import ChannelSearchbar from "@/components/channel/ChannelSearchbar/ChannelSearchbar";
 import * as S from "./Header.styles";
 import NotificationButton from "../../notification/NotificationButton/NotificationButton";
-import { ROUTE_PATH } from "@/constants/routePath";
+import { ROUTE_PATH } from "@/constants/routePaths";
 
 const Header = () => {
   const myInfo = useAtomValue(serverMemberAtom);

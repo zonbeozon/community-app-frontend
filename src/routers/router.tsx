@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route, Outlet } from 'react-router-dom';
-import { ROUTE_PATH } from '@/constants/routePath';
-import { MESSAGES } from '@/constants/message';
+import { ROUTE_PATH } from '@/constants/routePaths';
+import { MESSAGES } from '@/constants/messages';
 import Layout from '@/components/common/Layout/Layout';
 import AuthGuard from './AuthGuard';
 

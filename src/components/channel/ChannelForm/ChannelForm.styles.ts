@@ -1,4 +1,4 @@
-import { MAX_CHANNEL_TITLE_LENGTH, MIN_CHANNEL_TITLE_LENGTH, MAX_CHANNEL_DESCRIPTION_LENGTH } from "@/constants/config";
+import { MAX_CHANNEL_TITLE_LENGTH, MIN_CHANNEL_TITLE_LENGTH, MAX_CHANNEL_DESCRIPTION_LENGTH } from "@/constants/constants";
 
 export const section = "mb-6";
 

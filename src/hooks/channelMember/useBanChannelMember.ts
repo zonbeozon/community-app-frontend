@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { ChannelMemberVariables } from '@/types/channelMember.type';
 import { banChannelMember } from '@/apis/http/channelMember.api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/message";
+import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/messages";
 
 const useBanChannelMember = () => {
   const queryClient = useQueryClient();

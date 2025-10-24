@@ -5,7 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { AutosizeTextarea } from "@/components/ui/AutoSizeTextArea";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Button } from "@/components/ui/button";
-import { MAX_CHANNEL_TITLE_LENGTH, MAX_CHANNEL_DESCRIPTION_LENGTH } from "@/constants/config";
+import { MAX_CHANNEL_TITLE_LENGTH, MAX_CHANNEL_DESCRIPTION_LENGTH } from "@/constants/constants";
 import * as S from "./ChannelForm.styles";
 import type { ChannelRequest, ChannelType, ContentVisibility, JoinPolicy } from "@/types/channel.type";
 import type { FormProps } from "@/types/form.type";

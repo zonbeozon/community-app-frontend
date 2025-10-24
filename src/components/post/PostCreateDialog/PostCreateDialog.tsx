@@ -13,7 +13,7 @@ import validatePost from "@/validations/validatePost";
 import { selectedChannelIdAtom } from "@/atoms/channelAtoms";
 import { PostRequest } from "@/types/post.type";
 import { PlusIcon } from "lucide-react";
-import { DEFAULT_POST_VALUES } from "@/constants/config";
+import { DEFAULT_POST_VALUES } from "@/constants/constants";
 import * as S from "./PostCreateDialog.styles";
 
 interface PostCreateDialogProps {

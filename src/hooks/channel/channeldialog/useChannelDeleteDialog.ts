@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import useGetJoinedChannels from '@/queries/useGetJoinedChannel';
 import useDeleteChannel from '../useChannelDelete';
-import { ROUTE_PATH } from '@/constants/routePath';
+import { ROUTE_PATH } from '@/constants/routePaths';
 
 interface UseChannelDeleteProps {
   channelId: number;

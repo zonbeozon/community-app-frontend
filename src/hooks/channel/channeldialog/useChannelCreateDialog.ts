@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import useForm from '@/hooks/common/useForm';
 import useCreateChannel from '@/hooks/channel/useChannelCreate';
 import { ChannelRequest } from '@/types/channel.type';
-import { DEFAULT_CHANNEL_VALUES } from '@/constants/config';
+import { DEFAULT_CHANNEL_VALUES } from '@/constants/constants';
 import validateChannel from '@/validations/validateChannel';
 
 interface UseChannelCreateDialogProps {

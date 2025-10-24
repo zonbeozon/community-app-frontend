@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 
 import { deleteServerMember } from '@/apis/http/serverMember.api';
 import useSignOut from '../auth/useSignOut';
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/message";
+import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/messages";
 
 const useDeleteServerMember = () => {
   const queryClient = useQueryClient();

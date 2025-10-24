@@ -3,7 +3,7 @@ import { serverMemberAtom } from "@/atoms/authAtoms";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useAtomValue } from 'jotai';
-import { ROUTE_PATH } from "@/constants/routePath";
+import { ROUTE_PATH } from "@/constants/routePaths";
 import * as S from "./Landing.styles";
 
 const GoogleIcon = () => (

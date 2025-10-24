@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 
 import { createComment } from '@/apis/http/comment.api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/message";
+import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/messages";
 import { useAtomValue } from 'jotai';
 import { serverMemberAtom } from '@/atoms/authAtoms';
 

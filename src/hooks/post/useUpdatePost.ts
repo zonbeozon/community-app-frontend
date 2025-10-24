@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { updatePost } from '@/apis/http/post.api';
 import { PostRequest } from '@/types/post.type';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/message";
+import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/messages";
 
 // mutate 함수에 전달될 인자의 타입을 명확하게 정의합니다.
 // 목록을 갱신하려면 channelId도 필요합니다.

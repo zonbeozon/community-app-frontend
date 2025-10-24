@@ -1,5 +1,5 @@
 import { ChannelGroupProps } from "@/types/channel.type";
-import { MESSAGES } from "@/constants/message";
+import { MESSAGES } from "@/constants/messages";
 import ChannelItem from "@/components/channel/ChannelItem/ChannelItem";
 import * as S from "./ChannelGroup.styles";
 

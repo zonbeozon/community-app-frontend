@@ -1,4 +1,4 @@
-import { MAX_POST_CONTENT_LENGTH } from "@/constants/config";
+import { MAX_POST_CONTENT_LENGTH } from "@/constants/constants";
 
 export const wrapper = "p-4";
 

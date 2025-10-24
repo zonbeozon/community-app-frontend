@@ -18,3 +18,29 @@ export interface ChannelMemberVariables {
   channelId: number;
   targetMemberId: number;
 };
+
+export interface ChannelMemberProfileImageProps {
+  profile: {
+    imageUrl: string | null;
+  } | null;
+  username: string | null;
+  className?: string; 
+};
+
+export interface ChannelMemberDropdownProps {
+  channelId: number;
+  targetMember: ChannelMember;
+};
+
+export interface ChannelMemberInfoDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  channelMember: ChannelMember | null;
+};
+
+export interface ChannelMemberDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  channelId: number;
+  targetMember: ChannelMember;
+};

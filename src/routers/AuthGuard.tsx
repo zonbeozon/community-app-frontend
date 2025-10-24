@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
 import { serverMemberAtom } from '@/atoms/authAtoms';
-import { ROUTE_PATH } from '@/constants/routePath';
+import { ROUTE_PATH } from '@/constants/routePaths';
 
 const AuthGuard = () => {
   const serverMember = useAtomValue(serverMemberAtom);

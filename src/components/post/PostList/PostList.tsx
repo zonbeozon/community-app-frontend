@@ -10,7 +10,7 @@ import { selectedPostIdAtom } from '@/atoms/postAtoms';
 
 import PostItem from '../PostItem/PostItem';
 import ItemSkeleton from '@/components/common/ItemSkeleton/ItemSkeleton';
-import { MESSAGES } from '@/constants/message';
+import { MESSAGES } from '@/constants/messages';
 import * as S from './PostList.styles';
 
 const SCROLL_POSITION_KEY = 'post_list_scroll_position';

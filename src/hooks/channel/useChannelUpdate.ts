@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { updateChannel } from '@/apis/http/channel.api';
 import { UpdatechannelVariables } from '@/types/channel.type';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/message";
+import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/messages";
 
 const useUpdateChannel = () => {
   const queryClient = useQueryClient();

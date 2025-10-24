@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { XIcon, ImageIcon } from "lucide-react";
 import { AutosizeTextarea } from "@/components/ui/AutoSizeTextArea";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { MAX_POST_CONTENT_LENGTH } from "@/constants/config";
+import { MAX_POST_CONTENT_LENGTH } from "@/constants/constants";
 import type { FormProps } from "@/types/form.type";
 import { PostRequest } from "@/types/post.type";
 import * as S from "../PostForm/PostForm.styles";

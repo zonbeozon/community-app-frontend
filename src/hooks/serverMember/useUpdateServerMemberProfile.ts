@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 // 1. 존재하지 않는 UpdateProfilePayload 임포트 구문을 제거합니다.
 import { updateServerMemberProfile } from '@/apis/http/serverMember.api'; 
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/message";
+import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/messages";
 
 const useUpdateServerMemberProfile = () => {
   const queryClient = useQueryClient();

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import useSignIn from '@/hooks/auth/useSignIn';
-import { ROUTE_PATH } from '@/constants/routePath';
+import { ROUTE_PATH } from '@/constants/routePaths';
 import { toast } from 'sonner';
 
 const Callback = () => {

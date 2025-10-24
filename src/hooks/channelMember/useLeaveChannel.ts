@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { leaveChannel } from '@/apis/http/channelMember.api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from '@/constants/message';
+import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from '@/constants/messages';
 
 const useLeaveChannel = () => {
   const queryClient = useQueryClient();

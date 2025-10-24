@@ -3,7 +3,7 @@ import useGetJoinedChannels from '@/queries/useGetJoinedChannel';
 import useUpdateChannel from '@/hooks/channel/useChannelUpdate';
 import useForm from "@/hooks/common/useForm";
 import validateChannel from "@/validations/validateChannel";
-import { DEFAULT_CHANNEL_VALUES } from "@/constants/config";
+import { DEFAULT_CHANNEL_VALUES } from "@/constants/constants";
 import { ChannelRequest } from "@/types/channel.type";
 
 interface UseChannelUpdateDialogProps {

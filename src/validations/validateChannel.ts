@@ -1,6 +1,6 @@
 import { Errors } from "@/types/form.type";
 import { ChannelRequest, Channel } from "@/types/channel.type";
-import { MAX_CHANNEL_TITLE_LENGTH, MIN_CHANNEL_TITLE_LENGTH, MAX_CHANNEL_DESCRIPTION_LENGTH, NOT_ALLOWED_REGEX } from "@/constants/config";
+import { MAX_CHANNEL_TITLE_LENGTH, MIN_CHANNEL_TITLE_LENGTH, MAX_CHANNEL_DESCRIPTION_LENGTH, NOT_ALLOWED_REGEX } from "@/constants/constants";
 
 const validateChannel = (
   form: Partial<ChannelRequest> | Partial<Channel>

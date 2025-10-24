@@ -4,8 +4,8 @@ import { toast } from 'sonner';
 
 import { deletePost } from '@/apis/http/post.api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { ROUTE_PATH } from '@/constants/routePath';
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/message";
+import { ROUTE_PATH } from '@/constants/routePaths';
+import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/messages";
 
 // mutate 함수에 전달될 인자의 타입을 정의합니다.
 // onSuccess에서 channelId를 사용하기 위해 함께 받습니다.

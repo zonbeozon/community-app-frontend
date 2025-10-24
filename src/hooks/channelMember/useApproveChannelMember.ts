@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { approveChannelMember } from '@/apis/http/channelMember.api';
 import { ChannelMemberVariables } from '@/types/channelMember.type';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from '@/constants/message';
+import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from '@/constants/messages';
 
 const useApproveChannelMember = () => {
   const queryClient = useQueryClient();

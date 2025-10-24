@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Channel } from "@/types/channel.type";
-import { ROUTE_PATH } from "@/constants/routePath";
+import { ROUTE_PATH } from "@/constants/routePaths";
 import * as S from "./ChannelBackButton.styles";
 
 const ChannelBackButton = ({ channel }: { channel: Channel }) => {

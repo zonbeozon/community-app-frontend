@@ -5,7 +5,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useGetChannelById } from "@/queries/useGetChannelById";
 import useGetJoinedChannels from "@/queries/useGetJoinedChannel";
 import { selectedChannelIdAtom } from '@/atoms/channelAtoms';
-import { ROUTE_PATH } from "@/constants/routePath";
+import { ROUTE_PATH } from "@/constants/routePaths";
 import { QUERY_KEYS } from "@/constants/queryKeys";
 
 export const useChannelLogic = () => {

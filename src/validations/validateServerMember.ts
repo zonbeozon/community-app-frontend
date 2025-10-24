@@ -1,6 +1,6 @@
 import { Errors } from "@/types/form.type";
 import { ServerMember } from "@/types/serverMember.type";
-import { MAX_USER_NAME_LENGTH, NOT_ALLOWED_REGEX } from "@/constants/config";
+import { MAX_USER_NAME_LENGTH, NOT_ALLOWED_REGEX } from "@/constants/constants";
 
 const validateServerMember = (
   form: ServerMember

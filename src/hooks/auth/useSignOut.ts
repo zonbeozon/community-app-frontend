@@ -4,8 +4,8 @@ import { useSetAtom } from 'jotai';
 import { toast } from 'sonner';
 import { signOut } from '@/apis/http/auth.api';
 import { accessTokenAtom, serverMemberAtom } from '@/atoms/authAtoms';
-import { SUCCESS_MESSAGES, CLIENT_ERROR_MESSAGES } from "@/constants/message";
-import { ROUTE_PATH } from '@/constants/routePath';
+import { SUCCESS_MESSAGES, CLIENT_ERROR_MESSAGES } from "@/constants/messages";
+import { ROUTE_PATH } from '@/constants/routePaths';
 
 const useSignOut = () => {
   const navigate = useNavigate();

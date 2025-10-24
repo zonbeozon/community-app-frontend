@@ -1,6 +1,6 @@
 import { Errors } from "@/types/form.type";
 import { PostRequest } from "@/types/post.type";
-import { MAX_POST_CONTENT_LENGTH, NOT_ALLOWED_REGEX } from "@/constants/config";
+import { MAX_POST_CONTENT_LENGTH, NOT_ALLOWED_REGEX } from "@/constants/constants";
 
 const validatePost = (
   form: PostRequest

@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
-import useJoinChannel from '@/hooks/channelMember/useJoinChannel';
+import useJoinChannel from '@/hooks/channelmember/useJoinChannel';
 import { ChannelJoinDialogProps } from '@/types/channel.type';
 
 const ChannelJoinDialog = ({
