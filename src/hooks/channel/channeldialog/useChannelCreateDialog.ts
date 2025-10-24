@@ -28,11 +28,8 @@ export const useChannelCreateDialog = ({ open, onSuccess }: UseChannelCreateDial
   }, [open, reset]);
 
   const handleSubmit = async (data: ChannelRequest) => {
-    if (!isValid) {
-      console.log("Form is not valid.");
-      return;
-    }
-
+    if (!isValid) return;
+    
     createChannel(data, {
       onSuccess: () => {
         onSuccess(); 
