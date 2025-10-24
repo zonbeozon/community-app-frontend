@@ -43,4 +43,5 @@ export interface PostDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   post: Post;
+  channelId?: number;
 };
