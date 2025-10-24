@@ -1,16 +1,25 @@
 import useGetBannedChannelMembers from "@/queries/useGetBannedChannelMembers.ts";
 import ChannelMemberItem from "../ChannelMemberItem/ChannelMemberItem";
 import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
+import { DEFAULT_PAGE_REQUEST } from "@/constants/constants";
 import * as S from "./ChannelBannedMemberList.styles";
 
 const ChannelBannedMemberList = ({ channelId }: { channelId: number }) => {
-  const pageRequest = { page: 0, size: 20 };
-  const { data, isLoading, isError } = useGetBannedChannelMembers(channelId, pageRequest);
+  const { data, isLoading, isError } = useGetBannedChannelMembers(
+    channelId,
+    DEFAULT_PAGE_REQUEST
+  );
 
   const bannedMembers = data?.members || [];
 
   if (isLoading) {
-    return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
+    return (
+      <>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <ItemSkeleton key={i} />
+        ))}
+      </>
+    );
   }
 
   if (isError || bannedMembers.length === 0) {

@@ -1,34 +1,31 @@
-import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Loader2 } from "lucide-react";
-import useUpdateChannelMemberRole from "@/hooks/channelMember/useUpdateChannelMemberRole";
-import { ChannelMember, ChannelRole } from "@/types/channelMember.type";
+import { ChannelMember } from "@/types/channelMember.type";
+import { useChannelMemberRoleChangeDialog } from "@/hooks/channelmember/channelmemberdialog/useChannelMemberRoleChangeDialog";
 import * as S from "./ChannelMemberRoleChangeDialog.styles";
 
-interface ChannelMemberDialogProps {
+interface DialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   channelId: number;
   targetMember: ChannelMember;
 }
 
-const ChannelMemberRoleChangeDialog = ({ open, onOpenChange, channelId, targetMember }: ChannelMemberDialogProps) => {
-  const [newRole, setNewRole] = useState<ChannelRole>(targetMember.channelRole);
-  const { mutateAsync: updateRole, isPending: isUpdating } = useUpdateChannelMemberRole();
-
-  const handleChangeRole = async () => {
-    try {
-      await updateRole({ channelId, targetMemberId: targetMember.memberId, newRole });
-      onOpenChange(false);
-    } catch (error) {
-      console.error("Failed to update member role:", error);
-    }
-  };
-
-  const isRoleUnchanged = targetMember.channelRole === newRole;
+const ChannelMemberRoleChangeDialog = ({ open, onOpenChange, channelId, targetMember }: DialogProps) => {
+  const {
+    selectedRole,
+    isUpdating,
+    isRoleUnchanged,
+    handleRoleChange,
+    handleSubmit,
+  } = useChannelMemberRoleChangeDialog({
+    channelId,
+    targetMember,
+    onSuccess: () => onOpenChange(false), // 성공 시 다이얼로그를 닫도록 콜백 전달
+  });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -42,8 +39,8 @@ const ChannelMemberRoleChangeDialog = ({ open, onOpenChange, channelId, targetMe
 
         <div className={S.radioGroupContainer}>
           <RadioGroup
-            value={newRole}
-            onValueChange={(value) => setNewRole(value as ChannelRole)}
+            value={selectedRole}
+            onValueChange={handleRoleChange}
             className={S.radioGroup}
           >
             <Label htmlFor="role-admin" className={S.radioLabel}>
@@ -64,8 +61,7 @@ const ChannelMemberRoleChangeDialog = ({ open, onOpenChange, channelId, targetMe
 
           <Button
             type="button"
-            variant="destructive"
-            onClick={handleChangeRole}
+            onClick={handleSubmit}
             disabled={isRoleUnchanged || isUpdating}
           >
             {isUpdating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

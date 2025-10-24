@@ -1,43 +1,46 @@
-import { useChannelMemberDropdown } from "@/hooks/channelMember/useChannelMemberDropdown";
-import { ChannelMember } from "@/types/channelMember.type";
-import { ActionDropdown } from "@/components/common/ActionDropdown/ActionDropdown";
-import ChannelMemberBanDialog from "../ChannelMemberKickDialog/ChannelMemberBanDialog";
+import { useState } from "react";
+import { MoreHorizontal } from "lucide-react";
+import { ChannelMemberDropdownProps } from "@/types/channelMember.type";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import ChannelMemberBanDialog from "../ChannelMemberBanDialog/ChannelMemberBanDialog";
 import ChannelMemberRoleChangeDialog from "../ChannelMemberRoleChangeDialog/ChannelMemberRoleChangeDialog";
-import * as S from "./ChannelMemberDropdown.styles";
 
-type MemberDropdownProps = {
-  channelId: number;
-  targetMember: ChannelMember;
-};
+type DialogType = "ban" | "role" | null;
 
-const ChannelMemberDropdown = ({ channelId, targetMember }: MemberDropdownProps) => {
-  const {
-    dropdown,
-    roleDialog,
-    banDialog,
-    actions,
-    canPerformActions,
-  } = useChannelMemberDropdown({ channelId, targetMember });
-
-  if (!canPerformActions) {
-    return null;
-  }
+const ChannelMemberDropdown = ({ channelId, targetMember }: ChannelMemberDropdownProps) => {
+  const [dialog, setDialog] = useState<DialogType>(null);
 
   return (
     <>
-      <ActionDropdown
-        aria-label="멤버 옵션"
-        {...dropdown}
-        actions={actions}
-        triggerClassName={S.dropdownButton}
-      />
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon">
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onSelect={() => setDialog("role")}>
+            권한 수정
+          </DropdownMenuItem>
+          <DropdownMenuItem 
+            className="text-red-500" 
+            onSelect={() => setDialog("ban")}
+          >
+            추방
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
       <ChannelMemberRoleChangeDialog
-        {...roleDialog}
+        open={dialog === "role"}
+        onOpenChange={(isOpen) => !isOpen && setDialog(null)}
         channelId={channelId}
         targetMember={targetMember}
       />
       <ChannelMemberBanDialog
-        {...banDialog}
+        open={dialog === "ban"}
+        onOpenChange={(isOpen) => !isOpen && setDialog(null)}
         channelId={channelId}
         targetMember={targetMember}
       />

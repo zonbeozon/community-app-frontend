@@ -1,21 +1,8 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogClose
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ChannelMember } from "@/types/channelMember.type";
+import { ChannelMemberInfoDialogProps } from "@/types/channelMember.type";
 import ChannelMemberProfileImage from "../ChannelMemberProfileImage/ChannelMemberProfileImage";
 import * as S from "./ChannelMemberInfoDialog.styles";
-
-interface ChannelMemberInfoDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  channelMember: ChannelMember | null;
-}
 
 const ChannelMemberInfoDialog = ({
   open,

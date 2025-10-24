@@ -1,16 +1,27 @@
 import useGetChannelMembers from "@/queries/useGetChannelMembers";
-import ChannelMemberItem from "../ChannelMemberItem/ChannelMemberItem";
+import { DEFAULT_PAGE_REQUEST } from "@/constants/constants";
 import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
+import ChannelMemberItem from "../ChannelMemberItem/ChannelMemberItem";
+import ChannelMemberRoleIcon from "../ChannelMemberRoleIcon/ChannelMemberRoleIcon";
+import ChannelMemberDropdown from "../ChannelMemberDropdown/ChannelMemberDropdown";
 import * as S from "./ChannelActiveMemberList.styles";
 
 const ChannelActiveMemberList = ({ channelId }: { channelId: number }) => {
-  const pageRequest = { page: 0, size: 20 };
-  const { data, isLoading, isError } = useGetChannelMembers(channelId, pageRequest);
+  const { data, isLoading, isError } = useGetChannelMembers(
+    channelId,
+    DEFAULT_PAGE_REQUEST
+  );
 
   const members = data?.members || [];
 
   if (isLoading) {
-    return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
+    return (
+      <>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <ItemSkeleton key={i} />
+        ))}
+      </>
+    );
   }
 
   if (isError || members.length === 0) {
@@ -23,9 +34,16 @@ const ChannelActiveMemberList = ({ channelId }: { channelId: number }) => {
         {members.map((member) => (
           <ChannelMemberItem
             key={member.memberId}
-            channelId={channelId}
             member={member}
-            type="active"
+            actions={
+              <>
+                <ChannelMemberRoleIcon role={member.channelRole} />
+                <ChannelMemberDropdown 
+                  channelId={channelId} 
+                  targetMember={member} 
+                />
+              </>
+            }
           />
         ))}
       </ul>
