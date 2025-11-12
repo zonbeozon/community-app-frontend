@@ -21,7 +21,6 @@ export default function CommentItem({
   channelId 
 }: CommentItemProps) {
   const { content, createdAt } = comment;
-  const [isServerMemberInfoOpen, setServerMemberInfoOpen] = useState(false);
   const [isChannelMemberInfoOpen, setChannelMemberInfoOpen] = useState(false);
 
   if (!author) {
@@ -32,10 +31,7 @@ export default function CommentItem({
     <div className="relative">
       <div className={`${S.commentRow} group`}>
         {isCurrentUser ? (
-          <ServerMemberInfoDialog
-            open={isServerMemberInfoOpen}
-            onOpenChange={setServerMemberInfoOpen}
-          />
+          <ServerMemberInfoDialog/>
         ) : (
           <ChannelMemberInfoDialog
             open={isChannelMemberInfoOpen}
