@@ -23,8 +23,8 @@ export const MultiImageUploader = ({
   
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const [imageUrls, setImageUrls] = useState<string[]>(initialImageUrls);
-  const [imageIds, setImageIds] = useState<number[]>(initialImageIds);
+  const [imageUrls, setImageUrls] = useState<string[]>(initialImageUrls ?? []);
+  const [imageIds, setImageIds] = useState<number[]>(initialImageIds ?? []);
   const [error, setError] = useState<string | null>(null);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

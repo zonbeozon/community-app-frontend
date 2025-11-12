@@ -15,7 +15,7 @@ const PostForm = ({
     isValid,
     onSubmit,
     imagePreview,
-}: FormProps<PostRequest, string[] | null>) => {
+}: FormProps<PostRequest, string[]>) => {
     const { onChange } = handler;
 
     const handleUploadChange = (ids: number[]) => {
