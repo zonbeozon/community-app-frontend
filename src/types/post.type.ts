@@ -1,6 +1,6 @@
 import { Image } from "./common.type";
 import { ChannelMember } from "./channelMember.type";
-import { Reaction } from "./reaction.type";
+import { Metric } from "./reaction.type";
 
 export interface PostsParams {
   cursorPostId?: number | null;
@@ -20,7 +20,9 @@ export interface Post extends Omit<PostRequest, "imageIds">{
   authorId: number;
   commentCount: number;
   viewCount: number;
-  reaction: Reaction;
+  metric: Metric;
+  isLikedByRequester: boolean;
+  isDislikedByRequester: boolean;
   createdAt: string;
   updatedAt: string;
 };
