@@ -9,6 +9,8 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
 
+  useGlobalSubscriptions();
+
   return (
     <div className={S.wrapper}>
       <Header />

@@ -17,6 +17,9 @@ export const StompProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (accessToken) {
+      stompClient.connectHeaders = {
+        Authorization: `Bearer ${accessToken}`,
+      };
       stompClient.onConnect = () => {
         console.log('STOMP: Connection successful!');
         setIsConnected(true);

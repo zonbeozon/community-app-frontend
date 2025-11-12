@@ -1,13 +1,11 @@
-// src/hooks/stomp/useGlobalSubscriptions.ts
-
 import { useEffect, useMemo, useRef } from "react";
 import type { IMessage, StompSubscription } from "@stomp/stompjs";
-import { useNavigate } from "react-router-dom";
 import { useAtomValue } from 'jotai';
-import { serverMemberAtom } from "@/atoms/authAtoms"; // 사용자 정보 Atom 추가
+
+import { useStomp } from "../StompProvider";
+import { serverMemberAtom } from "@/atoms/authAtoms";
 import useGetJoinedChannels from "@/queries/useGetJoinedChannel";
 import { selectedChannelIdAtom } from "@/atoms/channelAtoms";
-import { useStomp } from "../StompProvider";
 import { STOMP_DESTINATIONS } from "../destinations";
 import { handleChannelEvent } from "../handlers/channelEventHandler";
 import { handleChannelMemberEvent } from "../handlers/channelMemberEventHandler";
@@ -17,14 +15,11 @@ import { handleCommentCountEvent } from '../handlers/commentCountEventHandler';
 
 export const useGlobalSubscriptions = () => {
   const { client, isConnected } = useStomp();
-  const navigate = useNavigate();
   
-  // 1. Jotai Atom에서 현재 로그인된 사용자의 정보를 가져옵니다.
   const myInfo = useAtomValue(serverMemberAtom);
   const { data: myChannels } = useGetJoinedChannels();
   const selectedChannelId = useAtomValue(selectedChannelIdAtom);
   
-  // 2. myInfo?.memberId를 사용하여 memberId를 할당합니다.
   const memberId = myInfo?.memberId;
   const joinedChannelIds = useMemo(() => {
     if (!myChannels) return [];
@@ -46,14 +41,15 @@ export const useGlobalSubscriptions = () => {
   });
 
   useEffect(() => {
-    // 3. memberId가 Jotai로부터 오므로, 로그인 시 이 effect가 올바르게 재실행됩니다.
-    if (!isConnected || !client || !memberId || !myChannels) {
+    if (!isConnected || !client) {
       return;
     }
 
     const subs = subscriptionsRef.current;
+    console.log(subs)
 
     if (!subs.member) {
+      console.log('STOMP: Subscribing to member events...');
       subs.member = client.subscribe(
         STOMP_DESTINATIONS.channelMember(),
         (message: IMessage) => handleChannelMemberEvent(JSON.parse(message.body)) 
@@ -61,14 +57,24 @@ export const useGlobalSubscriptions = () => {
     }
     
     if (!subs.notifications) {
+      console.log('STOMP: Subscribing to notification events...');
       subs.notifications = client.subscribe(
         STOMP_DESTINATIONS.notifications(),
         (message: IMessage) => handleNotificationEvent(JSON.parse(message.body))
       );
     }
+  }, [isConnected, client, memberId]); 
+
+  useEffect(() => {
+    if (!isConnected || !client || joinedChannelIds.length === 0) {
+      return;
+    }
+
+    const subs = subscriptionsRef.current;
 
     joinedChannelIds.forEach((channelId) => {
       if (!subs.channels.has(channelId)) {
+        console.log(`STOMP: Subscribing to channel events for channel ${channelId}`);
         const sub = client.subscribe(
           STOMP_DESTINATIONS.channel(channelId),
           (msg: IMessage) => handleChannelEvent(JSON.parse(msg.body))
@@ -76,6 +82,7 @@ export const useGlobalSubscriptions = () => {
         subs.channels.set(channelId, sub);
       }
       if (!subs.posts.has(channelId)) {
+        console.log(`STOMP: Subscribing to post events for channel ${channelId}`);
         const sub = client.subscribe(
           STOMP_DESTINATIONS.post(channelId),
           (msg: IMessage) => handlePostEvent(channelId, JSON.parse(msg.body))
@@ -87,6 +94,7 @@ export const useGlobalSubscriptions = () => {
     const currentSubscribedIds = Array.from(subs.channels.keys());
     currentSubscribedIds.forEach((subscribedId) => {
       if (!joinedChannelIds.includes(subscribedId)) {
+        console.log(`STOMP: Unsubscribing from all events for channel ${subscribedId}`);
         subs.channels.get(subscribedId)?.unsubscribe();
         subs.posts.get(subscribedId)?.unsubscribe();
         subs.channels.delete(subscribedId);
@@ -94,7 +102,7 @@ export const useGlobalSubscriptions = () => {
       }
     });
     
-  }, [isConnected, client, memberId, joinedChannelIds, myChannels, navigate]);
+  }, [isConnected, client, joinedChannelIds]); 
 
   useEffect(() => {
     if (!isConnected || !client) {
@@ -109,6 +117,7 @@ export const useGlobalSubscriptions = () => {
     }
 
     if (selectedChannelId) {
+      console.log(`STOMP: Subscribing to comment count for channel ${selectedChannelId}`);
       subs.commentCount = client.subscribe(
         STOMP_DESTINATIONS.commentCount(selectedChannelId),
         (message: IMessage) => handleCommentCountEvent(JSON.parse(message.body))
@@ -119,12 +128,13 @@ export const useGlobalSubscriptions = () => {
 
   useEffect(() => {
     return () => {
+      console.log('STOMP: Unsubscribing from all global subscriptions.');
       const subs = subscriptionsRef.current;
       subs.member?.unsubscribe();
       subs.notifications?.unsubscribe();
+      subs.commentCount?.unsubscribe();
       subs.channels.forEach(sub => sub.unsubscribe());
       subs.posts.forEach(sub => sub.unsubscribe());
-      subs.commentCount?.unsubscribe();
     };
   }, []);
 };
