@@ -1,10 +1,12 @@
-import useGetChannelMembers from "@/queries/useGetChannelMembers";
-import { DEFAULT_PAGE_REQUEST } from "@/constants/constants";
-import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
+import { useAtomValue } from 'jotai';
+import { serverMemberAtom } from '@/atoms/authAtoms';
+import * as S from "./ChannelActiveMemberList.styles";
 import ChannelMemberItem from "../ChannelMemberItem/ChannelMemberItem";
 import ChannelMemberRoleIcon from "../ChannelMemberRoleIcon/ChannelMemberRoleIcon";
 import ChannelMemberDropdown from "../ChannelMemberDropdown/ChannelMemberDropdown";
-import * as S from "./ChannelActiveMemberList.styles";
+import useGetChannelMembers from "@/queries/useGetChannelMembers";
+import { DEFAULT_PAGE_REQUEST } from "@/constants/constants";
+import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
 
 const ChannelActiveMemberList = ({ channelId }: { channelId: number }) => {
   const { data, isLoading, isError } = useGetChannelMembers(
@@ -12,6 +14,7 @@ const ChannelActiveMemberList = ({ channelId }: { channelId: number }) => {
     DEFAULT_PAGE_REQUEST
   );
 
+  const meId = useAtomValue(serverMemberAtom)?.memberId;
   const members = data?.members || [];
 
   if (isLoading) {
@@ -38,10 +41,9 @@ const ChannelActiveMemberList = ({ channelId }: { channelId: number }) => {
             actions={
               <>
                 <ChannelMemberRoleIcon role={member.channelRole} />
-                <ChannelMemberDropdown 
-                  channelId={channelId} 
-                  targetMember={member} 
-                />
+                {member.memberId !== meId && (
+                  <ChannelMemberDropdown channelId={channelId} targetMember={member} />
+                )}
               </>
             }
           />
