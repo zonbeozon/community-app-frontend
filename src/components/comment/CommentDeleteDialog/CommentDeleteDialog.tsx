@@ -6,17 +6,26 @@ import useDeleteComment from '@/hooks/comment/useDeleteComment';
 import * as S from "./CommentDeleteDialog.styles";
 
 const CommentDeleteDialog = ({ open, onOpenChange, comment }: CommentDialogProps) => {
-  const deleteCommentHandler = useDeleteComment();
+  const { mutateAsync: deleteComment, isPending } = useDeleteComment();
 
   const { postId: postIdFromParams } = useParams<{ postId: string }>();
   const numericPostId = Number(postIdFromParams);
 
   const handleDeleteComment = async () => {
     if (isNaN(numericPostId)) {
+        console.error("Post ID가 유효하지 않습니다.");
         return;
     }
-    await deleteCommentHandler(comment.commentId);
-    onOpenChange(false); 
+    
+    try {
+      await deleteComment({
+        postId: numericPostId,
+        commentId: comment.commentId
+      });
+      onOpenChange(false);
+    } catch (error) {
+      console.error("댓글 삭제 실패:", error);
+    }
   };
 
   return (
@@ -25,8 +34,10 @@ const CommentDeleteDialog = ({ open, onOpenChange, comment }: CommentDialogProps
         <DialogHeader><h3 className={S.title}>댓글 삭제</h3></DialogHeader>
         <p className={S.message}>정말로 이 댓글을 삭제하시겠습니까?</p>
         <DialogFooter className={S.footer}>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>취소</Button>
-          <Button variant="destructive" onClick={handleDeleteComment}>삭제</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isPending}>취소</Button>
+          <Button variant="destructive" onClick={handleDeleteComment} disabled={isPending}>
+            {isPending ? "삭제 중..." : "삭제"}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
