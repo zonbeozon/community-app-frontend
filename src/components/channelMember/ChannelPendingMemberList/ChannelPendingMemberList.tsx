@@ -1,5 +1,3 @@
-// src/components/ChannelPendingMemberList/ChannelPendingMemberList.tsx
-
 import { useState } from "react";
 import { ChannelMember } from "@/types/channelMember.type";
 import useGetPendingChannelMembers from "@/queries/useGetPendingChannelMembers";
@@ -11,7 +9,6 @@ import ChannelMemberApproveDialog from "../ChannelMemberApproveDialog/ChannelMem
 import ChannelMemberDenyDialog from "../ChannelMemberDenyDialog/ChannelMemberDenyDialog";
 import * as S from "./ChannelPendingMemberList.styles";
 
-// 다이얼로그 상태를 관리하기 위한 타입 정의
 interface ActiveDialogState {
   type: "approve" | "deny" | null;
   member: ChannelMember | null;
@@ -23,7 +20,6 @@ const ChannelPendingMemberList = ({ channelId }: { channelId: number }) => {
     DEFAULT_PAGE_REQUEST
   );
 
-  // 현재 열려있는 다이얼로그의 상태를 관리
   const [activeDialog, setActiveDialog] = useState<ActiveDialogState>({ type: null, member: null });
 
   const pendingMembers = data?.members || [];

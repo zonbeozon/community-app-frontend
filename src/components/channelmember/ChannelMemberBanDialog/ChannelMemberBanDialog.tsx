@@ -1,6 +1,4 @@
-// src/components/ChannelMemberBanDialog/ChannelMemberBanDialog.tsx
-
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import useBanChannelMember from "@/hooks/channelmember/useBanChannelMember";
 import { ChannelMember } from "@/types/channelMember.type";
@@ -21,7 +19,7 @@ const ChannelMemberBanDialog = ({ open, onOpenChange, channelId, targetMember, o
     banMember({ channelId, targetMemberId: targetMember.memberId }, {
       onSuccess: () => {
         onSuccess?.();
-        onOpenChange(false); // 성공 시 닫기
+        onOpenChange(false);
       },
     });
   };
