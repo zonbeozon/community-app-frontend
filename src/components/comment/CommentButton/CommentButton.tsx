@@ -21,7 +21,7 @@ const CommentButton = ({ post, onClick }: CommentButtonProps) => {
         />
       </button>
       <span className={S.count}>
-        {post.commentCount}
+        {post.metric.commentCount}
       </span>
     </div>
   );

@@ -10,7 +10,7 @@ const ViewCount = ({ post }: ViewCountProps) => {
   return (
     <div className={S.wrapper}>
       <Eye size={S.iconSize} className={S.icon}/>
-      <span className={S.text}>{post.viewCount}</span>
+      <span className={S.text}>{post.metric.viewCount}</span>
     </div>
   );
 };

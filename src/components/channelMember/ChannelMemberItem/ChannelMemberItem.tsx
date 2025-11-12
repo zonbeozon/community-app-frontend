@@ -13,7 +13,10 @@ const ChannelMemberItem = ({ member, actions }: ChannelMemberItemProps) => {
   return (
     <li className={S.wrapper}>
       <div className={S.infoContainer}>
-        <ChannelMemberProfileImage profile={member.profile?.imageUrl} username={member.username}/>
+         <ChannelMemberProfileImage 
+          profile={member.profile} 
+          username={member.username}
+        />
         <span className={S.username}>{member.username}</span>
       </div>
       
