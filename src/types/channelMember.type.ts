@@ -44,3 +44,7 @@ export interface ChannelMemberDialogProps {
   channelId: number;
   targetMember: ChannelMember;
 };
+
+export type AuthorMap = {
+  [key: number]: ChannelMember;
+};
