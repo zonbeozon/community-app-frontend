@@ -24,7 +24,7 @@ const ChannelMemberRoleChangeDialog = ({ open, onOpenChange, channelId, targetMe
   } = useChannelMemberRoleChangeDialog({
     channelId,
     targetMember,
-    onSuccess: () => onOpenChange(false), // 성공 시 다이얼로그를 닫도록 콜백 전달
+    onSuccess: () => onOpenChange(false),
   });
 
   return (
