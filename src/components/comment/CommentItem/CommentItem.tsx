@@ -45,7 +45,7 @@ export default function CommentItem({
         )}
         <div className={S.commentContent}>
           <div className={S.commentHeader}>
-            <span className={S.username}>{author.username || "알 수 없는 사용자"}</span>
+            <span className={S.username}>{author.username}</span>
             <TimeDisplay createdAt={createdAt} />
           </div>
           <p className={S.commentText}>{content}</p>

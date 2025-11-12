@@ -108,7 +108,7 @@ const PostItem = ({ post, author, channelId, onCommentClick }: PostItemProps) =>
         <div className={S.contentContainer}>
           <div className="flex flex-col gap-2">
             <div className={S.header}>
-              <span className={S.username}>{author.username || "알 수 없는 사용자"}</span>
+              <span className={S.username}>{author.username}</span>
               <TimeDisplay createdAt={post.createdAt} />
             </div>
             <p className={S.text}>{post.content}</p>

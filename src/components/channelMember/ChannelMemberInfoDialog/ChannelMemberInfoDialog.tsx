@@ -37,7 +37,7 @@ const ChannelMemberInfoDialog = ({
             username={username} 
             className={S.avatar} 
           />
-          <h2 className={S.username}>{username || "알 수 없는 사용자"}</h2>
+          <h2 className={S.username}>{username}</h2>
           <div>
             <DialogClose asChild>
               <Button type="button" variant="ghost" className={S.closeButton}>
