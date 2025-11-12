@@ -46,8 +46,8 @@ const ChannelMemberApproveDialog = ({ open, onOpenChange, channelId, targetMembe
             취소
           </Button>
 
-          <Button type="button" variant="destructive" onClick={handleApprove} disabled={isPending}>
-            {isPending ? "처리 중..." : "강제 퇴장"}
+          <Button type="button" onClick={handleApprove} disabled={isPending}>
+            {isPending ? "처리 중..." : "수락"}
           </Button>
         </DialogFooter>
       </DialogContent>
