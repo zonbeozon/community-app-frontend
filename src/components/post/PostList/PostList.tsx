@@ -107,14 +107,14 @@ if (isLoadingPosts || !postsData) {
       <div ref={scrollRef} id="main-content" style={{ overflowY: 'auto', height: '100%' }}>
         {posts.map((post) => {
   
-  const authorInfo = authors[String(post.authorId)]; 
+  const authorInfo = authors[(post.authorId)]; 
 
   return (
     <PostItem
       channelId={numericChannelId}
       key={post.postId}                        
       post={post}
-      author={authors[String(post.authorId)] ?? { memberId: 0, username: "알 수 없는 사용자", profile: null, serverRole: "USER", channelRole: "NONE" }} 
+      author={authorInfo} 
       onCommentClick={handleCommentClick} 
     />
   );
