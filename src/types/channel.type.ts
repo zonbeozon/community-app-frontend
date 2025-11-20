@@ -56,6 +56,8 @@ export interface ChannelHeaderProps {
   showBackButton: boolean;
   channelData: Channel;
   isMember: boolean;
+  isAdmin: boolean;
+  isOwner: boolean;
 };
 
 export interface ChannelDialogProps {

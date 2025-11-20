@@ -1,19 +1,30 @@
 import { queryClient } from '@/lib/queryClient';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { CommentCountEvent } from "@/types/stompEvent.type";
 import { Post } from '@/types/post.type';
 
-export const handleCommentCountEvent = (event: CommentCountEvent) => {
-  const { postId, commentCount } = event;
+interface CommentCountPayload {
+  postId: number;
+  commentCount: number;
+}
+
+export const handleCommentCountEvent = (payload: CommentCountPayload) => {
+  const { postId, commentCount } = payload;
 
   const postDetailQueryKey = QUERY_KEYS.posts.detail(postId);
+  const postListQueryKey = QUERY_KEYS.posts.lists();
+
   queryClient.setQueryData<Post>(postDetailQueryKey, (oldData) => {
-    if (!oldData) return;
+    if (!oldData) {
+      return undefined;
+    }
     return {
       ...oldData,
-      commentCount: commentCount,
+      metric: {
+        ...oldData.metric,
+        commentCount,
+      },
     };
   });
 
-  queryClient.invalidateQueries({ queryKey: QUERY_KEYS.posts.lists() });
+  queryClient.invalidateQueries({ queryKey: postListQueryKey });
 };
