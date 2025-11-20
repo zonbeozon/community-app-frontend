@@ -29,12 +29,9 @@ const useChannelCreate = () => {
 
     onError: (error: any) => {
       if (error?.response?.status === 409) {
-        toast.error(error.response.data?.message);
+        toast.error(SERVER_ERROR_MESSAGES.CHANNEL_DUPLICATE_NAME);
       } else {
-        toast.error(
-          error.response?.data?.message ||
-            SERVER_ERROR_MESSAGES.CHANNEL_CREATE_FAILED
-        );
+        toast.error(SERVER_ERROR_MESSAGES.CHANNEL_CREATE_FAILED);
       }
     },
   });

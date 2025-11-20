@@ -10,6 +10,7 @@ export const SERVER_ERROR_MESSAGES = {
   //Channel
   CHANNEL_GET_FAILED: "채널 조회에 실패했습니다. 다시 시도해 주세요.",
   CHANNEL_CREATE_FAILED: "채널 생성에 실패했습니다. 다시 시도해 주세요.",
+  CHANNEL_DUPLICATE_NAME: "동일한 이름의 채널이 존재합니다. 다른 이름으로 시도해 주세요.",
   CHANNEL_UPDATE_FAILED: "채널 정보 수정에 실패했습니다. 잠시 후 다시 시도해 주세요.",
   CHANNEL_DELETE_FAILED: "채널 삭제에 실패했습니다. 다시 시도해 주세요.",
   JOINED_CHANNELS_NOT_FOUND: "참가한 채널을 불러올 수 없습니다. 다시 시도해 주세요.",
@@ -41,7 +42,7 @@ export const SERVER_ERROR_MESSAGES = {
   SERVERMEMBER_GET_FAILED: "유저 정보 조회에 실패했습니다. 다시 시도해 주세요.",
   SERVERMEMBER_PROFILE_UPDATE_FAILED: "유저 프로필 수정에 실패했습니다. 다시 시도해 주세요.",
   SERVERMEMBER_NAME_UPDATE_FAILED: "유저 이름 수정에 실패했습니다. 다시 시도해 주세요.",
-  SERVERMEMBER_NAME_DUPLICATED: "동일한 유저 이름이 존재합니다. 다른 이름으로 시도해 주세요.",
+  SERVERMEMBER_NAME_DUPLICATED: "동일한 이름의 유저가 존재합니다. 다른 이름으로 시도해 주세요.",
   SERVERMEMBER_DELETE_FAILED: "회원탈퇴에 실패했습니다. 다시 시도해 주세요.",
   
   //Reaction

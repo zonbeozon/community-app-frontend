@@ -17,12 +17,10 @@ export const useServerMemberProfileImage = () => {
     if (!file || !serverMember) return;
 
     try {
-      // FormData 인스턴스를 생성하고 파일을 담습니다.
       const formData = new FormData();
       formData.append('image', file);
       formData.append('type', 'profile');
 
-      // 생성된 formData를 API로 전송합니다.
       const { imageId, imageUrl } = await uploadImage(formData);
       
       updateProfile({ imageId }, {
