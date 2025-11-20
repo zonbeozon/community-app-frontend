@@ -1,6 +1,7 @@
 import { Image } from "./common.type";
 import { ChannelMember } from "./channelMember.type";
 import { Metric } from "./reaction.type";
+import { ServerMember } from "./serverMember.type";
 
 export interface PostsParams {
   cursorPostId?: number | null;
@@ -18,8 +19,6 @@ export interface Post extends Omit<PostRequest, "imageIds">{
   postId: number;
   images: Image[];
   authorId: number;
-  commentCount: number;
-  viewCount: number;
   metric: Metric;
   isLikedByRequester: boolean;
   isDislikedByRequester: boolean;
@@ -35,7 +34,7 @@ export interface PostsResponse {
   authors: ChannelMember[];
   posts: Post[];
   size: number;
-  cursor: number | null;
+  nextCursor: number | null;
   totalElements: number;
   isLast: boolean;
   isInverted: boolean;
@@ -46,4 +45,20 @@ export interface PostDialogProps {
   onOpenChange: (open: boolean) => void;
   post: Post;
   channelId?: number;
+};
+
+export interface RecommendedPostResponse {
+  content: {
+    postId: number;
+    content: string;
+    images: Image[];
+    metric: Metric;
+    author: ServerMember
+    createdAt: string;
+    updatedAt: string;
+  }[];
+  totalPages: number;
+  totalElements: number;
+  currentPage: number;
+  lastUpdated: string;
 };
