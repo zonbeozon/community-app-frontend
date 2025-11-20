@@ -1,10 +1,9 @@
-import { useEffect, useLayoutEffect, useRef, useMemo } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { Loader2 } from 'lucide-react';
 import { useSetAtom } from 'jotai';
 import useInfinitePosts from '@/hooks/post/useInfinitePosts';
-import useGetJoinedChannels from '@/queries/useGetJoinedChannel';
 import { selectedPostIdAtom } from '@/atoms/postAtoms';
 import PostItem from '../PostItem/PostItem';
 import ItemSkeleton from '@/components/common/ItemSkeleton/ItemSkeleton';
@@ -20,14 +19,8 @@ const PostList = () => {
   const numericChannelId = Number(channelId);
 
   const setSelectedPostId = useSetAtom(selectedPostIdAtom);
-  const updateLatestPost = useUpdateLatestPost(); // ✅ 추가
-  const { data: myChannels, isLoading: isLoadingChannels } = useGetJoinedChannels();
+  const updateLatestPost = useUpdateLatestPost();
 
-  const currentChannel = useMemo(() => {
-    if (!myChannels) return null;
-    return myChannels.find(c => c.channelInfo.channelId === numericChannelId);
-  }, [myChannels, numericChannelId]);
-  
   const {
     data: postsData,
     fetchNextPage,
@@ -49,7 +42,6 @@ const PostList = () => {
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // ✅ 최신 포스트 갱신
   useEffect(() => {
     if (postsData?.posts?.length) {
       updateLatestPost(numericChannelId, postsData.posts[0]);
@@ -90,10 +82,6 @@ const PostList = () => {
     setSelectedPostId(postId);
     navigate(`/channels/${numericChannelId}/posts/${postId}`);
   };
-
-  if (isLoadingChannels) {
-    return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
-  }
 
   if (isLoadingPosts || !postsData) { 
     return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
