@@ -16,6 +16,12 @@ const AuthGuard = () => {
   
   const isChecked = useRef(false);
 
+  const FullScreenLoader = () => (
+  <div className="flex flex-col justify-center items-center gap-4 h-screen w-screen">
+    <Spinner />
+  </div>
+);
+
   useEffect(() => {
     if (isChecked.current) return;
     isChecked.current = true;
@@ -53,12 +59,7 @@ const AuthGuard = () => {
   }, [setAccessToken, setServerMember]);
 
   if (isAuthChecking) {
-    return (
-      <div className="flex flex-col justify-center items-center gap-4 h-screen w-screen">
-        <Spinner />
-        <div>페이지를 불러오는 중입니다...</div>
-      </div>
-    );
+    return <FullScreenLoader />
   }
 
   if (!isAuthenticated) {

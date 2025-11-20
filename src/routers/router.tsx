@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import { ROUTE_PATH } from "@/constants/routePaths";
 import Layout from "@/components/common/Layout/Layout";
-import { Spinner } from "@/components/ui/spinner";
 import AuthGuard from "./AuthGuard";
 
 const Main = React.lazy(() => import("@/pages/Main/Main"));
@@ -30,21 +29,7 @@ const RecommendedPostList = React.lazy(
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route
-      element={
-        <Suspense
-          fallback={
-            <div className="flex flex-col justify-center items-center gap-4 h-screen w-screen">
-              <Spinner />
-              페이지를 불러오는 중입니다...
-            </div>
-          }
-        >
-          <Outlet />
-        </Suspense>
-      }
-      errorElement={<ErrorPage />}
-    >
+    <>
       <Route element={<Outlet />}>
         <Route
           element={
@@ -57,10 +42,7 @@ const router = createBrowserRouter(
 
           <Route element={<AuthGuard />}>
             <Route element={<Main />}>
-              <Route
-                path={ROUTE_PATH.main}
-                element={<RecommendedPostList />}
-              />
+              <Route path={ROUTE_PATH.main} element={<RecommendedPostList />} />
               <Route path={ROUTE_PATH.channelId} element={<ChannelContent />}>
                 <Route index element={<PostList />} />
                 <Route path={ROUTE_PATH.postId} element={<PostDetail />} />
@@ -72,7 +54,7 @@ const router = createBrowserRouter(
 
       <Route path={ROUTE_PATH.authCallback} element={<Callback />} />
       <Route path="*" element={<ErrorPage />} />
-    </Route>
+    </>
   )
 );
 
