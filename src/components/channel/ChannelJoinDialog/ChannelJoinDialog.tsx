@@ -66,10 +66,6 @@ const ChannelJoinDialog = ({
           <DialogDescription>{dialogContent.description}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="ghost">취소</Button>
-          </DialogClose>
-          
           {joinPolicy !== 'DENY' ? (
             <Button onClick={handleJoin} disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -80,6 +76,9 @@ const ChannelJoinDialog = ({
               {dialogContent.buttonText}
             </Button>
           )}
+          <DialogClose asChild>
+            <Button variant="ghost">취소</Button>
+          </DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>
