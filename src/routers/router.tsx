@@ -6,7 +6,6 @@ import {
   Outlet,
 } from "react-router-dom";
 import { ROUTE_PATH } from "@/constants/routePaths";
-import { MESSAGES } from "@/constants/messages";
 import Layout from "@/components/common/Layout/Layout";
 import { Spinner } from "@/components/ui/spinner";
 import AuthGuard from "./AuthGuard";
@@ -25,18 +24,8 @@ const Callback = React.lazy(() => import("@/pages/Callback/Callback"));
 const Landing = React.lazy(() => import("@/pages/Landing/Landing"));
 const ErrorPage = React.lazy(() => import("@/pages/Error/Error"));
 
-const NoChannelSelected = () => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100%",
-      width: "100%",
-    }}
-  >
-    <p>{MESSAGES.NO_SELECTED_CHANNEL}</p>
-  </div>
+const RecommendedPostList = React.lazy(
+  () => import("@/components/post/RecommendedPostList/RecommendedPostList")
 );
 
 const router = createBrowserRouter(
@@ -68,7 +57,10 @@ const router = createBrowserRouter(
 
           <Route element={<AuthGuard />}>
             <Route element={<Main />}>
-              <Route path={ROUTE_PATH.main} element={<NoChannelSelected />} />
+              <Route
+                path={ROUTE_PATH.main}
+                element={<RecommendedPostList />}
+              />
               <Route path={ROUTE_PATH.channelId} element={<ChannelContent />}>
                 <Route index element={<PostList />} />
                 <Route path={ROUTE_PATH.postId} element={<PostDetail />} />
