@@ -20,7 +20,7 @@ const ChannelActiveMemberList = ({ channelId }: { channelId: number }) => {
   if (isLoading) {
     return (
       <>
-        {Array.from({ length: 5 }).map((_, i) => (
+        {Array.from({ length: 1 }).map((_, i) => (
           <ItemSkeleton key={i} />
         ))}
       </>
