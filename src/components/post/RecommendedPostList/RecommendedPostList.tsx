@@ -5,12 +5,14 @@ import PostItem from "@/components/post/PostItem/PostItem";
 import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
 import { MESSAGES } from "@/constants/messages";
 import * as S from "@/components/post/PostList/PostList.styles";
-import { Sparkles } from "lucide-react"; // 💡 아이콘 추가
+import { Sparkles } from "lucide-react";
+import localizeTimezone from "@/utils/localizeTimezone";
 
 const RecommendedPostList = () => {
   const navigate = useNavigate();
   const {
     data: posts,
+    lastUpdated,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -26,8 +28,8 @@ const RecommendedPostList = () => {
     },
   });
 
-  const handleCommentClick = (postId: number) => {
-    console.log(`Post ${postId} clicked from recommendations.`);
+  const handleClick = (channelId: number, postId: number) => {
+    navigate(`/channels/${channelId}/posts/${postId}`);
   };
 
   if (isLoading) {
@@ -49,12 +51,17 @@ const RecommendedPostList = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
-        <div className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-purple-500" />
-          <h2 className="text-lg font-semibold text-gray-800">추천 포스트</h2>
-          <text></text>
+    <>
+      <div className="flex flex-col">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-purple-500" />
+            <h2 className="text-lg font-semibold text-gray-800">추천 포스트</h2>
+          </div>
+
+          <span className="text-xs text-gray-500">
+            마지막 업데이트: {localizeTimezone(lastUpdated)}
+          </span>
         </div>
       </div>
 
@@ -68,12 +75,13 @@ const RecommendedPostList = () => {
             key={post.postId}
             post={post}
             author={post.author}
-            onCommentClick={handleCommentClick}
+            onCommentClick={null}
+            hideActions={true}
           />
         ))}
         {hasNextPage && <div ref={inViewRef} style={{ height: "1px" }} />}
       </div>
-    </div>
+    </>
   );
 };
 
