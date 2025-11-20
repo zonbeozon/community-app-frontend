@@ -39,7 +39,9 @@ export const SERVER_ERROR_MESSAGES = {
 
   //ServerMember
   SERVERMEMBER_GET_FAILED: "유저 정보 조회에 실패했습니다. 다시 시도해 주세요.",
-  SERVERMEMBER_UPDATE_FAILED: "유저 정보 수정에 실패했습니다. 다시 시도해 주세요.",
+  SERVERMEMBER_PROFILE_UPDATE_FAILED: "유저 프로필 수정에 실패했습니다. 다시 시도해 주세요.",
+  SERVERMEMBER_NAME_UPDATE_FAILED: "유저 이름 수정에 실패했습니다. 다시 시도해 주세요.",
+  SERVERMEMBER_NAME_DUPLICATED: "동일한 유저 이름이 존재합니다. 다른 이름으로 시도해 주세요.",
   SERVERMEMBER_DELETE_FAILED: "회원탈퇴에 실패했습니다. 다시 시도해 주세요.",
   
   //Reaction
@@ -86,6 +88,7 @@ export const SUCCESS_MESSAGES = {
 
   //ChannelMember
   CHANNELMEMBER_JOIN_SUCCESS: "채널에 참가했습니다.",
+  CHANNELMEMBER_JOIN_PENDING: "가입 신청이 완료되었습니다. 관리자의 승인을 기다려주세요.",
   CHANNEL_LEAVE_SUCCESS: "채널을 떠나는데 성공했습니다.",
   CHANNELMEMBER_UPDATE_ROLE_SUCCESS: "해당 멤버의 권한을 수정했습니다.",
   CHANNELMEMBER_BAN_SUCCESS: "멤버를 퇴장시켰습니다.",
@@ -94,7 +97,8 @@ export const SUCCESS_MESSAGES = {
   CHANNELMEMBER_DENY_SUCCESS: "멤버 참가 요청을 거절했습니다.",
 
   //ServerMember
-  SERVERMEMBER_UPDATE_SUCCESS: "회원 정보가 수정되었습니다.",
+  SERVERMEMBER_PROFILE_UPDATE_SUCCESS: "유저 프로필 정보가 수정되었습니다.",
+  SERVERMEMBER_NAME_UPDATE_SUCCESS: "유저 이름이 수정되었습니다.",
   SERVERMEMBER_DELETE_SUCCESS: "회원 탈퇴가 완료되었습니다.",
 };
 
