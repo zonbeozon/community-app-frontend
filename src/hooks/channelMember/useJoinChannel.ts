@@ -10,13 +10,21 @@ const useJoinChannel = () => {
   return useMutation({
     mutationFn: (channelId: number) => joinChannel(channelId),
 
-    onSuccess: () => {
+    onSuccess: ({ status }) => {
+      if (status === 200) {
+        toast.success(SUCCESS_MESSAGES.CHANNELMEMBER_JOIN_SUCCESS);
+      } else if (status === 202) {
+        toast.info(SUCCESS_MESSAGES.CHANNELMEMBER_JOIN_PENDING);
+      }
+
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.channels.all });
-      toast.success(SUCCESS_MESSAGES.CHANNELMEMBER_JOIN_SUCCESS);
     },
 
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || SERVER_ERROR_MESSAGES.CHANNELMEMBER_JOIN_FAILED);
+      toast.error(
+        error.response?.data?.message ||
+        SERVER_ERROR_MESSAGES.CHANNELMEMBER_JOIN_FAILED
+      );
     },
   });
 };

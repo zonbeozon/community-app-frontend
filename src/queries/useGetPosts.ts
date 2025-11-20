@@ -10,10 +10,16 @@ interface GetPostsOptions {
 
 const useGetPosts = (channelId: number, options: GetPostsOptions = {}) => {
   const { page = 0, size = 20 } = options;
+  const numericChannelId = Number(channelId);
+  const currentQueryKey = QUERY_KEYS.posts.list(numericChannelId, { page, size })
 
   return useQuery<PostsResponse, Error, Post[]>({
-    queryKey: QUERY_KEYS.posts.list(channelId, { page, size }),
-    queryFn: () => getPosts(channelId, { page, size }),
+    queryKey: currentQueryKey, 
+    
+    queryFn: () => {
+      return getPosts(channelId, { page, size });
+    },
+    
     select: (data) => data?.posts ?? [],
     enabled: !!channelId,
   });
