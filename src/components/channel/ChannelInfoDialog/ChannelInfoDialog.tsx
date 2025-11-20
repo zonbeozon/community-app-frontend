@@ -23,7 +23,6 @@ const ChannelInfoDialog = ({ channel }: { channel: Channel }) => {
             {channel.channelInfo.description || "설명이 없습니다."}
           </DialogDescription>
         </DialogHeader>
-
         <div className={S.scrollableArea}>
           <div className={S.profileSection.wrapper}>
             <ChannelProfileImage channelInfo={channel.channelInfo} size="lg" />
@@ -36,7 +35,6 @@ const ChannelInfoDialog = ({ channel }: { channel: Channel }) => {
             <ChannelMemberList channelId={channel.channelInfo.channelId} />
           </div>
         </div>
-
         <DialogFooter className={S.footer}>
           <DialogClose asChild>
             <Button type="button" variant="ghost" className={S.closeButton}>
