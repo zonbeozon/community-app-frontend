@@ -10,7 +10,9 @@ import * as S from "@/components/channel/ChannelHeader/ChannelHeader.styles";
 
 const ChannelHeader = ({ showBackButton, channelData, isMember }: ChannelHeaderProps) => {
   const [isPostDialogOpen, setPostDialogOpen] = useState(false);
-  const canCreatePost = useSelectedChannel();
+  const selectedChannel = useSelectedChannel();
+
+  const canCreatePost = selectedChannel?.canCreatePost
 
   return (
     <div className={S.wrapper}>
