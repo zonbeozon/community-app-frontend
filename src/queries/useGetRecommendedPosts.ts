@@ -1,10 +1,9 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getRecommendedPosts } from '@/apis/http/post.api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { Post } from '@/types/post.type';
 
 const useGetRecommendedPosts = () => {
-  return useInfiniteQuery<any, Error, Post[]>({
+  const queryInfo =  useInfiniteQuery<any, Error>({
     queryKey: QUERY_KEYS.posts.recommend(), 
     queryFn: ({ pageParam = 0 }) => getRecommendedPosts({ page: pageParam, size: 20 }),
     initialPageParam: 0,
@@ -13,9 +12,16 @@ const useGetRecommendedPosts = () => {
         return undefined;
       }
       return allPages.length;
-    },
-    select: (data) => data.pages.flatMap(page => page.content),
+    } 
   });
+  const posts = queryInfo.data?.pages.flatMap((page) => page.content) || [];
+  const lastUpdated = queryInfo.data?.pages[0]?.lastUpdated || null;
+
+  return {
+    ...queryInfo,
+    data: posts, 
+    lastUpdated, 
+  };
 };
 
 export default useGetRecommendedPosts;
