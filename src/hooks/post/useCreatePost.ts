@@ -29,11 +29,13 @@ const useCreatePost = () => {
 
     onSuccess: (data, variables) => {
       const { channelId } = variables;
+
       const queryKeyToInvalidate = [...QUERY_KEYS.posts.lists(), channelId];
       
-      console.log('✅ Corrected query key invalidation:', queryKeyToInvalidate);
-
-      queryClient.invalidateQueries({ queryKey: queryKeyToInvalidate });
+      queryClient.invalidateQueries({ 
+        queryKey: queryKeyToInvalidate,
+        refetchType: 'all'
+      });
       
       toast.success(SUCCESS_MESSAGES.POST_CREATE_SUCCESS);
     },

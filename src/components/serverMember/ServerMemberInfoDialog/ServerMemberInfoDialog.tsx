@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import * as S from "./ServerMemberInfoDialog.styles";
 
 const ServerMemberInfoDialog = () => {
-  const { props: dialogProps, close } = useDialog();
+  const { props: dialogProps } = useDialog();
   const serverMember = useAtomValue(serverMemberAtom);
 
   if (!serverMember) {
@@ -54,7 +54,7 @@ const ServerMemberInfoDialog = () => {
           <div className={S.buttonContainer}>
             <div><LogOutButton /></div>
             <DialogClose asChild>
-              <Button type="button" variant="ghost" onClick={close} className={S.closeButton}>닫기</Button>
+              <Button type="button" variant="ghost" className={S.closeButton}>닫기</Button>
             </DialogClose>
           </div>
         </div>
