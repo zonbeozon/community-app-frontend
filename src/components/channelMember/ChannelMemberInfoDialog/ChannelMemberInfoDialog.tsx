@@ -1,14 +1,12 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ChannelMemberInfoDialogProps } from "@/types/channelMember.type";
+import { ChannelMember, ChannelMemberInfoDialogProps } from "@/types/channelMember.type";
 import ChannelMemberProfileImage from "../ChannelMemberProfileImage/ChannelMemberProfileImage";
+import useDialog from "@/hooks/common/useDialog";
 import * as S from "./ChannelMemberInfoDialog.styles";
 
-const ChannelMemberInfoDialog = ({
-  open,
-  onOpenChange,
-  channelMember,
-}: ChannelMemberInfoDialogProps) => {
+const ChannelMemberInfoDialog = ({ channelMember }: ChannelMember) => {
+  const { props: dialogProps } = useDialog();
 
   if (!channelMember) {
     return null;
@@ -17,15 +15,13 @@ const ChannelMemberInfoDialog = ({
   const { profile, username } = channelMember;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog {...dialogProps}>
       <DialogTrigger asChild>
-        <Button className={S.createButton}>
           <ChannelMemberProfileImage
             profile={profile} 
             username={username} 
             className={S.avatar} 
           />
-        </Button>
       </DialogTrigger>
       <DialogContent className={S.dialogContent}>
         <DialogHeader>
@@ -35,7 +31,7 @@ const ChannelMemberInfoDialog = ({
           <ChannelMemberProfileImage
             profile={profile} 
             username={username} 
-            className={S.avatar} 
+            className={S.bigImg} 
           />
           <h2 className={S.username}>{username}</h2>
           <div>
