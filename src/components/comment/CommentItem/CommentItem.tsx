@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Comment } from "@/types/comment.type";
 import { ChannelMember } from "@/types/channelMember.type";
 import ChannelMemberInfoDialog from "@/components/channelmember/ChannelMemberInfoDialog/ChannelMemberInfoDialog";
@@ -21,7 +20,7 @@ export default function CommentItem({
   channelId 
 }: CommentItemProps) {
   const { content, createdAt } = comment;
-  const [isChannelMemberInfoOpen, setChannelMemberInfoOpen] = useState(false);
+
 
   if (!author) {
     return null;
@@ -33,11 +32,7 @@ export default function CommentItem({
         {isCurrentUser ? (
           <ServerMemberInfoDialog/>
         ) : (
-          <ChannelMemberInfoDialog
-            open={isChannelMemberInfoOpen}
-            onOpenChange={setChannelMemberInfoOpen}
-            channelMember={author}
-          />
+          <ChannelMemberInfoDialog channelMember={author}/>
         )}
         <div className={S.commentContent}>
           <div className={S.commentHeader}>

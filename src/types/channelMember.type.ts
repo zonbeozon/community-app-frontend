@@ -33,8 +33,6 @@ export interface ChannelMemberDropdownProps {
 };
 
 export interface ChannelMemberInfoDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
   channelMember: ChannelMember | null;
 };
 
