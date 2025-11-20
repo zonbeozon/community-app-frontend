@@ -1,16 +1,15 @@
-import { useLayoutEffect, useRef, useMemo } from 'react';
+import { useEffect, useLayoutEffect, useRef, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { Loader2 } from 'lucide-react';
 import { useSetAtom } from 'jotai';
-
 import useInfinitePosts from '@/hooks/post/useInfinitePosts';
 import useGetJoinedChannels from '@/queries/useGetJoinedChannel';
 import { selectedPostIdAtom } from '@/atoms/postAtoms';
-
 import PostItem from '../PostItem/PostItem';
 import ItemSkeleton from '@/components/common/ItemSkeleton/ItemSkeleton';
 import { MESSAGES } from '@/constants/messages';
+import { useUpdateLatestPost } from '@/hooks/post/useSetLatestPost';
 import * as S from './PostList.styles';
 
 const SCROLL_POSITION_KEY = 'post_list_scroll_position';
@@ -21,6 +20,7 @@ const PostList = () => {
   const numericChannelId = Number(channelId);
 
   const setSelectedPostId = useSetAtom(selectedPostIdAtom);
+  const updateLatestPost = useUpdateLatestPost(); // ✅ 추가
   const { data: myChannels, isLoading: isLoadingChannels } = useGetJoinedChannels();
 
   const currentChannel = useMemo(() => {
@@ -48,6 +48,15 @@ const PostList = () => {
   });
 
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // ✅ 최신 포스트 갱신
+  useEffect(() => {
+    if (postsData?.posts?.length) {
+      updateLatestPost(numericChannelId, postsData.posts[0]);
+    } else {
+      updateLatestPost(numericChannelId, null);
+    }
+  }, [postsData, numericChannelId, updateLatestPost]);
 
   useLayoutEffect(() => {
     const parentScroller = scrollRef.current;
@@ -77,22 +86,21 @@ const PostList = () => {
     };
   }, [numericChannelId]);
 
-const handleCommentClick = (postId: number) => {
-  setSelectedPostId(postId);
-  navigate(`/channels/${numericChannelId}/posts/${postId}`);
-};
+  const handleCommentClick = (postId: number) => {
+    setSelectedPostId(postId);
+    navigate(`/channels/${numericChannelId}/posts/${postId}`);
+  };
 
   if (isLoadingChannels) {
-  return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
-}
+    return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
+  }
 
-if (isLoadingPosts || !postsData) { 
-  return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
-}
+  if (isLoadingPosts || !postsData) { 
+    return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
+  }
 
-  
-  const posts = postsData?.posts || [];
-  const authors = postsData?.authors || {};
+  const posts = postsData.posts || [];
+  const authors = postsData.authors || {};
 
   if (posts.length === 0) {
     return (
@@ -103,34 +111,30 @@ if (isLoadingPosts || !postsData) {
   }
 
   return (
-    <>
-      <div ref={scrollRef} id="main-content" style={{ overflowY: 'auto', height: '100%' }}>
-        {posts.map((post) => {
-  
-  const authorInfo = authors[(post.authorId)]; 
+    <div ref={scrollRef} id="main-content" style={{ overflowY: 'auto', height: '100%' }}>
+      {posts.map((post) => {
+        const authorInfo = authors[post.authorId];
+        return (
+          <PostItem
+            channelId={numericChannelId}
+            key={post.postId}
+            post={post}
+            author={authorInfo}
+            onCommentClick={handleCommentClick}
+          />
+        );
+      })}
 
-  return (
-    <PostItem
-      channelId={numericChannelId}
-      key={post.postId}                        
-      post={post}
-      author={authorInfo} 
-      onCommentClick={handleCommentClick} 
-    />
-  );
-})}
-
-        {hasNextPage && !isFetchingNextPage && (
-          <div ref={inViewRef} style={{ height: '1px' }} />
-        )}
+      {hasNextPage && !isFetchingNextPage && (
+        <div ref={inViewRef} style={{ height: '1px' }} />
+      )}
         
-        {isFetchingNextPage && (
-          <div className={S.loadingMoreContainer}>
-            <Loader2 className={S.loadingMoreIcon} size={S.loadingMoreIconSize} />
-          </div>
-        )}
-      </div>
-    </>
+      {isFetchingNextPage && (
+        <div className={S.loadingMoreContainer}>
+          <Loader2 className={S.loadingMoreIcon} size={S.loadingMoreIconSize} />
+        </div>
+      )}
+    </div>
   );
 };
 
