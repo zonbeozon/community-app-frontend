@@ -1,8 +1,6 @@
-// src/components/post/PostDropdown/PostDropdown.tsx
-
 import { useState, useMemo } from "react";
-import { useAtomValue } from "jotai"; // Jotai 훅 추가
-import { serverMemberAtom } from "@/atoms/authAtoms"; // 사용자 정보 Atom 추가
+import { useAtomValue } from "jotai";
+import { serverMemberAtom } from "@/atoms/authAtoms"; 
 import { Post } from "@/types/post.type";
 import { ChannelMember } from "@/types/channelMember.type";
 import ChannelRoleManager from "@/utils/channelRoleManager";
@@ -23,23 +21,19 @@ const PostDropdown = ({ post, author, channelId }: PostDropdownProps) => {
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // 1. Jotai Atom에서 현재 로그인된 사용자의 정보를 가져옵니다.
   const myServerInfo = useAtomValue(serverMemberAtom);
   const { data: myChannels } = useGetJoinedChannels();
 
-  // 2. myId를 Jotai로부터 온 정보로 직접 할당합니다.
   const myId = myServerInfo?.memberId;
   const myInfoInChannel = useMemo(() => {
     if (!myChannels) return null;
     return myChannels.find(c => c.channelInfo.channelId === channelId)?.membership;
   }, [myChannels, channelId]);
 
-  // 3. 이제 myId가 Jotai로부터 오므로, 정상적으로 null 체크가 가능합니다.
   if (!myInfoInChannel || !author || !myId) {
     return null;
   }
   
-  // 4. 나머지 권한 체크 로직은 myId가 올바르게 설정되었으므로 정상적으로 동작합니다.
   const isMyPost = myId === post.authorId;
   const canManagePost = ChannelRoleManager.isRoleHigher(
     myInfoInChannel.channelRole,
@@ -89,7 +83,8 @@ const PostDropdown = ({ post, author, channelId }: PostDropdownProps) => {
         <PostUpdateDialog
           open={isPatchDialogOpen}
           onOpenChange={setPatchDialogOpen}
-          post={post} 
+          post={post}
+          channelId={channelId} 
         />
       )}
       {canDelete && (
@@ -97,6 +92,7 @@ const PostDropdown = ({ post, author, channelId }: PostDropdownProps) => {
           open={isDeleteDialogOpen}
           onOpenChange={setDeleteDialogOpen}
           post={post}
+          channelId={channelId} 
         />
       )}
     </>

@@ -6,7 +6,7 @@ import { ChannelMember } from "@/types/channelMember.type";
 import useCreateReaction from "@/hooks/reaction/useCreateReaction";
 import useDeleteReaction from "@/hooks/reaction/useDeleteReaction";
 import usePostViewLogger from "@/hooks/viewLogger/usePostViewLogger";
-import PostDropdown from "@/components/post/PostDropdown/PostDropdown";
+import PostDropdown from "../PostDropdown/PostDropdown";
 import ServerMemberInfoDialog from "@/components/servermember/ServerMemberInfoDialog/ServerMemberInfoDialog";
 import ChannelMemberInfoDialog from "@/components/channelmember/ChannelMemberInfoDialog/ChannelMemberInfoDialog";
 import TimeDisplay from "@/components/common/TimeDisplay/TimeDisplay";
@@ -75,11 +75,10 @@ const PostItem = ({ post, author, channelId, onCommentClick }: PostItemProps) =>
     return <ItemSkeleton />;
   }
 
-  const { reaction } = post;
-  const isLiked = reaction?.likedByCurrentMember ?? false;
-  const isDisliked = reaction?.dislikedByCurrentMember ?? false;
-  const likeCount = reaction?.likeCount ?? 0;
-  const dislikeCount = reaction?.dislikeCount ?? 0;
+  const isLiked = post.isLikedByRequester;
+  const isDisliked = post.isDislikedByRequester;
+  const likeCount = post.metric?.likeCount ?? 0;
+  const dislikeCount = post.metric?.dislikeCount ?? 0;
 
   const handleLikeClick = () => {
     const variables = { postId: post.postId, channelId, reactionType: 'LIKE' as const };
@@ -91,7 +90,6 @@ const PostItem = ({ post, author, channelId, onCommentClick }: PostItemProps) =>
     isDisliked ? deleteReaction(variables) : createReaction(variables);
   };
 
-  // 2. isMyPost 비교 로직이 Jotai로부터 온 정보로 정상적으로 동작합니다.
   const isMyPost = author.memberId === myInfo?.memberId;
 
   return (
@@ -146,7 +144,6 @@ const PostItem = ({ post, author, channelId, onCommentClick }: PostItemProps) =>
       </div>
       <div className={S.dropdownContainer}>
         <div className={S.dropdownButtonWrapper}>
-          {/* PostDropdown은 이미 수정되었으므로, 올바르게 동작할 것입니다. */}
           <PostDropdown post={post} author={author} channelId={channelId} />
         </div>
       </div>

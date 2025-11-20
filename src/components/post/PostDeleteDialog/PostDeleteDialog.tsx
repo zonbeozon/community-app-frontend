@@ -12,13 +12,13 @@ import { PostDialogProps } from "@/types/post.type";
 import useDeletePost from "@/hooks/post/useDeletePost";
 import * as S from "./PostDeleteDialog.styles";
 
-const PostDeleteDialog = ({ open, onOpenChange, post }: PostDialogProps) => {
+const PostDeleteDialog = ({ open, onOpenChange, post, channelId }: PostDialogProps) => { 
   const { mutateAsync: deletePost, isPending } = useDeletePost();
   const postId = post.postId;
 
   const handleDeletePost = async () => {
     try {
-      await deletePost(postId);
+      await deletePost({ postId, channelId }); 
       onOpenChange(false); 
     } catch (error) {
       console.error("포스트 삭제 실패:", error);
