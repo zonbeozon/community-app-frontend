@@ -8,10 +8,6 @@ export const stompClient = new Client({
   heartbeatOutgoing: 4000,
 });
 
-stompClient.onConnect = (frame) => {
-  console.log('STOMP: Connected to ' + frame.headers['server']);
-};
-
 stompClient.onStompError = (frame) => {
   console.error('STOMP: Broker reported error: ' + frame.headers['message']);
   console.error('STOMP: Additional details: ' + frame.body);

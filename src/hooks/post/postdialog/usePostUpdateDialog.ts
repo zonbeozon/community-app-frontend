@@ -32,7 +32,7 @@ export const usePostUpdateDialog = ({ post, open, onSuccess, channelId }: UsePos
     if (open) {
       reset();
     }
-  }, [open, reset]);
+  }, [open]);
 
   const handleSubmit = (data: PostRequest) => {
     if (typeof channelId !== 'number') {

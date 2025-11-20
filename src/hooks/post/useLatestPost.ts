@@ -6,10 +6,13 @@ import { latestPostByChannelAtom } from "@/atoms/postAtoms";
 export const useLatestPost = (channelId: number) => {
   const latestPost = useAtomValue(
     useMemo(
-      () => selectAtom(latestPostByChannelAtom, (postsMap) => postsMap[channelId] || null),
+      () =>
+        selectAtom(
+          latestPostByChannelAtom,
+          (postsMap) => postsMap[String(channelId)] || null
+        ),
       [channelId]
     )
   );
-
   return latestPost;
 };

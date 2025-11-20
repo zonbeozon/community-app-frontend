@@ -24,7 +24,8 @@ export const ENDPOINT = {
   //Post
   POST: (channelId: number) => `/channels/${channelId}/posts`,
   POST_BY_ID: (postId: number) => `/posts/${postId}`,
-  POST_VIEWCOUNT: `/posts/view-count`,
+  POST_VIEWCOUNT: '/posts/view-count',
+  POST_RECOMMED: '/posts/recommend',
 
   //Comment
   COMMENT: (postId: number) => `/posts/${postId}/comments`,

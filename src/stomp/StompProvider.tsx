@@ -21,18 +21,14 @@ export const StompProvider = ({ children }: { children: React.ReactNode }) => {
         Authorization: `Bearer ${accessToken}`,
       };
       stompClient.onConnect = () => {
-        console.log('STOMP: Connection successful!');
         setIsConnected(true);
       };
 
       stompClient.onDisconnect = () => {
-        console.log('STOMP: Disconnected.');
         setIsConnected(false);
       };
 
-      stompClient.onStompError = (frame) => {
-        console.error('STOMP: Broker reported error: ' + frame.headers['message']);
-        console.error('STOMP: Additional details: ' + frame.body);
+      stompClient.onStompError = () => {
         setIsConnected(false);
       };
 

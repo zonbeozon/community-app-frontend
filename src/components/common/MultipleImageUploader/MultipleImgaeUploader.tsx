@@ -71,7 +71,6 @@ export const MultiImageUploader = ({
       setImageIds(newImageIds);
       setImageUrls(newImageUrls);
       onUploadChange(newImageIds, newImageUrls);
-      console.log(newImageIds, newImageUrls)
 
     } catch (e: any) {
       setError(e.message || "이미지 업로드에 실패했습니다.");

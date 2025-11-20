@@ -46,10 +46,8 @@ export const useGlobalSubscriptions = () => {
     }
 
     const subs = subscriptionsRef.current;
-    console.log(subs)
 
     if (!subs.member) {
-      console.log('STOMP: Subscribing to member events...');
       subs.member = client.subscribe(
         STOMP_DESTINATIONS.channelMember(),
         (message: IMessage) => handleChannelMemberEvent(JSON.parse(message.body)) 
@@ -57,7 +55,6 @@ export const useGlobalSubscriptions = () => {
     }
     
     if (!subs.notifications) {
-      console.log('STOMP: Subscribing to notification events...');
       subs.notifications = client.subscribe(
         STOMP_DESTINATIONS.notifications(),
         (message: IMessage) => handleNotificationEvent(JSON.parse(message.body))
@@ -74,7 +71,6 @@ export const useGlobalSubscriptions = () => {
 
     joinedChannelIds.forEach((channelId) => {
       if (!subs.channels.has(channelId)) {
-        console.log(`STOMP: Subscribing to channel events for channel ${channelId}`);
         const sub = client.subscribe(
           STOMP_DESTINATIONS.channel(channelId),
           (msg: IMessage) => handleChannelEvent(JSON.parse(msg.body))
@@ -82,7 +78,6 @@ export const useGlobalSubscriptions = () => {
         subs.channels.set(channelId, sub);
       }
       if (!subs.posts.has(channelId)) {
-        console.log(`STOMP: Subscribing to post events for channel ${channelId}`);
         const sub = client.subscribe(
           STOMP_DESTINATIONS.post(channelId),
           (msg: IMessage) => handlePostEvent(channelId, JSON.parse(msg.body))
@@ -94,7 +89,6 @@ export const useGlobalSubscriptions = () => {
     const currentSubscribedIds = Array.from(subs.channels.keys());
     currentSubscribedIds.forEach((subscribedId) => {
       if (!joinedChannelIds.includes(subscribedId)) {
-        console.log(`STOMP: Unsubscribing from all events for channel ${subscribedId}`);
         subs.channels.get(subscribedId)?.unsubscribe();
         subs.posts.get(subscribedId)?.unsubscribe();
         subs.channels.delete(subscribedId);
@@ -117,7 +111,6 @@ export const useGlobalSubscriptions = () => {
     }
 
     if (selectedChannelId) {
-      console.log(`STOMP: Subscribing to comment count for channel ${selectedChannelId}`);
       subs.commentCount = client.subscribe(
         STOMP_DESTINATIONS.commentCount(selectedChannelId),
         (message: IMessage) => handleCommentCountEvent(JSON.parse(message.body))
@@ -128,7 +121,6 @@ export const useGlobalSubscriptions = () => {
 
   useEffect(() => {
     return () => {
-      console.log('STOMP: Unsubscribing from all global subscriptions.');
       const subs = subscriptionsRef.current;
       subs.member?.unsubscribe();
       subs.notifications?.unsubscribe();

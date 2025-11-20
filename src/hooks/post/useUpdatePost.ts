@@ -15,12 +15,13 @@ const useUpdatePost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ postId, payload }: UpdatePostVariables) => 
+    mutationFn: ({ postId, payload }: UpdatePostVariables) =>
       updatePost(postId, payload),
 
     onSuccess: (_data, { postId, channelId }) => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.posts.list(channelId, {}) });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.posts.list(channelId) });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.posts.detail(postId) });
+
       toast.success(SUCCESS_MESSAGES.POST_UPDATE_SUCCESS);
     },
 
