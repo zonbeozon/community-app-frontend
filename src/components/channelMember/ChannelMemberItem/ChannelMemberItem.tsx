@@ -16,6 +16,7 @@ const ChannelMemberItem = ({ member, actions }: ChannelMemberItemProps) => {
          <ChannelMemberProfileImage 
           profile={member.profile} 
           username={member.username}
+          className={S.profileImage}
         />
         <span className={S.username}>{member.username}</span>
       </div>
