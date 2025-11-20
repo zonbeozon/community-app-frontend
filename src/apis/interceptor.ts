@@ -2,6 +2,7 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import * as Sentry from "@sentry/react";
 import { jotaiStore } from "@/atoms/store";
 import { accessTokenAtom } from "@/atoms/authAtoms";
+import { reissue } from "./http/reissue.api";
 import { ENDPOINT } from "./url";
 
 let isRefreshing = false;
@@ -19,23 +20,38 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const tokenString = localStorage.getItem('accessToken');
-    
-    if (tokenString && tokenString !== 'null' && config.headers) {
-      const token = JSON.parse(tokenString);
-      config.headers.Authorization = `Bearer ${token}`;
+    const tokenString = localStorage.getItem("accessToken");
+    if (tokenString && tokenString !== "null" && config.headers) {
+      try {
+        const token = tokenString.startsWith('"') ? JSON.parse(tokenString) : tokenString;
+        config.headers.Authorization = `Bearer ${token}`;
+      } catch (e) {
+        config.headers.Authorization = `Bearer ${tokenString}`;
+      }
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
-    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+    const originalRequest = error.config as InternalAxiosRequestConfig & {
+      _retry?: boolean;
+    };
+
+    if (originalRequest.url?.includes(ENDPOINT.REISSUE)) {
+      return Promise.reject(error);
+    }
+
+    const tokenString = localStorage.getItem("accessToken");
+    if (!tokenString || tokenString === "null") {
+      if (window.location.pathname !== '/') {
+        window.location.href = '/';
+      }
+      return Promise.reject(error);
+    }
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
@@ -43,46 +59,41 @@ api.interceptors.response.use(
           refreshQueue.push((newToken) => {
             if (newToken && originalRequest.headers) {
               originalRequest.headers.Authorization = `Bearer ${newToken}`;
-              resolve(api(originalRequest)); 
+              resolve(api(originalRequest));
             } else {
-              reject(error); 
+              reject(error);
             }
           });
         });
       }
 
-      originalRequest._retry = true; 
-      isRefreshing = true; 
+      originalRequest._retry = true;
+      isRefreshing = true;
 
       try {
-        const reissueResponse = await api.post(
-          ENDPOINT.REISSUE,
-          {}, 
-          { headers: { Authorization: null } }
-        );
+        const newAccessToken = await reissue();
 
-        const newAccessToken = reissueResponse.data?.accessToken;
-
-        if (!newAccessToken) {
-          throw new Error("새로운 액세스 토큰이 없습니다.");
-        }
+        if (!newAccessToken) throw new Error("Failed to refresh token");
 
         jotaiStore.set(accessTokenAtom, newAccessToken);
+        localStorage.setItem("accessToken", JSON.stringify(newAccessToken));
 
         processQueue(newAccessToken);
 
         if (originalRequest.headers) {
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         }
-        
+
         return api(originalRequest);
 
       } catch (reissueError) {
-        processQueue(null); 
-        Sentry.captureException(reissueError); 
-        jotaiStore.set(accessTokenAtom, null);
+        processQueue(null);
+        Sentry.captureException(reissueError);
         
-        window.location.assign('/');
+        jotaiStore.set(accessTokenAtom, null);
+        localStorage.removeItem("accessToken");
+
+        window.location.href = "/";
 
         return Promise.reject(reissueError);
       } finally {

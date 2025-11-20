@@ -6,3 +6,4 @@ export const signOut = async (): Promise<void> => {
     url: BASE_URL + ENDPOINT.SIGNOUT
   });
 };
+
