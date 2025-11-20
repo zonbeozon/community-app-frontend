@@ -17,7 +17,6 @@ const fetcher = {
     body,
     headers,
     params,
-    errorMessage,
   }: RequestProps): Promise<T> {
     try {
       const config: AxiosRequestConfig = {
@@ -31,11 +30,7 @@ const fetcher = {
       const response = await api(config);
       return response.data as T;
     } catch (error: any) {
-      const errorMsg =
-        error?.response?.data?.message ||
-        errorMessage ||
-        "API 요청 중 오류가 발생했습니다.";
-      throw new Error(errorMsg);
+      throw error
     }
   },
 

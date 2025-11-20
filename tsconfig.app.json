@@ -26,5 +26,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
   },
-  "include": ["src", "member", "src/vite-env.d.ts", "src/pages/Main/Main.styles.ts", "PostUpdateDialog"]
+  "include": ["src", "member", "src/vite-env.d.ts", "src/pages/Main/Main.styles.ts", "PostUpdateDialog", "src/hooks/post/useInfinitePosts.ts", "ChannelJoinDialog.tsx"]
 }

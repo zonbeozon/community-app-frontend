@@ -1,6 +1,7 @@
 import fetcher from "@/apis/fetcher";
 import { BASE_URL, ENDPOINT } from "@/apis/url";
 import { PageRequest } from "@/types/common.type";
+import api from "../interceptor";
 import { ChannelMembersResponse, ChannelRole } from "@/types/channelMember.type";
 
 export const getChannelMembers = async (channelId: number, pageRequest: PageRequest): Promise<ChannelMembersResponse> => {
@@ -10,10 +11,11 @@ export const getChannelMembers = async (channelId: number, pageRequest: PageRequ
   });
 };
 
-export const joinChannel = async (channelId: number): Promise<void> => {
-  return await fetcher.post<void>({
-    url: BASE_URL + ENDPOINT.CHANNELMEMBER(channelId)
-  });
+export const joinChannel = async (
+  channelId: number
+): Promise<{ status: number }> => {
+  const response = await api.post(BASE_URL + ENDPOINT.CHANNELMEMBER(channelId));
+  return { status: response.status };
 };
 
 export const leaveChannel = async (channelId: number): Promise<void> => {

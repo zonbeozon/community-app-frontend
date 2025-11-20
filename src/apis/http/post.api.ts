@@ -1,6 +1,6 @@
 import fetcher from "@/apis/fetcher";
 import { BASE_URL, ENDPOINT } from "@/apis/url";
-import type { PostsParams, PostsResponse, PostResponse, PostRequest } from "@/types/post.type";
+import type { PostsParams, PostsResponse, PostResponse, PostRequest, RecommendedPostResponse } from "@/types/post.type";
 
 export const getPosts = async (channelId: number, params: PostsParams = {}): Promise<PostsResponse> => {
   const queryParams = {
@@ -44,5 +44,17 @@ export const updatePostViewCount = async (postIds: number[]): Promise<void> => {
   return fetcher.post<void>({
     url: BASE_URL + ENDPOINT.POST_VIEWCOUNT,
     body: { postIds: postIds }
+  });
+};
+
+export const getRecommendedPosts = async (params: PostsParams = {}): Promise<RecommendedPostResponse> => {
+  const queryParams = {
+    size: 20,
+    inverted: false,
+    ...params, 
+  };
+  return fetcher.get<RecommendedPostResponse>({
+    url: BASE_URL + ENDPOINT.POST_RECOMMED,
+    params: queryParams
   });
 };
