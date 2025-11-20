@@ -1,11 +1,11 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ChannelMember, ChannelMemberInfoDialogProps } from "@/types/channelMember.type";
+import { ChannelMemberInfoDialogProps } from "@/types/channelMember.type";
 import ChannelMemberProfileImage from "../ChannelMemberProfileImage/ChannelMemberProfileImage";
 import useDialog from "@/hooks/common/useDialog";
 import * as S from "./ChannelMemberInfoDialog.styles";
 
-const ChannelMemberInfoDialog = ({ channelMember }: ChannelMember) => {
+const ChannelMemberInfoDialog = ({ channelMember }: ChannelMemberInfoDialogProps) => {
   const { props: dialogProps } = useDialog();
 
   if (!channelMember) {
