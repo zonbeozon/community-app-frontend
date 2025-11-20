@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import { useAtomValue } from "jotai"; 
+import { useAtomValue } from "jotai";
 import { serverMemberAtom } from "@/atoms/authAtoms";
 import { Post } from "@/types/post.type";
 import { ChannelMember } from "@/types/channelMember.type";
@@ -13,9 +13,9 @@ import TimeDisplay from "@/components/common/TimeDisplay/TimeDisplay";
 import ThumbsUpIcon from "../../reaction/LikeButton/LikeButton";
 import ThumbsDownIcon from "../../reaction/DislikeButton/DislikeButton";
 import CommentButton from "@/components/comment/CommentButton/CommentButton";
-import ViewCount from '@/components/common/ViewCount/ViewCount';
-import { Image } from '@/types/common.type';
-import ItemSkeleton from '@/components/common/ItemSkeleton/ItemSkeleton';
+import ViewCount from "@/components/common/ViewCount/ViewCount";
+import { Image } from "@/types/common.type";
+import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
 import * as S from "./PostItem.styles";
 
 interface PostItemProps {
@@ -23,12 +23,19 @@ interface PostItemProps {
   author: ChannelMember;
   channelId: number;
   onCommentClick: (postId: number) => void;
+  hideActions: boolean;
 }
 
 const VIEW_THRESHOLD_PERCENT = 0.5;
 const VIEW_DEBOUNCE_TIME_MS = 500;
 
-const PostItem = ({ post, author, channelId, onCommentClick }: PostItemProps) => {
+const PostItem = ({
+  post,
+  author,
+  channelId,
+  onCommentClick,
+  hideActions,
+}: PostItemProps) => {
   const myInfo = useAtomValue(serverMemberAtom);
   const { mutate: createReaction } = useCreateReaction();
   const { mutate: deleteReaction } = useDeleteReaction();
@@ -41,7 +48,10 @@ const PostItem = ({ post, author, channelId, onCommentClick }: PostItemProps) =>
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= VIEW_THRESHOLD_PERCENT) {
+          if (
+            entry.isIntersecting &&
+            entry.intersectionRatio >= VIEW_THRESHOLD_PERCENT
+          ) {
             if (!viewTimer.current) {
               viewTimer.current = setTimeout(() => {
                 logView(post.postId);
@@ -59,7 +69,7 @@ const PostItem = ({ post, author, channelId, onCommentClick }: PostItemProps) =>
       },
       { threshold: VIEW_THRESHOLD_PERCENT }
     );
-    
+
     const currentRef = itemRef.current;
     if (currentRef) {
       observer.observe(currentRef);
@@ -81,12 +91,20 @@ const PostItem = ({ post, author, channelId, onCommentClick }: PostItemProps) =>
   const dislikeCount = post.metric?.dislikeCount ?? 0;
 
   const handleLikeClick = () => {
-    const variables = { postId: post.postId, channelId, reactionType: 'LIKE' as const };
+    const variables = {
+      postId: post.postId,
+      channelId,
+      reactionType: "LIKE" as const,
+    };
     isLiked ? deleteReaction(variables) : createReaction(variables);
   };
 
   const handleDislikeClick = () => {
-    const variables = { postId: post.postId, channelId, reactionType: 'DISLIKE' as const };
+    const variables = {
+      postId: post.postId,
+      channelId,
+      reactionType: "DISLIKE" as const,
+    };
     isDisliked ? deleteReaction(variables) : createReaction(variables);
   };
 
@@ -113,7 +131,7 @@ const PostItem = ({ post, author, channelId, onCommentClick }: PostItemProps) =>
             {post.images && post.images.length > 0 && (
               <div className={S.imageGrid}>
                 {post.images
-                  .filter(image => image.imageUrl)
+                  .filter((image) => image.imageUrl)
                   .map((image: Image) => (
                     <img
                       key={image.imageId}
@@ -125,20 +143,28 @@ const PostItem = ({ post, author, channelId, onCommentClick }: PostItemProps) =>
               </div>
             )}
           </div>
-          
+
           <div className={S.reactionContainer}>
-            <ThumbsUpIcon 
-              isLiked={isLiked} 
-              count={likeCount} 
-              onClick={handleLikeClick} 
-            />
-            <ThumbsDownIcon 
-              isDisliked={isDisliked} 
-              count={dislikeCount} 
-              onClick={handleDislikeClick} 
-            />
-            <CommentButton post={post} onClick={() => onCommentClick(post.postId)} />
-            <ViewCount post={post} />
+            {!hideActions && (
+              <>
+                <ThumbsUpIcon
+                  isLiked={isLiked}
+                  count={likeCount}
+                  onClick={handleLikeClick}
+                />
+                <ThumbsDownIcon
+                  isDisliked={isDisliked}
+                  count={dislikeCount}
+                  onClick={handleDislikeClick}
+                />
+                <CommentButton
+                  post={post}
+                  onClick={() => onCommentClick(post.postId)}
+                />
+
+                <ViewCount post={post} />
+              </>
+            )}
           </div>
         </div>
       </div>

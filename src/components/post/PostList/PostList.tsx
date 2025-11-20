@@ -109,6 +109,7 @@ const PostList = () => {
             post={post}
             author={authorInfo}
             onCommentClick={handleCommentClick}
+            hideActions={false}
           />
         );
       })}
