@@ -17,10 +17,11 @@ const useUpdateServerMemberUsername = () => {
     },
 
     onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message ||
-          SERVER_ERROR_MESSAGES.SERVERMEMBER_NAME_UPDATE_FAILED
-      );
+      if (error?.response?.status === 409) {
+        toast.error(SERVER_ERROR_MESSAGES.SERVERMEMBER_NAME_DUPLICATED);
+      } else {
+        toast.error(SERVER_ERROR_MESSAGES.SERVERMEMBER_NAME_UPDATE_FAILED);
+      }
     },
   });
 };
