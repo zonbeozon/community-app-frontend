@@ -19,6 +19,7 @@ export const QUERY_KEYS = {
       list: (channelId: number | string, filters: object) => [...QUERY_KEYS.posts.lists(), channelId, filters] as const,
       details: () => [...QUERY_KEYS.posts.all, 'detail'] as const,
       detail: (postId: number | string) => [...QUERY_KEYS.posts.details(), postId] as const,
+      recommend: () => ['posts', 'recommend']
     },
 
     comments: {
