@@ -1,16 +1,13 @@
 import { useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSetAtom } from 'jotai';
-import { useQueryClient } from '@tanstack/react-query';
 import { useGetChannelById } from "@/queries/useGetChannelById";
 import useGetJoinedChannels from "@/queries/useGetJoinedChannel";
 import { selectedChannelIdAtom } from '@/atoms/channelAtoms';
 import { ROUTE_PATH } from "@/constants/routePaths";
-import { QUERY_KEYS } from "@/constants/queryKeys";
 
 export const useChannelLogic = () => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const { channelId, postId } = useParams<{ channelId: string; postId?: string }>();
   const setSelectedChannelId = useSetAtom(selectedChannelIdAtom);
 
@@ -34,9 +31,8 @@ export const useChannelLogic = () => {
   useEffect(() => {
     if (currentChannelData) {
       setSelectedChannelId(currentChannelData.channelInfo.channelId);
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.channels.joinedLists() });
     }
-  }, [currentChannelData, setSelectedChannelId, queryClient]);
+  }, [currentChannelData, setSelectedChannelId]);
 
   const isMember = useMemo(() => {
     if (!myChannels || numericChannelId === -1) {
