@@ -1,24 +1,17 @@
-import { Outlet } from "react-router-dom";
-import ChannelHeader from "@/components/channel/ChannelHeader/ChannelHeader";
-import { useChannelLogic } from "@/hooks/channel/useChannelLogic";
-import * as S from "./ChannelContent.styles";
+import { Outlet } from 'react-router-dom';
+import { ChannelHeader } from '@/components/channel/ChannelHeader/ChannelHeader';
+import { useChannelLogic } from '@/hooks/channel/useChannelLogic';
+import * as S from './ChannelContent.styles';
 
-const ChannelContent = () => {
-  const {
-    showBackButton,
-    channelData,
-    isMember,
-    isLoading,
-    selectedChannel,
-    canCreatePost,
-  } = useChannelLogic();
+export const ChannelContent = () => {
+  const { showBackButton, channelData, isMember, isLoading, selectedChannel, canCreatePost } = useChannelLogic();
 
   if (isLoading) {
     return null;
   }
 
   if (!channelData) {
-    return <div>❓ 요청한 채널을 찾을 수 없습니다.</div>;
+    return <div className={S.notFoundMessage}>❓ 요청한 채널을 찾을 수 없습니다.</div>;
   }
 
   return (
@@ -38,5 +31,3 @@ const ChannelContent = () => {
     </div>
   );
 };
-
-export default ChannelContent;
