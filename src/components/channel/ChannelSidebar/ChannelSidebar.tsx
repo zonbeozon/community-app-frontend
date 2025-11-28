@@ -1,16 +1,16 @@
-import { useMemo } from "react";
-import { useAtomValue } from "jotai";
-import { Channel } from "@/types/channel.type";
-import useGetJoinedChannels from "@/queries/useGetJoinedChannel";
-import { channelActivityMapAtom } from "@/atoms/channelAtoms"; 
-import ChannelGroup from "@/components/channel/ChannelGroup/ChannelGroup";
-import * as S from "./ChannelSidebar.styles";
+import { useMemo } from 'react';
+import { channelActivityMapAtom } from '@/atoms/channelAtoms';
+import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
+import { useAtomValue } from 'jotai';
+import { ChannelGroup } from '@/components/channel/ChannelGroup/ChannelGroup';
+import type { Channel } from '@/types/channel.type';
+import * as S from './ChannelSidebar.styles';
 
 const SidebarSkeleton = () => {
   return <div className={S.sidebarWrapper}>채널 목록 로딩 중...</div>;
 };
 
-const ChannelSidebar = () => {
+export const ChannelSidebar = () => {
   const { data: channels, isLoading, isError } = useGetJoinedChannels();
   const activityMap = useAtomValue(channelActivityMapAtom);
 
@@ -22,9 +22,8 @@ const ChannelSidebar = () => {
       const timeB = new Date(activityMap[b.channelInfo.channelId] || 0).getTime();
       return timeB - timeA;
     });
-
   }, [channels, activityMap]);
-  
+
   if (isLoading) {
     return <SidebarSkeleton />;
   }
@@ -36,17 +35,12 @@ const ChannelSidebar = () => {
       </div>
     );
   }
-  
+
   return (
     <div className={S.sidebarWrapper}>
       <ul className={S.sidebarContent}>
-        <ChannelGroup
-          title="커뮤니티 채널"
-          channels={communityChannels}
-        />
+        <ChannelGroup title="커뮤니티 채널" channels={communityChannels} />
       </ul>
     </div>
   );
 };
-
-export default ChannelSidebar;
