@@ -1,7 +1,8 @@
 import { useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { useGetChannelById } from "@/queries/useGetChannelById";
+import ChannelRoleManager from "@/utils/channelRoleManager";
 import useGetJoinedChannels from "@/queries/useGetJoinedChannel";
 import { selectedChannelIdAtom } from '@/atoms/channelAtoms';
 import { ROUTE_PATH } from "@/constants/routePaths";
@@ -9,6 +10,7 @@ import { ROUTE_PATH } from "@/constants/routePaths";
 export const useChannelLogic = () => {
   const navigate = useNavigate();
   const { channelId, postId } = useParams<{ channelId: string; postId?: string }>();
+  const selectedChannelId = useAtomValue(selectedChannelIdAtom);
   const setSelectedChannelId = useSetAtom(selectedChannelIdAtom);
 
   const numericChannelId = useMemo(() => {
@@ -27,6 +29,15 @@ export const useChannelLogic = () => {
       navigate(ROUTE_PATH.main);
     }
   }, [isError, error, navigate]);
+
+  const selectedChannel = useMemo(() => {
+    if (!myChannels || !selectedChannelId) {
+      return null;
+    }
+    return myChannels.find(
+      (channel) => channel.channelInfo.channelId === selectedChannelId
+    );
+  }, [myChannels, selectedChannelId]);
   
   useEffect(() => {
     if (currentChannelData) {
@@ -34,19 +45,15 @@ export const useChannelLogic = () => {
     }
   }, [currentChannelData, setSelectedChannelId]);
 
-  const isMember = useMemo(() => {
-    if (!myChannels || numericChannelId === -1) {
-      return false;
-    }
-    return myChannels.some(
-      (channel) => channel.channelInfo.channelId === numericChannelId
-    );
-  }, [myChannels, numericChannelId]);
+  const isMember = !!selectedChannel?.membership;
+  const canCreatePost = isMember && ChannelRoleManager.isAdmin(selectedChannel.membership.channelRole);
 
   return {
     channelData: currentChannelData,
+    selectedChannel,
     isLoading: isChannelLoading,
     isMember,
+    canCreatePost,
     showBackButton: !!postId,
   };
 };
