@@ -7,8 +7,10 @@ import ChannelMemberDropdown from "../ChannelMemberDropdown/ChannelMemberDropdow
 import useGetChannelMembers from "@/queries/useGetChannelMembers";
 import { DEFAULT_PAGE_REQUEST } from "@/constants/constants";
 import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
+import { useChannelLogic } from '@/hooks/channel/useChannelLogic';
 
 const ChannelActiveMemberList = ({ channelId }: { channelId: number }) => {
+  const { isMember } = useChannelLogic();
   const { data, isLoading, isError } = useGetChannelMembers(
     channelId,
     DEFAULT_PAGE_REQUEST
@@ -41,7 +43,7 @@ const ChannelActiveMemberList = ({ channelId }: { channelId: number }) => {
             actions={
               <>
                 <ChannelMemberRoleIcon role={member.channelRole} />
-                {member.memberId !== meId && (
+                {isMember && member.memberId !== meId && (
                   <ChannelMemberDropdown channelId={channelId} targetMember={member} />
                 )}
               </>

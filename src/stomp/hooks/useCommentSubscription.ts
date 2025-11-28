@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import type { IMessage } from "@stomp/stompjs";
-
 import { useStomp } from '../StompProvider';
 import { STOMP_DESTINATIONS } from '../destinations';
 import { handleCommentEvent } from '../handlers/commentEventHandler';

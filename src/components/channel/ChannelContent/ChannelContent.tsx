@@ -4,7 +4,14 @@ import { useChannelLogic } from "@/hooks/channel/useChannelLogic";
 import * as S from "./ChannelContent.styles";
 
 const ChannelContent = () => {
-  const { showBackButton, channelData, isMember, isLoading } = useChannelLogic();
+  const {
+    showBackButton,
+    channelData,
+    isMember,
+    isLoading,
+    selectedChannel,
+    canCreatePost,
+  } = useChannelLogic();
 
   if (isLoading) {
     return null;
@@ -21,6 +28,8 @@ const ChannelContent = () => {
           showBackButton={showBackButton}
           channelData={channelData}
           isMember={isMember}
+          selectedChannel={selectedChannel}
+          canCreatePost={canCreatePost}
         />
       </div>
       <div className={S.contentWrapper}>

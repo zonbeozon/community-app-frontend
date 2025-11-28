@@ -1,5 +1,3 @@
-// NotificationButton.tsx (수정된 전체 코드)
-
 import { Bell } from "lucide-react";
 import {
   DropdownMenu,
@@ -12,15 +10,12 @@ import useMarkNotificationsAsRead from "@/hooks/notification/useNotificationAsRe
 import * as S from "./NotificationButton.styles";
 
 const NotificationButton = () => {
-  // ✨ 1. isLoading, isError 상태도 함께 가져옵니다.
   const { 
     data: notificationData = { notifications: [], unreadCount: 0 },
     isLoading,
     isError
   } = useGetNotifications();
-  
   const { mutate: markAsRead, isPending } = useMarkNotificationsAsRead();
-
   const { notifications, unreadCount: totalUnreadCount } = notificationData;
 
   const handleOpenChange = (open: boolean) => {

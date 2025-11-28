@@ -45,7 +45,6 @@ const AuthGuard = () => {
           throw new Error("No token returned");
         }
       } catch (error) {
-        console.log("AuthGuard: 인증 실패", error);
         setAccessToken(null);
         setServerMember(null);
         localStorage.removeItem("accessToken");

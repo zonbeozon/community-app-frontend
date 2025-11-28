@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import type { IMessage, StompSubscription } from "@stomp/stompjs";
 import { useAtomValue } from 'jotai';
-
 import { useStomp } from "../StompProvider";
 import { serverMemberAtom } from "@/atoms/authAtoms";
 import useGetJoinedChannels from "@/queries/useGetJoinedChannel";

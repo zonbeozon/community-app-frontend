@@ -56,8 +56,8 @@ export interface ChannelHeaderProps {
   showBackButton: boolean;
   channelData: Channel;
   isMember: boolean;
-  isAdmin: boolean;
-  isOwner: boolean;
+  selectedChannel: Channel | undefined | null;
+  canCreatePost: boolean;
 };
 
 export interface ChannelDialogProps {

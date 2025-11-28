@@ -5,14 +5,10 @@ import ChannelInfoDialog from '@/components/channel/ChannelInfoDialog/ChannelInf
 import ChannelBackButton from '../ChannelBackButton/ChannelBackButton';
 import ChannelJoinButton from '@/components/channel/ChannelJoinButton/ChannelJoinButton';
 import { ChannelHeaderProps } from '@/types/channel.type';
-import { useSelectedChannel } from '@/hooks/channel/useSelectedChannel';
 import * as S from "@/components/channel/ChannelHeader/ChannelHeader.styles";
 
-const ChannelHeader = ({ showBackButton, channelData, isMember }: ChannelHeaderProps) => {
+const ChannelHeader = ({ showBackButton, channelData, isMember, canCreatePost }: ChannelHeaderProps) => {
   const [isPostDialogOpen, setPostDialogOpen] = useState(false);
-  const selectedChannel = useSelectedChannel();
-
-  const canCreatePost = selectedChannel?.canCreatePost
 
   return (
     <div className={S.wrapper}>

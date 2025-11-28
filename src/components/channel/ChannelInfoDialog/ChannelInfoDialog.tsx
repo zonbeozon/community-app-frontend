@@ -2,7 +2,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { Button } from "@/components/ui/button";
 import { Channel } from "@/types/channel.type";
 import useDialog from "@/hooks/common/useDialog";
-import ChannelMemberList from "@/components/channelmember/ChannelActiveMemberList/ChannelActiveMemberList";
+import ChannelActiveMemberList from "@/components/channelmember/ChannelActiveMemberList/ChannelActiveMemberList";
 import ChannelProfileImage from "../ChannelProfileImage/ChannelProfileImage";
 import * as S from "./ChannelInfoDialog.styles";
 
@@ -32,7 +32,7 @@ const ChannelInfoDialog = ({ channel }: { channel: Channel }) => {
             <h4 className={S.memberSection.title}>
               멤버 ({channel.channelInfo.memberCount})
             </h4>
-            <ChannelMemberList channelId={channel.channelInfo.channelId} />
+            <ChannelActiveMemberList channelId={channel.channelInfo.channelId} />
           </div>
         </div>
         <DialogFooter className={S.footer}>

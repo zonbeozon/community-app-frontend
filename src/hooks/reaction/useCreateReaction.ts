@@ -23,25 +23,13 @@ const useCreateReaction = () => {
       createReaction(postId, reactionType),
 
     onMutate: async ({ postId, channelId, reactionType }) => {
-      // 더 유연한 매칭을 위해 필터({}) 객체를 제외한 부분 키를 사용합니다.
       const listQueryKey = QUERY_KEYS.posts.list(channelId); 
       const detailQueryKey = QUERY_KEYS.posts.detail(postId);
-
-      console.log(`[Reaction] Optimistic Update 시작. PostID: ${postId}, Type: ${reactionType}`);
-      console.log(`[Reaction] 업데이트할 목록 키:`, listQueryKey);
 
       await queryClient.cancelQueries({ queryKey: listQueryKey });
       await queryClient.cancelQueries({ queryKey: detailQueryKey });
 
       const previousListData = queryClient.getQueryData<InfinitePostsData>(listQueryKey);
-
-      if (!previousListData) {
-        console.error("[Reaction] 치명적 오류: 목록 캐시 데이터를 찾을 수 없습니다. Query Key가 일치하지 않습니다.");
-        // 여기서 return 하면 롤백할 데이터가 없으므로 onSettled에서 invalidate만 실행됩니다.
-        return; 
-      }
-      
-      console.log("[Reaction] 기존 목록 캐시 데이터를 찾았습니다.", previousListData);
       const previousDetailData = queryClient.getQueryData<Post>(detailQueryKey);
 
       const updatePostLogic = (post: Post): Post => {
@@ -63,7 +51,7 @@ const useCreateReaction = () => {
               newPost.metric.dislikeCount -= 1;
             }
           }
-        } else { // DISLIKE
+        } else { 
           if (wasDisliked) {
             newPost.isDislikedByRequester = false;
             newPost.metric.dislikeCount -= 1;
@@ -80,7 +68,6 @@ const useCreateReaction = () => {
         return newPost;
       };
 
-      // 목록 캐시 업데이트
       queryClient.setQueryData<InfinitePostsData>(listQueryKey, (oldData) => {
         if (!oldData) return undefined;
         return {
@@ -92,7 +79,6 @@ const useCreateReaction = () => {
         };
       });
 
-      // 상세 페이지 캐시가 존재하면 함께 업데이트
       if (previousDetailData) {
         queryClient.setQueryData<Post>(detailQueryKey, updatePostLogic);
       }
@@ -113,7 +99,6 @@ const useCreateReaction = () => {
     },
 
     onSettled: (_data, _error, { postId, channelId }) => {
-      // 서버와 데이터 최종 동기화
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.posts.list(channelId) });
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.posts.detail(postId) });
     },
