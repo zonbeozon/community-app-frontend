@@ -24,15 +24,12 @@ export const ChannelDeleteDialog = ({ channel, open, onOpenChange }: ChannelDial
       <DialogContent className={S.content}>
         <DialogTitle>채널 삭제</DialogTitle>
         <DialogDescription>
-          정말 <strong>{channel.channelInfo.title}</strong> 채널을 삭제하시겠습니까?
-          <br />이 작업은 되돌릴 수 없습니다.
+          정말 <strong>{channel.channelInfo.title}</strong> 채널을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.
         </DialogDescription>
 
-        <div className="flex justify-end gap-2 mt-4">
-          <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
-            {isDeleting ? '삭제 중...' : '삭제'}
-          </Button>
-        </div>
+        <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
+          {isDeleting ? '삭제 중...' : '삭제'}
+        </Button>
       </DialogContent>
     </Dialog>
   );
