@@ -1,5 +1,5 @@
-import { atom } from "jotai";
-import { Post } from "@/types/post.type";
+import { atom } from 'jotai';
+import type { Post } from '@/types/post.type';
 
 export const selectedPostIdAtom = atom<number | null>(null);
 

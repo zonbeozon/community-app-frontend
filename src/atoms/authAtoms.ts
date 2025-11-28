@@ -1,5 +1,5 @@
-import { atomWithStorage } from "jotai/utils";
-import { ServerMember } from '@/types/serverMember.type';
+import { atomWithStorage } from 'jotai/utils';
+import type { ServerMember } from '@/types/serverMember.type';
 
 export const accessTokenAtom = atomWithStorage<string | null>('accessToken', null);
 
