@@ -22,7 +22,8 @@ interface PostItemProps {
   post: Post;
   author: ChannelMember;
   channelId: number;
-  onCommentClick: (postId: number) => void;
+  onClick?: () => void;
+  onCommentClick?: ((postId: number) => void) | null; 
   hideActions: boolean;
 }
 
@@ -34,6 +35,7 @@ const PostItem = ({
   author,
   channelId,
   onCommentClick,
+  onClick,
   hideActions,
 }: PostItemProps) => {
   const myInfo = useAtomValue(serverMemberAtom);
@@ -111,7 +113,7 @@ const PostItem = ({
   const isMyPost = author.memberId === myInfo?.memberId;
 
   return (
-    <div className={S.wrapper} ref={itemRef}>
+    <div className={S.wrapper} ref={itemRef} onClick={onClick}>
       <div className={S.postRow}>
         <div className="flex-shrink-0">
           {isMyPost ? (

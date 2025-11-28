@@ -67,7 +67,7 @@ const RecommendedPostList = () => {
 
       <div
         id="main-content"
-        className="overflow-y-auto h-full flex flex-col gap-2"
+        className="overflow-y-auto h-full flex flex-col gap-2 cursor-pointer"
       >
         {posts.map((post) => (
           <PostItem
@@ -76,6 +76,7 @@ const RecommendedPostList = () => {
             post={post}
             author={post.author}
             onCommentClick={null}
+            onClick={() => handleClick(post.channelId, post.postId)}
             hideActions={true}
           />
         ))}

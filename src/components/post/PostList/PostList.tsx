@@ -10,16 +10,23 @@ import ItemSkeleton from '@/components/common/ItemSkeleton/ItemSkeleton';
 import { MESSAGES } from '@/constants/messages';
 import { useUpdateLatestPost } from '@/hooks/post/useSetLatestPost';
 import * as S from './PostList.styles';
+import { usePostSubscription } from '@/stomp/hooks/usePostSubscriptions';
+import { useChannelLogic } from '@/hooks/channel/useChannelLogic';
+import { ROUTE_PATH } from '@/constants/routePaths';
+import { toast } from 'sonner';
 
 const SCROLL_POSITION_KEY = 'post_list_scroll_position';
 
 const PostList = () => {
+  const { channelData } = useChannelLogic();
   const navigate = useNavigate();
   const { channelId } = useParams<{ channelId: string }>();
   const numericChannelId = Number(channelId);
 
   const setSelectedPostId = useSetAtom(selectedPostIdAtom);
   const updateLatestPost = useUpdateLatestPost();
+
+  usePostSubscription(numericChannelId)
 
   const {
     data: postsData,
@@ -41,6 +48,18 @@ const PostList = () => {
   });
 
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!channelData) return;
+
+    const { settings } = channelData.channelInfo;
+    const { isJoined } = channelData;
+
+    if (settings.contentVisibility === "PRIVATE" && !isJoined) {
+      navigate(ROUTE_PATH.main);
+      toast.error("해당 채널은 비공개 채널입니다.");
+    }
+  }, [channelData, navigate]);
 
   useEffect(() => {
     if (postsData?.posts?.length) {
