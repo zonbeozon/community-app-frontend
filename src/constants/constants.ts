@@ -17,7 +17,6 @@ export const DEFAULT_CHANNEL_VALUES: ChannelRequest = {
   title: "",
   description: "",
   imageId: null,
-  channelType: "BLOG",
   settings: {
     contentVisibility: "PUBLIC",
     joinPolicy: "OPEN",
