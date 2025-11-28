@@ -1,6 +1,4 @@
-import { API_URL } from "@/apis/config";
-
-export const BASE_URL = API_URL;
+export const BASE_URL = '';
 
 export const ENDPOINT = {
   //Channel
@@ -15,7 +13,7 @@ export const ENDPOINT = {
   CHANNELMEMBER_BAN: (channelId: number, memberId: number) => `/channels/${channelId}/members/${memberId}/ban`,
   CHANNELMEMBER_APPROVE: (channelId: number, memberId: number) => `/channels/${channelId}/members/${memberId}/approve`,
   CHANNELMEMBER_ROLE: (channelId: number, memberId: number) => `/channels/${channelId}/members/${memberId}/role`,
-  CHANNELMEMBER_PENDING: (channelId: number) => `/channels/${channelId}/members/pending`,  
+  CHANNELMEMBER_PENDING: (channelId: number) => `/channels/${channelId}/members/pending`,
   CHANNELMEMBER_BANNED: (channelId: number) => `/channels/${channelId}/members/ban`,
 
   //Post
@@ -27,8 +25,7 @@ export const ENDPOINT = {
   //Chatting
   CHAT_ID: (chatId: number) => `/chat/${chatId}`,
   CHAT_IMAGE: (chatId: number) => `/chat/${chatId}/image`,
-  CHAT_GROUP: (chattingGroupName: string) => `/chattingGroup/${chattingGroupName}/chat`,     
-
+  CHAT_GROUP: (chattingGroupName: string) => `/chattingGroup/${chattingGroupName}/chat`,
 
   //Comment
   COMMENT: (postId: number) => `/posts/${postId}/comments`,
@@ -56,5 +53,5 @@ export const ENDPOINT = {
   CRYPTO_SYMBOL: (symbol: string) => `/info/coin/${symbol}`,
 
   //Image
-  IMAGE: `/images`
+  IMAGE: `/images`,
 };

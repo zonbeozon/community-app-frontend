@@ -1,9 +1,9 @@
-import { AxiosRequestConfig } from "axios";
-import api from "./interceptor";
+import api from '@/apis/interceptor';
+import { AxiosRequestConfig } from 'axios';
 
 interface RequestProps {
   url: string;
-  method?: "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
+  method?: 'GET' | 'POST' | 'DELETE' | 'PATCH' | 'PUT';
   errorMessage?: string;
   body?: any;
   headers?: Record<string, string>;
@@ -11,13 +11,7 @@ interface RequestProps {
 }
 
 const fetcher = {
-  async request<T = any>({
-    url,
-    method = "GET",
-    body,
-    headers,
-    params,
-  }: RequestProps): Promise<T> {
+  async request<T = any>({ url, method = 'GET', body, headers, params }: RequestProps): Promise<T> {
     try {
       const config: AxiosRequestConfig = {
         url,
@@ -30,24 +24,24 @@ const fetcher = {
       const response = await api(config);
       return response.data as T;
     } catch (error: any) {
-      throw error
+      throw error;
     }
   },
 
-  get<T = any>(props: Omit<RequestProps, "method" | "body">) {
-    return this.request<T>({ ...props, method: "GET" });
+  get<T = any>(props: Omit<RequestProps, 'method' | 'body'>) {
+    return this.request<T>({ ...props, method: 'GET' });
   },
-  post<T = any>(props: Omit<RequestProps, "method">) {
-    return this.request<T>({ ...props, method: "POST" });
+  post<T = any>(props: Omit<RequestProps, 'method'>) {
+    return this.request<T>({ ...props, method: 'POST' });
   },
-  delete<T = any>(props: Omit<RequestProps, "method">) {
-    return this.request<T>({ ...props, method: "DELETE" });
+  delete<T = any>(props: Omit<RequestProps, 'method'>) {
+    return this.request<T>({ ...props, method: 'DELETE' });
   },
-  patch<T = any>(props: Omit<RequestProps, "method">) {
-    return this.request<T>({ ...props, method: "PATCH" });
+  patch<T = any>(props: Omit<RequestProps, 'method'>) {
+    return this.request<T>({ ...props, method: 'PATCH' });
   },
-  put<T = any>(props: Omit<RequestProps, "method">) {
-    return this.request<T>({ ...props, method: "PUT" });
+  put<T = any>(props: Omit<RequestProps, 'method'>) {
+    return this.request<T>({ ...props, method: 'PUT' });
   },
 };
 

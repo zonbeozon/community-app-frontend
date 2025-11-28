@@ -14,7 +14,7 @@ const processQueue = (newToken: string | null) => {
 };
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: "",
   withCredentials: true,
 });
 
