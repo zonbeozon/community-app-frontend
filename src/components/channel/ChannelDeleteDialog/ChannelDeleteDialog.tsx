@@ -1,41 +1,39 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { useChannelDeleteDialog } from "@/hooks/channel/channeldialog/useChannelDeleteDialog";
-import { ChannelDialogProps } from "@/types/channel.type";
-import * as S from "./ChannelDeleteDialog.styles";
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import { useChannelDelete } from '@/hooks/channel/useChannelDelete';
+import type { ChannelDialogProps } from '@/types/channel.type';
+import * as S from './ChannelDeleteDialog.styles';
 
-const ChannelDeleteDialog = ({ open, onOpenChange, channelId }: ChannelDialogProps) => {
-  const { channel, handleDelete, isDeleting } = useChannelDeleteDialog({
-    channelId,
-    onSuccess: () => onOpenChange(false), 
-  });
+export const ChannelDeleteDialog = ({ channel, open, onOpenChange }: ChannelDialogProps) => {
+  const { deleteChannel, isDeleting } = useChannelDelete();
 
-  if (!channel) {
-    return null;
-  }
+  const handleDelete = () => {
+    if (!channel) return;
+
+    deleteChannel(channel.channelInfo.channelId, {
+      onSuccess: () => {
+        onOpenChange(false);
+      },
+    });
+  };
+
+  if (!channel) return null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={S.content}>
-        <DialogHeader>
-          <DialogTitle>채널 삭제</DialogTitle>
-          <DialogDescription>
-            정말 <strong>{channel.channelInfo.title}</strong> 채널을 삭제하시겠습니까? 이 작업은
-            되돌릴 수 없습니다.
-          </DialogDescription>
-        </DialogHeader>
+        <DialogTitle>채널 삭제</DialogTitle>
+        <DialogDescription>
+          정말 <strong>{channel.channelInfo.title}</strong> 채널을 삭제하시겠습니까?
+          <br />이 작업은 되돌릴 수 없습니다.
+        </DialogDescription>
 
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="outline">취소</Button>
-          </DialogClose>
+        <div className="flex justify-end gap-2 mt-4">
           <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
-            {isDeleting ? "삭제 중..." : "삭제"}
+            {isDeleting ? '삭제 중...' : '삭제'}
           </Button>
-        </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );
 };
-
-export default ChannelDeleteDialog;
