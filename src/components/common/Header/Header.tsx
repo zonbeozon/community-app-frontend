@@ -29,7 +29,7 @@ const Header = () => {
         className={S.logoButton}
         variant="ghost"
       >
-        <h1 className={S.logo}>placeHolder</h1>
+        <h1 className={S.logo}>zonbeozon</h1>
       </Button>
       
       {isAuthenticated && (

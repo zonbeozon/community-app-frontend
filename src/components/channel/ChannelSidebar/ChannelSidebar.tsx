@@ -37,15 +37,9 @@ const ChannelSidebar = () => {
     );
   }
   
-  const officialChannels: Channel[] = [];
-  
   return (
     <div className={S.sidebarWrapper}>
       <ul className={S.sidebarContent}>
-        <ChannelGroup
-          title="공식 크립토 채널"
-          channels={officialChannels}
-        />
         <ChannelGroup
           title="커뮤니티 채널"
           channels={communityChannels}

@@ -38,7 +38,7 @@ const Landing = () => {
 
   return (
     <div className={S.container}>
-      <h1 className={S.logo}>placeHolder</h1>
+      <h1 className={S.logo}>zonbeozon</h1>
       
       <button className={S.gsiButton} onClick={handleGoogleLogin}>
         <div className={S.gsiState}></div>
