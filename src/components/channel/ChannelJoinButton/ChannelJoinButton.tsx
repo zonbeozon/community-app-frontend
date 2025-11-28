@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { ChannelJoinDialog } from '@/components/channel/ChannelJoinDialog/ChannelJoinDialog';
 import { Button } from '@/components/ui/button';
-import ChannelJoinDialog from '@/components/channel/ChannelJoinDialog/ChannelJoinDialog';
-import { ChannelJoinButtonProps } from '@/types/channel.type';
-import * as S from "./ChannelJoinButton.styles";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { useDialog } from '@/hooks/common/useDialog';
+import type { ChannelJoinButtonProps } from '@/types/channel.type';
+import * as S from './ChannelJoinButton.styles';
 
-const ChannelJoinButton = ({ channel, onJoinSuccess }: ChannelJoinButtonProps) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+export const ChannelJoinButton = ({ channel, onJoinSuccess }: ChannelJoinButtonProps) => {
+  const { open, close, props: dialogProps } = useDialog();
 
   const handleJoinSuccess = () => {
-    setIsDialogOpen(false);
+    close();
     onJoinSuccess();
   };
 
@@ -17,39 +17,33 @@ const ChannelJoinButton = ({ channel, onJoinSuccess }: ChannelJoinButtonProps) =
     return null;
   }
 
-  if (channel.channelInfo.settings.joinPolicy === "DENY") {
+  if (channel.channelInfo.settings.joinPolicy === 'DENY') {
     return (
       <HoverCard openDelay={10} closeDelay={10}>
         <HoverCardTrigger>
-          <Button className={S.button} disabled>참여 불가</Button>
+          <Button className={S.button} disabled>
+            참여 불가
+          </Button>
         </HoverCardTrigger>
-        <HoverCardContent className='text-sm text-red-500'>
-          이 채널은 참가가 허용되지 않습니다.
-        </HoverCardContent>
+        <HoverCardContent className="text-sm text-red-500">이 채널은 참가가 허용되지 않습니다.</HoverCardContent>
       </HoverCard>
     );
   }
 
   return (
     <>
-      <Button 
+      <Button
         className={S.button}
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsDialogOpen(true);
-        }}
+        onClick={open}
       >
         참여
       </Button>
 
-      <ChannelJoinDialog 
-        channel={channel} 
+      <ChannelJoinDialog
+        {...dialogProps}
+        channel={channel}
         onJoinSuccess={handleJoinSuccess}
-        open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
       />
     </>
   );
 };
-
-export default ChannelJoinButton;
