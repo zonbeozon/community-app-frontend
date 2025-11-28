@@ -1,30 +1,41 @@
-import { PlusIcon } from "lucide-react";
-import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import ChannelForm from "@/components/channel/ChannelForm/ChannelForm";
-import { useChannelCreateDialog } from "@/hooks/channel/channeldialog/useChannelCreateDialog";
-import { DialogProps } from "@/types/common.type";
-import * as S from "./ChannelCreateDialog.styles";
+import { PlusIcon } from 'lucide-react';
+import { ChannelForm } from '@/components/channel/ChannelForm/ChannelForm';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useChannelCreate } from '@/hooks/channel/useChannelCreate';
+import { useForm } from '@/hooks/common/useForm';
+import { DEFAULT_CHANNEL_VALUES } from '@/constants/constants';
+import { validateChannel } from '@/validations/validateChannel';
+import type { ChannelDialogProps, ChannelRequest } from '@/types/channel.type';
+import * as S from './ChannelCreateDialog.styles';
 
-const ChannelCreateDialog = ({ open, onOpenChange }: DialogProps) => {
-  const {
-    formValues,
-    formErrors,
-    formHandler,
-    isFormValid,
-    isSubmitting,
-    handleSubmit,
-  } = useChannelCreateDialog({
-    open,
-    onSuccess: () => onOpenChange(false), 
-  });
+export const ChannelCreateDialog = ({ open, onOpenChange }: ChannelDialogProps) => {
+  const { values, errors, handler, isValid, reset } = useForm<ChannelRequest>(DEFAULT_CHANNEL_VALUES, validateChannel);
+
+  const { createChannel, isCreating } = useChannelCreate();
+
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      reset();
+    }
+    onOpenChange(isOpen);
+  };
+
+  const handleSubmit = async () => {
+    if (!isValid) return;
+
+    createChannel(values, {
+      onSuccess: () => {
+        handleOpenChange(false);
+      },
+    });
+  };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button className={S.createButton}>
-          <PlusIcon size={16}/>
-          새 채널 만들기
+          <PlusIcon size={16} />새 채널 만들기
         </Button>
       </DialogTrigger>
 
@@ -35,18 +46,16 @@ const ChannelCreateDialog = ({ open, onOpenChange }: DialogProps) => {
         </DialogDescription>
 
         <ChannelForm
-          content={formValues}
-          errors={formErrors}
-          handler={formHandler}
-          imagePreview={null} 
+          content={values}
+          errors={errors}
+          handler={handler}
+          imagePreview={null}
           isEdit={false}
-          isValid={isFormValid}
-          isSubmitting={isSubmitting}
-          onSubmit={handleSubmit} 
+          isValid={isValid}
+          isSubmitting={isCreating}
+          onSubmit={handleSubmit}
         />
       </DialogContent>
     </Dialog>
   );
 };
-
-export default ChannelCreateDialog;
