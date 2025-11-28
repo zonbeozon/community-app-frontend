@@ -1,11 +1,11 @@
-import { Link, useParams } from "react-router-dom";
-import ChannelDropdown from "@/components/channel/ChannelDropdown/ChannelDropdown";
-import ChannelProfileImage from "../ChannelProfileImage/ChannelProfileImage";
-import { useLatestPost } from "@/hooks/post/useLatestPost";
-import { Channel } from "@/types/channel.type";
-import * as S from "./ChannelItem.styles";
+import { Link, useParams } from 'react-router-dom';
+import { ChannelDropdown } from '@/components/channel/ChannelDropdown/ChannelDropdown';
+import { ChannelProfileImage } from '@/components/channel/ChannelProfileImage/ChannelProfileImage';
+import { useLatestPost } from '@/hooks/post/useLatestPost';
+import type { Channel } from '@/types/channel.type';
+import * as S from './ChannelItem.styles';
 
-const ChannelItem = ({ channel }: { channel: Channel }) => {
+export const ChannelItem = ({ channel }: { channel: Channel }) => {
   const { channelId: currentUrlChannelId } = useParams<{ channelId: string }>();
   const { channelInfo } = channel;
   const latestPost = useLatestPost(channelInfo.channelId);
@@ -18,10 +18,7 @@ const ChannelItem = ({ channel }: { channel: Channel }) => {
 
   return (
     <div className={S.wrapper}>
-      <Link
-        to={`/channels/${channelInfo.channelId}`}
-        className={S.itemWrapper(isSelected)}
-      >
+      <Link to={`/channels/${channelInfo.channelId}`} className={S.itemWrapper(isSelected)}>
         <ChannelProfileImage size={'sm'} channelInfo={channelInfo} />
         <div className={S.contentWrapper}>
           <p className={S.title}>{channelInfo.title}</p>
@@ -41,5 +38,3 @@ const ChannelItem = ({ channel }: { channel: Channel }) => {
     </div>
   );
 };
-
-export default ChannelItem;
