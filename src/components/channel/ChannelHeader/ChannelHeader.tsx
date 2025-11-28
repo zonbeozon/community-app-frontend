@@ -1,20 +1,20 @@
 import { useState } from 'react';
-import NewPostDialog from '@/components/post/PostCreateDialog/PostCreateDialog';
-import ChannelDropdown from '@/components/channel/ChannelDropdown/ChannelDropdown';
-import ChannelInfoDialog from '@/components/channel/ChannelInfoDialog/ChannelInfoDialog';
-import ChannelBackButton from '../ChannelBackButton/ChannelBackButton';
-import ChannelJoinButton from '@/components/channel/ChannelJoinButton/ChannelJoinButton';
-import { ChannelHeaderProps } from '@/types/channel.type';
-import * as S from "@/components/channel/ChannelHeader/ChannelHeader.styles";
+import { ChannelBackButton } from '@/components/channel/ChannelBackButton/ChannelBackButton';
+import { ChannelDropdown } from '@/components/channel/ChannelDropdown/ChannelDropdown';
+import { ChannelInfoDialog } from '@/components/channel/ChannelInfoDialog/ChannelInfoDialog';
+import { ChannelJoinButton } from '@/components/channel/ChannelJoinButton/ChannelJoinButton';
+import { PostCreateDialog } from '@/components/post/PostCreateDialog/PostCreateDialog';
+import type { ChannelHeaderProps } from '@/types/channel.type';
+import * as S from './ChannelHeader.styles';
 
-const ChannelHeader = ({ showBackButton, channelData, isMember, canCreatePost }: ChannelHeaderProps) => {
+export const ChannelHeader = ({ showBackButton, channelData, isMember, canCreatePost }: ChannelHeaderProps) => {
   const [isPostDialogOpen, setPostDialogOpen] = useState(false);
 
   return (
     <div className={S.wrapper}>
       <div className={S.goBackButtonWrapper}>
         {showBackButton && <ChannelBackButton channel={channelData} />}
-        
+
         <div className={S.image}>
           <ChannelInfoDialog channel={channelData} />
         </div>
@@ -27,12 +27,7 @@ const ChannelHeader = ({ showBackButton, channelData, isMember, canCreatePost }:
       {isMember ? (
         <>
           <div className={S.button}>
-            {canCreatePost && (
-              <NewPostDialog 
-                open={isPostDialogOpen}
-                onOpenChange={setPostDialogOpen}
-              />
-            )}
+            {canCreatePost && <PostCreateDialog open={isPostDialogOpen} onOpenChange={setPostDialogOpen} />}
           </div>
           <div className={S.dropdownButton}>
             <ChannelDropdown channel={channelData} />
@@ -40,14 +35,9 @@ const ChannelHeader = ({ showBackButton, channelData, isMember, canCreatePost }:
         </>
       ) : (
         <div className={S.button}>
-          <ChannelJoinButton 
-            channel={{ ...channelData, isJoined: false }} 
-            onJoinSuccess={() => {}} 
-          />
+          <ChannelJoinButton channel={channelData} onJoinSuccess={() => {}} />
         </div>
       )}
     </div>
   );
 };
-
-export default ChannelHeader;
