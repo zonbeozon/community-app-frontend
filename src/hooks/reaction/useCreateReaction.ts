@@ -64,7 +64,6 @@ const useCreateReaction = () => {
             }
           }
         }
-        console.log(`[Reaction] PostID: ${postId}의 상태가 업데이트되었습니다.`, newPost);
         return newPost;
       };
 

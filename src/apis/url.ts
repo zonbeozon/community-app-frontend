@@ -1,8 +1,6 @@
 import { API_URL } from "@/apis/config";
-import { BINANCE_URL } from "@/apis/config";
 
 export const BASE_URL = API_URL;
-export const PRICE_URL = BINANCE_URL;
 
 export const ENDPOINT = {
   //Channel
@@ -26,6 +24,12 @@ export const ENDPOINT = {
   POST_VIEWCOUNT: '/posts/view-count',
   POST_RECOMMED: '/posts/recommend',
 
+  //Chatting
+  CHAT_ID: (chatId: number) => `/chat/${chatId}`,
+  CHAT_IMAGE: (chatId: number) => `/chat/${chatId}/image`,
+  CHAT_GROUP: (chattingGroupName: string) => `/chattingGroup/${chattingGroupName}/chat`,     
+
+
   //Comment
   COMMENT: (postId: number) => `/posts/${postId}/comments`,
   COMMENT_BY_ID: (commentId: number) => `/comments/${commentId}`,
@@ -46,6 +50,10 @@ export const ENDPOINT = {
   //Auth
   REISSUE: `/auth/reissue`,
   SIGNOUT: `/auth/logout`,
+
+  //Crypto
+  CRYPTOS: `/info/coin`,
+  CRYPTO_SYMBOL: (symbol: string) => `/info/coin/${symbol}`,
 
   //Image
   IMAGE: `/images`

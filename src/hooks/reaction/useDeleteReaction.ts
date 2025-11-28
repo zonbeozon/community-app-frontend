@@ -23,7 +23,6 @@ const useDeleteReaction = () => {
       deleteReaction(postId),
 
     onMutate: async ({ postId, channelId, reactionType }) => {
-      // 필터 객체({})를 제외하여 다른 훅과 Query Key를 일치시킵니다.
       const listQueryKey = QUERY_KEYS.posts.list(channelId);
       const detailQueryKey = QUERY_KEYS.posts.detail(postId);
 
@@ -40,17 +39,14 @@ const useDeleteReaction = () => {
 
         if (reactionType === 'LIKE') {
           newPost.isLikedByRequester = false;
-          // 음수가 되지 않도록 방지
           newPost.metric.likeCount = Math.max(0, newPost.metric.likeCount - 1);
-        } else { // DISLIKE
+        } else { 
           newPost.isDislikedByRequester = false;
-          // 음수가 되지 않도록 방지
           newPost.metric.dislikeCount = Math.max(0, newPost.metric.dislikeCount - 1);
         }
         return newPost;
       };
 
-      // 목록 캐시 업데이트
       queryClient.setQueryData<InfinitePostsData | undefined>(listQueryKey, (oldData) => {
         if (!oldData) return undefined;
         return {
@@ -62,7 +58,6 @@ const useDeleteReaction = () => {
         };
       });
 
-      // 상세 페이지 캐시가 존재하면 함께 업데이트
       if (previousDetailData) {
         queryClient.setQueryData<Post>(detailQueryKey, updatePostLogic);
       }
@@ -72,7 +67,7 @@ const useDeleteReaction = () => {
 
     onError: (error: any, variables, context) => {
       toast.error(
-        error.response?.data?.message || SERVER_ERROR_MESSAGES.REACTION_DELETE_FAILED // 적절한 메시지로 변경
+        error.response?.data?.message || SERVER_ERROR_MESSAGES.REACTION_DELETE_FAILED 
       );
       if (context?.previousListData) {
         queryClient.setQueryData(QUERY_KEYS.posts.list(variables.channelId), context.previousListData);
