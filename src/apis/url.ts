@@ -7,7 +7,6 @@ export const PRICE_URL = BINANCE_URL;
 export const ENDPOINT = {
   //Channel
   CHANNEL: `/channels`,
-  CHANNEL_COMMUNITY: `/channels/community`,
   CHANNEL_BY_ID: (channelId: number) => `/channels/${channelId}`,
   CHANNEL_JOINED: `/channels/joined`,
   CHANNEL_JOINED_BY_ID: (channelId: number) => `/channels/joined/${channelId}`,
