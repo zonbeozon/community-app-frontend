@@ -42,12 +42,11 @@ const ChannelMemberDenyDialog = ({ open, onOpenChange, channelId, targetMember }
         </DialogHeader>
 
         <DialogFooter>
+          <Button type="button" variant="destructive" onClick={handleDeny} disabled={isPending}>
+            {isPending ? "처리 중..." : "거절"}
+          </Button>
           <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
             취소
-          </Button>
-
-          <Button type="button" variant="destructive" onClick={handleDeny} disabled={isPending}>
-            {isPending ? "처리 중..." : "강제 퇴장"}
           </Button>
         </DialogFooter>
       </DialogContent>
