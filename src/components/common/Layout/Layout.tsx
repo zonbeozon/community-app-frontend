@@ -1,14 +1,10 @@
-import Header from "@/components/common/Header/Header";
-import Footer from "@/components/common/Footer/Footer";
 import { useGlobalSubscriptions } from '@/stomp/hooks/useGlobalSubscriptions';
-import * as S from "./Layout.styles";
+import { Footer } from '@/components/common/Footer/Footer';
+import { Header } from '@/components/common/Header/Header';
+import type { LayoutProps } from '@/types/common.type';
+import * as S from './Layout.styles';
 
-interface LayoutProps {
-  children: React.ReactNode;
-};
-
-const Layout = ({ children }: LayoutProps) => {
-
+export const Layout = ({ children }: LayoutProps) => {
   useGlobalSubscriptions();
 
   return (
@@ -21,5 +17,3 @@ const Layout = ({ children }: LayoutProps) => {
     </div>
   );
 };
-
-export default Layout;

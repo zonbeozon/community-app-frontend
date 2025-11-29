@@ -1,30 +1,25 @@
 import { useEffect } from 'react';
-import { ImageIcon, XIcon } from "lucide-react";
+import { ImageIcon, XIcon } from 'lucide-react';
 import { useImageHandler } from '@/hooks/common/image/useImageHandler';
-import useUploadImage from '@/hooks/common/image/useUploadImage';
-
-interface ImageUploaderInputProps {
-  initialImageUrl?: string | null;
-  isUploading?: boolean; 
-  onUploadSuccess: (imageId: number | null) => void;
-}
+import { useUploadImage } from '@/hooks/common/image/useUploadImage';
+import type { ImageUploaderInputProps } from '@/types/common.type';
 
 export const SingleImageUploader = ({
   initialImageUrl,
   isUploading: isFormSubmitting,
   onUploadSuccess,
 }: ImageUploaderInputProps) => {
-  const { upload, isUploading: isImageUploading } = useUploadImage(); 
+  const { upload, isUploading: isImageUploading } = useUploadImage();
 
   const {
     imageFile,
     previewUrl,
     handleImageChange,
-    handleRemoveImage: baseHandleRemoveImage, 
-  } = useImageHandler({ 
-    initialImageUrl, 
+    handleRemoveImage: baseHandleRemoveImage,
+  } = useImageHandler({
+    initialImageUrl,
   });
-  
+
   useEffect(() => {
     if (!imageFile) {
       return;
@@ -36,14 +31,13 @@ export const SingleImageUploader = ({
     const performUpload = async () => {
       try {
         const uploadedImage = await upload(formData);
-        onUploadSuccess(uploadedImage.imageId); 
+        onUploadSuccess(uploadedImage.imageId);
       } catch (error) {
-        console.error("Upload failed:", error);
+        console.error('Upload failed:', error);
       }
     };
 
     performUpload();
-    
   }, [imageFile, upload, onUploadSuccess]);
 
   const handleRemoveImage = () => {
@@ -67,20 +61,16 @@ export const SingleImageUploader = ({
         <label
           htmlFor="profileImage"
           className={`px-4 py-2 bg-white border border-gray-300 text-sm rounded-md ${
-            isDisabled ? "cursor-not-allowed opacity-60" : "cursor-pointer" 
+            isDisabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
           } hover:bg-gray-50 transition`}
         >
-          {isImageUploading ? "업로드 중..." : "이미지 업로드"} 
+          {isImageUploading ? '업로드 중...' : '이미지 업로드'}
         </label>
 
         {previewUrl ? (
           <div className="relative w-14 h-14">
             <div className="w-full h-full rounded-full overflow-hidden border">
-              <img
-                src={previewUrl}
-                alt="이미지 미리보기"
-                className="w-full h-full object-cover"
-              />
+              <img src={previewUrl} alt="이미지 미리보기" className="w-full h-full object-cover" />
             </div>
             <button
               type="button"

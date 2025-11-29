@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
-import { useAtomValue } from 'jotai'; 
-import { StompContextType } from '@/types/stomp.type';
-import { accessTokenAtom } from '@/atoms/authAtoms'; 
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { accessTokenAtom } from '@/atoms/authAtoms';
+import { useAtomValue } from 'jotai';
+import type { StompContextType } from '@/types/stomp.type';
 import { stompClient } from './client';
 
 const StompContext = createContext<StompContextType>({
@@ -40,12 +40,8 @@ export const StompProvider = ({ children }: { children: React.ReactNode }) => {
         }
       };
     }
-  }, [accessToken]); 
+  }, [accessToken]);
   const value = useMemo(() => ({ client: stompClient, isConnected }), [isConnected]);
 
-  return (
-    <StompContext.Provider value={value}>
-      {children}
-    </StompContext.Provider>
-  );
+  return <StompContext.Provider value={value}>{children}</StompContext.Provider>;
 };

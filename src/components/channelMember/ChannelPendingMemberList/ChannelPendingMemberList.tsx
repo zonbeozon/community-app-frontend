@@ -1,24 +1,21 @@
-import { useState } from "react";
-import { ChannelMember } from "@/types/channelMember.type";
-import useGetPendingChannelMembers from "@/queries/useGetPendingChannelMembers";
-import ChannelMemberItem from "../ChannelMemberItem/ChannelMemberItem";
-import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
-import { DEFAULT_PAGE_REQUEST } from "@/constants/constants";
-import { Button } from "@/components/ui/button";
-import ChannelMemberApproveDialog from "../ChannelMemberApproveDialog/ChannelMemberApproveDialog";
-import ChannelMemberDenyDialog from "../ChannelMemberDenyDialog/ChannelMemberDenyDialog";
-import * as S from "./ChannelPendingMemberList.styles";
+import { useState } from 'react';
+import useGetPendingChannelMembers from '@/queries/useGetPendingChannelMembers';
+import ChannelMemberApproveDialog from '@/components/channelmember/ChannelMemberApproveDialog/ChannelMemberApproveDialog';
+import { ChannelMemberDenyDialog } from '@/components/channelmember/ChannelMemberDenyDialog/ChannelMemberDenyDialog';
+import { ChannelMemberItem } from '@/components/channelmember/ChannelMemberItem/ChannelMemberItem';
+import ItemSkeleton from '@/components/common/ItemSkeleton/ItemSkeleton';
+import { Button } from '@/components/ui/button';
+import { DEFAULT_PAGE_REQUEST } from '@/constants/constants';
+import { ChannelMember } from '@/types/channelMember.type';
+import * as S from './ChannelPendingMemberList.styles';
 
 interface ActiveDialogState {
-  type: "approve" | "deny" | null;
+  type: 'approve' | 'deny' | null;
   member: ChannelMember | null;
 }
 
-const ChannelPendingMemberList = ({ channelId }: { channelId: number }) => {
-  const { data, isLoading, isError } = useGetPendingChannelMembers(
-    channelId,
-    DEFAULT_PAGE_REQUEST
-  );
+export const ChannelPendingMemberList = ({ channelId }: { channelId: number }) => {
+  const { data, isLoading, isError } = useGetPendingChannelMembers(channelId, DEFAULT_PAGE_REQUEST);
 
   const [activeDialog, setActiveDialog] = useState<ActiveDialogState>({ type: null, member: null });
 
@@ -51,18 +48,10 @@ const ChannelPendingMemberList = ({ channelId }: { channelId: number }) => {
             member={member}
             actions={
               <div className="flex items-center gap-2">
-                <Button
-                  className=""
-                  size="sm"
-                  onClick={() => setActiveDialog({ type: "approve", member })}
-                >
+                <Button className="" size="sm" onClick={() => setActiveDialog({ type: 'approve', member })}>
                   수락
                 </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setActiveDialog({ type: "deny", member })}
-                >
+                <Button variant="outline" size="sm" onClick={() => setActiveDialog({ type: 'deny', member })}>
                   거절
                 </Button>
               </div>
@@ -74,13 +63,13 @@ const ChannelPendingMemberList = ({ channelId }: { channelId: number }) => {
       {activeDialog.member && (
         <>
           <ChannelMemberApproveDialog
-            open={activeDialog.type === "approve"}
+            open={activeDialog.type === 'approve'}
             onOpenChange={(isOpen) => !isOpen && handleCloseDialog()}
             channelId={channelId}
             targetMember={activeDialog.member}
           />
           <ChannelMemberDenyDialog
-            open={activeDialog.type === "deny"}
+            open={activeDialog.type === 'deny'}
             onOpenChange={(isOpen) => !isOpen && handleCloseDialog()}
             channelId={channelId}
             targetMember={activeDialog.member}
@@ -90,5 +79,3 @@ const ChannelPendingMemberList = ({ channelId }: { channelId: number }) => {
     </div>
   );
 };
-
-export default ChannelPendingMemberList;

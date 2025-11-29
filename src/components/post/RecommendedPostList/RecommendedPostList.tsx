@@ -1,23 +1,16 @@
-import { useInView } from "react-intersection-observer";
-import { useNavigate } from "react-router-dom";
-import useGetRecommendedPosts from "@/queries/useGetRecommendedPosts";
-import PostItem from "@/components/post/PostItem/PostItem";
-import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
-import { MESSAGES } from "@/constants/messages";
-import * as S from "@/components/post/PostList/PostList.styles";
-import { Sparkles } from "lucide-react";
-import localizeTimezone from "@/utils/localizeTimezone";
+import { useInView } from 'react-intersection-observer';
+import { useNavigate } from 'react-router-dom';
+import useGetRecommendedPosts from '@/queries/useGetRecommendedPosts';
+import { Sparkles } from 'lucide-react';
+import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
+import { PostItem } from '@/components/post/PostItem/PostItem';
+import * as S from '@/components/post/PostList/PostList.styles';
+import localizeTimezone from '@/utils/localizeTimezone';
+import { MESSAGES } from '@/constants/messages';
 
-const RecommendedPostList = () => {
+export const RecommendedPostList = () => {
   const navigate = useNavigate();
-  const {
-    data: posts,
-    lastUpdated,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useGetRecommendedPosts();
+  const { data: posts, lastUpdated, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetRecommendedPosts();
 
   const { ref: inViewRef } = useInView({
     threshold: 0.5,
@@ -59,16 +52,11 @@ const RecommendedPostList = () => {
             <h2 className="text-lg font-semibold text-gray-800">추천 포스트</h2>
           </div>
 
-          <span className="text-xs text-gray-500">
-            마지막 업데이트: {localizeTimezone(lastUpdated)}
-          </span>
+          <span className="text-xs text-gray-500">마지막 업데이트: {localizeTimezone(lastUpdated)}</span>
         </div>
       </div>
 
-      <div
-        id="main-content"
-        className="overflow-y-auto h-full flex flex-col gap-2 cursor-pointer"
-      >
+      <div id="main-content" className="overflow-y-auto h-full flex flex-col gap-2 cursor-pointer">
         {posts.map((post) => (
           <PostItem
             channelId={0}
@@ -80,10 +68,8 @@ const RecommendedPostList = () => {
             hideActions={true}
           />
         ))}
-        {hasNextPage && <div ref={inViewRef} style={{ height: "1px" }} />}
+        {hasNextPage && <div ref={inViewRef} style={{ height: '1px' }} />}
       </div>
     </>
   );
 };
-
-export default RecommendedPostList;

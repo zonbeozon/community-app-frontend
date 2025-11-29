@@ -1,46 +1,42 @@
-import { Image } from "./common.type";
-import { ChannelMember } from "./channelMember.type";
+import type { ChannelMember } from './channelMember.type';
+import type { Image } from './common.type';
 
-export type ChannelType = "BLOG" | "CHAT";
-export type ContentVisibility = "PUBLIC" | "PRIVATE";
-export type JoinPolicy = "OPEN" | "APPROVAL" | "DENY";
+export type ContentVisibility = 'PUBLIC' | 'PRIVATE';
+export type JoinPolicy = 'OPEN' | 'APPROVAL' | 'DENY';
 
 export interface ChannelSettings {
   contentVisibility: ContentVisibility;
   joinPolicy: JoinPolicy;
-};
+}
 
 export interface Channel {
   channelInfo: {
     channelId: number;
-    channelType: ChannelType;
     title: string;
     description: string;
     profile: Image | null;
     settings: ChannelSettings;
     memberCount: number;
   };
-  isJoined?: boolean;
   membership: ChannelMember;
-};
+}
 
 export interface ChannelRequest {
   title: string;
   description: string;
   imageId: number | null;
-  channelType: ChannelType;
   settings: ChannelSettings;
-};
+}
 
 export interface JoinedChannelsResponse {
-  channels: Channel[]; 
+  channels: Channel[];
   totalElements: number;
-};
+}
 
-export interface UpdatechannelVariables {
+export interface UpdateChannelProps {
   channelId: number;
   payload: ChannelRequest;
-};
+}
 
 export interface ChannelProfileImageProps extends React.ComponentPropsWithoutRef<'div'> {
   channelInfo: {
@@ -50,7 +46,7 @@ export interface ChannelProfileImageProps extends React.ComponentPropsWithoutRef
     } | null;
   };
   size: 'sm' | 'lg';
-};
+}
 
 export interface ChannelHeaderProps {
   showBackButton: boolean;
@@ -58,37 +54,27 @@ export interface ChannelHeaderProps {
   isMember: boolean;
   selectedChannel: Channel | undefined | null;
   canCreatePost: boolean;
-};
+}
 
 export interface ChannelDialogProps {
+  channel?: Channel | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  channelId: number;
-};
+}
 
 export interface ChannelJoinDialogProps {
   channel: Channel;
   onJoinSuccess?: () => void;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-};
+}
 
 export interface ChannelGroupProps {
   title: string;
   channels: Channel[];
-};
+}
 
 export interface ChannelJoinButtonProps {
   channel: Channel;
   onJoinSuccess: () => void;
-};
-
-export interface ChannelSearchResultTemp {
-  channelId: number;
-  channelType: ChannelType;
-  title: string;
-  description: string;
-  profile: Image | null;
-  settings: ChannelSettings;
-  memberCount: number;
-};
+}

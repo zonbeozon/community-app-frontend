@@ -1,5 +1,5 @@
-import { ChannelRequest } from "@/types/channel.type";
-import { PostRequest } from "@/types/post.type";
+import type { ChannelRequest } from '@/types/channel.type';
+import type { PostRequest } from '@/types/post.type';
 
 export const MAX_CHANNEL_TITLE_LENGTH = 32 as const;
 export const MIN_CHANNEL_TITLE_LENGTH = 2 as const;
@@ -14,16 +14,16 @@ export const DEFAULT_PAGE_REQUEST = {
 } as const;
 
 export const DEFAULT_CHANNEL_VALUES: ChannelRequest = {
-  title: "",
-  description: "",
+  title: '',
+  description: '',
   imageId: null,
   settings: {
-    contentVisibility: "PUBLIC",
-    joinPolicy: "OPEN",
+    contentVisibility: 'PUBLIC',
+    joinPolicy: 'OPEN',
   },
 } as const;
 
 export const DEFAULT_POST_VALUES: PostRequest = {
-  content: "",
+  content: '',
   imageIds: [] as number[],
 } as const;

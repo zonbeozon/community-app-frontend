@@ -1,20 +1,20 @@
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import useGetPost from "@/queries/useGetPost";
-import useGetComments from "@/queries/useGetComments";
-import useCreateComment from "@/hooks/comment/useCreateComment";
-import { useCommentSubscription } from "@/stomp/hooks/useCommentSubscription";
-import PostItem from "@/components/post/PostItem/PostItem";
-import CommentList from "@/components/comment/CommentList/CommentList";
-import CommentInput from "@/components/comment/CommentInput/CommentInput";
-import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
-import * as S from "./PostDetail.styles";
-import { useNavigate } from "react-router-dom";
-import { ROUTE_PATH } from "@/constants/routePaths";
-import { toast } from "sonner";
-import { useChannelLogic } from "@/hooks/channel/useChannelLogic";
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import useGetComments from '@/queries/useGetComments';
+import useGetPost from '@/queries/useGetPost';
+import { useCommentSubscription } from '@/stomp/hooks/useCommentSubscription';
+import { toast } from 'sonner';
+import { CommentInput } from '@/components/comment/CommentInput/CommentInput';
+import { CommentList } from '@/components/comment/CommentList/CommentList';
+import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
+import { PostItem } from '@/components/post/PostItem/PostItem';
+import { useChannelLogic } from '@/hooks/channel/useChannelLogic';
+import { useCreateComment } from '@/hooks/comment/useCreateComment';
+import { ROUTE_PATH } from '@/constants/routePaths';
+import * as S from './PostDetail.styles';
 
-const PostDetail = () => {
+export const PostDetail = () => {
   const { channelId, postId } = useParams<{
     channelId: string;
     postId: string;
@@ -25,11 +25,7 @@ const PostDetail = () => {
   const numericChannelId = Number(channelId || 0);
   const numericPostId = Number(postId || 0);
 
-  const {
-    data: postData,
-    isLoading: isLoadingPost,
-    isError: isErrorPost,
-  } = useGetPost(numericPostId, numericChannelId);
+  const { data: postData, isLoading: isLoadingPost, isError: isErrorPost } = useGetPost(numericPostId, numericChannelId);
   const { data: commentsData } = useGetComments(numericPostId);
   const { mutate: createComment } = useCreateComment();
 
@@ -45,11 +41,11 @@ const PostDetail = () => {
     if (!channelData) return;
 
     const { settings } = channelData.channelInfo;
-    const { isJoined } = channelData;
+    const isJoined = channelData.membership;
 
-    if (settings.contentVisibility === "PRIVATE" && !isJoined) {
+    if (settings.contentVisibility === 'PRIVATE' && !isJoined) {
       navigate(ROUTE_PATH.main);
-      toast.error("해당 채널은 비공개 채널입니다.");
+      toast.error('해당 채널은 비공개 채널입니다.');
     }
   }, [channelData, navigate]);
 
@@ -67,19 +63,12 @@ const PostDetail = () => {
 
   const { post, author } = postData;
 
-  const commentCount =
-    commentsData?.comments.length ?? post.metric.commentCount;
+  const commentCount = commentsData?.comments.length ?? post.metric.commentCount;
 
   return (
     <div className={S.wrapper}>
       <div className={S.scrollableArea}>
-        <PostItem
-          post={post}
-          author={author}
-          channelId={numericChannelId}
-          onCommentClick={() => {}}
-          hideActions={false}
-        />
+        <PostItem post={post} author={author} channelId={numericChannelId} onCommentClick={() => {}} hideActions={false} />
         <div className={S.commentSection.wrapper}>
           <h2 className={S.commentSection.title}>댓글 ({commentCount})</h2>
           <CommentList postId={numericPostId} channelId={numericChannelId} />
@@ -91,5 +80,3 @@ const PostDetail = () => {
     </div>
   );
 };
-
-export default PostDetail;

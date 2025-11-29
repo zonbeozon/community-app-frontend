@@ -1,9 +1,9 @@
+import { notificationsRead } from '@/apis/http/notification.api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { notificationsRead } from '@/apis/http/notification.api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 
-const useMarkNotificationsAsRead = () => {
+export const useMarkNotificationsAsRead = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -13,10 +13,7 @@ const useMarkNotificationsAsRead = () => {
     },
 
     onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message);
+      toast.error(error.response?.data?.message);
     },
   });
 };
-
-export default useMarkNotificationsAsRead;

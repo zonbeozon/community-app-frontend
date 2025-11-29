@@ -1,30 +1,50 @@
-import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import PostForm from "../PostForm/PostForm";
-import { usePostCreateDialog } from "@/hooks/post/postdialog/usePostCreateDialog";
-import { PlusIcon } from "lucide-react";
-import * as S from "./PostCreateDialog.styles";
-import { DialogProps } from "@/types/common.type";
-import { Button } from "@/components/ui/button";
+import { useParams } from 'react-router-dom';
+import { PlusIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useForm } from '@/hooks/common/useForm';
+import { useCreatePost } from '@/hooks/post/useCreatePost';
+import { DEFAULT_POST_VALUES } from '@/constants/constants';
+import { validatePost } from '@/validations/validatePost';
+import type { DialogProps } from '@/types/common.type';
+import type { PostRequest } from '@/types/post.type';
+import { PostForm } from '../PostForm/PostForm';
+import * as S from './PostCreateDialog.styles';
 
-const PostCreateDialog = ({ open, onOpenChange }: DialogProps) => {
-  const {
-    formValues,
-    formErrors,
-    formHandler,
-    isFormValid,
-    isSubmitting,
-    handleSubmit,
-  } = usePostCreateDialog({
-    open,
-    onSuccess: () => onOpenChange(false), 
-  });
+export const PostCreateDialog = ({ open, onOpenChange }: DialogProps) => {
+  const { channelId } = useParams();
+  const { values, errors, handler, isValid, reset } = useForm<PostRequest>(DEFAULT_POST_VALUES, validatePost);
+
+  const { mutate: createPost, isPending } = useCreatePost();
+
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      reset();
+    }
+    onOpenChange(isOpen);
+  };
+
+  const handleSubmit = async () => {
+    if (!isValid || !channelId) return;
+
+    createPost(
+      {
+        channelId: Number(channelId),
+        payload: values,
+      },
+      {
+        onSuccess: () => {
+          handleOpenChange(false);
+        },
+      },
+    );
+  };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button className={S.createButton}>
-          <PlusIcon size={16} />
-          새 포스트 생성하기
+          <PlusIcon size={16} />새 포스트 생성하기
         </Button>
       </DialogTrigger>
 
@@ -35,18 +55,15 @@ const PostCreateDialog = ({ open, onOpenChange }: DialogProps) => {
         </DialogDescription>
 
         <PostForm
-          content={formValues}
-          errors={formErrors}
-          handler={formHandler}
-          imagePreview={null} 
+          content={values}
+          errors={errors}
+          handler={handler}
           isEdit={false}
-          isValid={isFormValid}
-          isSubmitting={isSubmitting}
-          onSubmit={handleSubmit} 
+          isValid={isValid}
+          isSubmitting={isPending}
+          onSubmit={handleSubmit}
         />
       </DialogContent>
     </Dialog>
   );
 };
-
-export default PostCreateDialog;

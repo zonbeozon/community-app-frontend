@@ -3,7 +3,7 @@ import { useAtom } from "jotai";
 import { postViewQueueAtom } from "@/atoms/postViewsAtoms";
 import useFlushPostViews from "@/queries/useFlushPostViews";
 
-const usePostViewLogger = () => {
+export const usePostViewLogger = () => {
   const [queue, setQueue] = useAtom(postViewQueueAtom);
   const { mutate: flush, isPending } = useFlushPostViews();
 
@@ -38,5 +38,3 @@ const usePostViewLogger = () => {
 
   return { logView, manualFlush, isFlushing: isPending };
 };
-
-export default usePostViewLogger;

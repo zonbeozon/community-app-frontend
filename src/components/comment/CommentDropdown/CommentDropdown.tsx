@@ -1,19 +1,15 @@
-import { useState, useMemo } from "react";
-import { useAtomValue } from "jotai";
-import { serverMemberAtom } from "@/atoms/authAtoms";
-import useGetJoinedChannels from "@/queries/useGetJoinedChannel";
-import { Comment } from "@/types/comment.type";
-import ChannelRoleManager from "@/utils/channelRoleManager";
-import { ActionDropdown, DropdownAction } from "@/components/common/ActionDropdown/ActionDropdown";
-import DeleteCommentDialog from "@/components/comment/CommentDeleteDialog/CommentDeleteDialog";
-import * as S from "./CommentDropdown.styles";
+import { useMemo, useState } from 'react';
+import { serverMemberAtom } from '@/atoms/authAtoms';
+import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
+import { useAtomValue } from 'jotai';
+import { CommentDeleteDialog } from '@/components/comment/CommentDeleteDialog/CommentDeleteDialog';
+import { ActionDropdown } from '@/components/common/ActionDropdown/ActionDropdown';
+import ChannelRoleManager from '@/utils/channelRoleManager';
+import type { CommentDropdownProps } from '@/types/comment.type';
+import type { DropdownAction } from '@/types/common.type';
+import * as S from './CommentDropdown.styles';
 
-interface CommentDropdownProps {
-  comment: Comment;
-  channelId: number;
-}
-
-const CommentDropdown = ({ comment, channelId }: CommentDropdownProps) => {
+export const CommentDropdown = ({ comment, channelId }: CommentDropdownProps) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const myServerInfo = useAtomValue(serverMemberAtom);
@@ -22,16 +18,16 @@ const CommentDropdown = ({ comment, channelId }: CommentDropdownProps) => {
   const myId = myServerInfo?.memberId;
   const myInfoInChannel = useMemo(() => {
     if (!myChannels) return null;
-    return myChannels.find(c => c.channelInfo.channelId === channelId)?.membership;
+    return myChannels.find((c) => c.channelInfo.channelId === channelId)?.membership;
   }, [myChannels, channelId]);
-  
+
   if (!myInfoInChannel || !myId) {
     return null;
   }
 
   const isMyComment = myId === comment.authorId;
   const isChannelAdminOrOwner = ChannelRoleManager.isAdmin(myInfoInChannel.channelRole);
-  
+
   const canDelete = isMyComment || isChannelAdminOrOwner;
 
   if (!canDelete) {
@@ -42,10 +38,10 @@ const CommentDropdown = ({ comment, channelId }: CommentDropdownProps) => {
     setIsDeleteDialogOpen(true);
     setIsDropdownOpen(false);
   };
-  
+
   const actions: DropdownAction[] = [
     {
-      label: "댓글 삭제",
+      label: '댓글 삭제',
       onSelect: handleSelectDelete,
       isDestructive: true,
     },
@@ -60,14 +56,8 @@ const CommentDropdown = ({ comment, channelId }: CommentDropdownProps) => {
         actions={actions}
         triggerClassName={S.dropdownButton}
       />
-      
-      <DeleteCommentDialog 
-        open={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-        comment={comment} 
-      />
+
+      <CommentDeleteDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen} comment={comment} />
     </>
   );
 };
-
-export default CommentDropdown;

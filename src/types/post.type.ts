@@ -26,9 +26,23 @@ export interface Post extends Omit<PostRequest, "imageIds">{
   updatedAt: string;
 };
 
+export interface InfinitePostsData {
+  posts: Post[];
+  authors: Record<number, ChannelMember>;
+}
+
 export interface PostResponse extends Omit<Post, 'authorId'> {
   author: ChannelMember;
 };
+
+export interface PostItemProps {
+  post: Post;
+  author: ChannelMember;
+  channelId: number;
+  onClick?: () => void;
+  onCommentClick?: ((postId: number) => void) | null; 
+  hideActions: boolean;
+}
 
 export interface PostsResponse {
   authors: ChannelMember[];
@@ -40,12 +54,34 @@ export interface PostsResponse {
   isInverted: boolean;
 };
 
+export interface CreatePostVars {
+  channelId: number;
+  payload: PostRequest;
+}
+
+export interface DeletePostVars {
+  postId: number;
+  channelId: number;
+}
+
+export interface UpdatePostVars {
+  postId: number;
+  channelId: number;
+  payload: PostRequest;
+}
+
 export interface PostDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   post: Post;
   channelId?: number;
 };
+
+export interface PostDropdownProps {
+  post: Post;
+  author: ChannelMember;
+  channelId: number;
+}
 
 export interface RecommendedPostResponse {
   content: {

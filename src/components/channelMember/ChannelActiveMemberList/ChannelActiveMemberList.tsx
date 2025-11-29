@@ -1,20 +1,17 @@
-import { useAtomValue } from 'jotai';
 import { serverMemberAtom } from '@/atoms/authAtoms';
-import * as S from "./ChannelActiveMemberList.styles";
-import ChannelMemberItem from "../ChannelMemberItem/ChannelMemberItem";
-import ChannelMemberRoleIcon from "../ChannelMemberRoleIcon/ChannelMemberRoleIcon";
-import ChannelMemberDropdown from "../ChannelMemberDropdown/ChannelMemberDropdown";
-import useGetChannelMembers from "@/queries/useGetChannelMembers";
-import { DEFAULT_PAGE_REQUEST } from "@/constants/constants";
-import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
+import useGetChannelMembers from '@/queries/useGetChannelMembers';
+import { useAtomValue } from 'jotai';
+import { ChannelMemberDropdown } from '@/components/channelmember/ChannelMemberDropdown/ChannelMemberDropdown';
+import { ChannelMemberItem } from '@/components/channelmember/ChannelMemberItem/ChannelMemberItem';
+import { ChannelMemberRoleIcon } from '@/components/channelmember/ChannelMemberRoleIcon/ChannelMemberRoleIcon';
+import ItemSkeleton from '@/components/common/ItemSkeleton/ItemSkeleton';
 import { useChannelLogic } from '@/hooks/channel/useChannelLogic';
+import { DEFAULT_PAGE_REQUEST } from '@/constants/constants';
+import * as S from './ChannelActiveMemberList.styles';
 
-const ChannelActiveMemberList = ({ channelId }: { channelId: number }) => {
+export const ChannelActiveMemberList = ({ channelId }: { channelId: number }) => {
   const { isMember } = useChannelLogic();
-  const { data, isLoading, isError } = useGetChannelMembers(
-    channelId,
-    DEFAULT_PAGE_REQUEST
-  );
+  const { data, isLoading, isError } = useGetChannelMembers(channelId, DEFAULT_PAGE_REQUEST);
 
   const meId = useAtomValue(serverMemberAtom)?.memberId;
   const members = data?.members || [];
@@ -54,5 +51,3 @@ const ChannelActiveMemberList = ({ channelId }: { channelId: number }) => {
     </div>
   );
 };
-
-export default ChannelActiveMemberList;

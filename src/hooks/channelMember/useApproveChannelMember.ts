@@ -1,16 +1,15 @@
+import { approveChannelMember } from '@/apis/http/channelMember.api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { approveChannelMember } from '@/apis/http/channelMember.api';
-import { ChannelMemberVariables } from '@/types/channelMember.type';
+import { SERVER_ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/constants/messages';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from '@/constants/messages';
+import type { ChannelMemberIdProps } from '@/types/channelMember.type';
 
-const useApproveChannelMember = () => {
+export const useApproveChannelMember = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ channelId, targetMemberId }: ChannelMemberVariables) =>
-      approveChannelMember(channelId, targetMemberId),
+    mutationFn: ({ channelId, targetMemberId }: ChannelMemberIdProps) => approveChannelMember(channelId, targetMemberId),
 
     onSuccess: (_data, { channelId }) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.channelMember.all });
@@ -20,12 +19,7 @@ const useApproveChannelMember = () => {
     },
 
     onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message ||
-          SERVER_ERROR_MESSAGES.CHANNELMEMBER_APPROVE_FAILED 
-      );
+      toast.error(error.response?.data?.message || SERVER_ERROR_MESSAGES.CHANNELMEMBER_APPROVE_FAILED);
     },
   });
 };
-
-export default useApproveChannelMember;

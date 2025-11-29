@@ -6,21 +6,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import * as S from "./ActionDropdown.styles";
-
-export interface DropdownAction {
-  label: string;
-  onSelect: () => void;
-  isRendered?: boolean;
-  isDestructive?: boolean;
-}
-
-interface ActionDropdownProps {
-  actions: DropdownAction[];
-  triggerClassName?: string;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  [key: string]: any;
-}
+import type { ActionDropdownProps } from "@/types/common.type";
 
 export const ActionDropdown = ({
   actions,

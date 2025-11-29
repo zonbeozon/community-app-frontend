@@ -1,29 +1,25 @@
-import { useState } from "react";
-import useGetBannedChannelMembers from "@/queries/useGetBannedChannelMembers.ts";
-import ChannelMemberItem from "../ChannelMemberItem/ChannelMemberItem";
-import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
-import { DEFAULT_PAGE_REQUEST } from "@/constants/constants";
-import ChannelMemberUnbanDialog from "../ChannelMemberUnbanDialog/ChannelMemberUnbanDialog";
-import { ChannelMember } from "@/types/channelMember.type";
-import { Button } from "@/components/ui/button";
-import * as S from "./ChannelBannedMemberList.styles";
+import { useState } from 'react';
+import useGetBannedChannelMembers from '@/queries/useGetBannedChannelMembers.ts';
+import { ChannelMemberItem } from '@/components/channelmember/ChannelMemberItem/ChannelMemberItem';
+import { ChannelMemberUnbanDialog } from '@/components/channelmember/ChannelMemberUnbanDialog/ChannelMemberUnbanDialog';
+import ItemSkeleton from '@/components/common/ItemSkeleton/ItemSkeleton';
+import { Button } from '@/components/ui/button';
+import { DEFAULT_PAGE_REQUEST } from '@/constants/constants';
+import type { ChannelMember } from '@/types/channelMember.type';
+import * as S from './ChannelBannedMemberList.styles';
 
-interface ActiveDialogState {
-  member: ChannelMember | null;
-}
-
-const ChannelBannedMemberList = ({ channelId }: { channelId: number }) => {
-  const { data, isLoading, isError } = useGetBannedChannelMembers(
-    channelId,
-    DEFAULT_PAGE_REQUEST
-  );
-
-  const [activeDialog, setActiveDialog] = useState<ActiveDialogState>({ member: null });
+export const ChannelBannedMemberList = ({ channelId }: { channelId: number }) => {
+  const { data, isLoading, isError } = useGetBannedChannelMembers(channelId, DEFAULT_PAGE_REQUEST);
+  const [selectedMember, setSelectedMember] = useState<ChannelMember | null>(null);
 
   const bannedMembers = data?.members || [];
 
+  const handleOpenUnbanDialog = (member: ChannelMember) => {
+    setSelectedMember(member);
+  };
+
   const handleCloseDialog = () => {
-    setActiveDialog({ member: null });
+    setSelectedMember(null);
   };
 
   if (isLoading) {
@@ -43,16 +39,12 @@ const ChannelBannedMemberList = ({ channelId }: { channelId: number }) => {
   return (
     <div className={S.wrapper}>
       <ul className={S.list}>
-        {bannedMembers.map((member) => (
+        {bannedMembers.map((member: ChannelMember) => (
           <ChannelMemberItem
             key={member.memberId}
             member={member}
             actions={
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setActiveDialog({ member: member })}
-              >
+              <Button variant="outline" size="sm" onClick={() => handleOpenUnbanDialog(member)}>
                 추방 해제
               </Button>
             }
@@ -60,18 +52,16 @@ const ChannelBannedMemberList = ({ channelId }: { channelId: number }) => {
         ))}
       </ul>
 
-      <ChannelMemberUnbanDialog
-        open={activeDialog.member !== null}
-        onOpenChange={(isOpen) => {
-          if (!isOpen) {
-            handleCloseDialog();
-          }
-        }}
-        channelId={channelId}
-        targetMember={activeDialog.member!}
-      />
+      {selectedMember && (
+        <ChannelMemberUnbanDialog
+          open={!!selectedMember}
+          onOpenChange={(isOpen) => {
+            if (!isOpen) handleCloseDialog();
+          }}
+          channelId={channelId}
+          targetMember={selectedMember}
+        />
+      )}
     </div>
   );
 };
-
-export default ChannelBannedMemberList;

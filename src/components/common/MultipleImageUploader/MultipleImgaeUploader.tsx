@@ -1,16 +1,9 @@
-import { useState } from "react";
-import { ImageIcon, XIcon } from "lucide-react";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import useUploadImage from "@/hooks/common/image/useUploadImage";
-import * as S from "./MultipleImageUploader.styles"
-
-interface MultiImageUploaderProps {
-  initialImageUrls?: string[];
-  initialImageIds?: number[];
-  onUploadChange: (imageIds: number[], imageUrls: string[]) => void;
-  uploadContext?: { [key: string]: string };
-  maxImages?: number;
-}
+import { useState } from 'react';
+import { ImageIcon, XIcon } from 'lucide-react';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { useUploadImage } from '@/hooks/common/image/useUploadImage';
+import type { MultiImageUploaderProps } from '@/types/common.type';
+import * as S from './MultipleImageUploader.styles';
 
 export const MultiImageUploader = ({
   initialImageUrls = [],
@@ -20,7 +13,7 @@ export const MultiImageUploader = ({
   maxImages = 5,
 }: MultiImageUploaderProps) => {
   const { upload } = useUploadImage();
-  
+
   const [isProcessing, setIsProcessing] = useState(false);
 
   const [imageUrls, setImageUrls] = useState<string[]>(initialImageUrls ?? []);
@@ -32,7 +25,7 @@ export const MultiImageUploader = ({
 
     const image = e.target.files?.[0];
     if (e.target) {
-      e.target.value = ""; 
+      e.target.value = '';
     }
     if (!image) return;
 
@@ -40,8 +33,8 @@ export const MultiImageUploader = ({
       alert(`이미지는 최대 ${maxImages}장까지 업로드할 수 있습니다.`);
       return;
     }
-    if (!image.type.startsWith("image/")) {
-      alert("이미지 파일만 업로드 가능합니다.");
+    if (!image.type.startsWith('image/')) {
+      alert('이미지 파일만 업로드 가능합니다.');
       return;
     }
 
@@ -61,7 +54,7 @@ export const MultiImageUploader = ({
       const result = await upload(formData);
 
       if (!result) {
-        throw new Error("이미지 업로드 결과가 없습니다.");
+        throw new Error('이미지 업로드 결과가 없습니다.');
       }
 
       const { imageId, imageUrl } = result;
@@ -71,9 +64,8 @@ export const MultiImageUploader = ({
       setImageIds(newImageIds);
       setImageUrls(newImageUrls);
       onUploadChange(newImageIds, newImageUrls);
-
     } catch (e: any) {
-      setError(e.message || "이미지 업로드에 실패했습니다.");
+      setError(e.message || '이미지 업로드에 실패했습니다.');
     } finally {
       setIsProcessing(false);
     }
@@ -127,7 +119,7 @@ export const MultiImageUploader = ({
         <HoverCard openDelay={50} closeDelay={100}>
           <HoverCardTrigger>
             <label htmlFor="postImages" className={S.uploadLabel(isDisabled)}>
-              {isProcessing ? "업로드 중..." : isMaxReached ? `최대 ${maxImages}장` : "파일 선택"}
+              {isProcessing ? '업로드 중...' : isMaxReached ? `최대 ${maxImages}장` : '파일 선택'}
             </label>
           </HoverCardTrigger>
           {isMaxReached && !isProcessing && (
@@ -136,7 +128,9 @@ export const MultiImageUploader = ({
             </HoverCardContent>
           )}
         </HoverCard>
-        <p className={S.uploadCountText}>{imageUrls.length} / {maxImages}장</p>
+        <p className={S.uploadCountText}>
+          {imageUrls.length} / {maxImages}장
+        </p>
         {error && <p className={S.uploadErrorText}>{error}</p>}
       </div>
     </div>

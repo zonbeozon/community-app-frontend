@@ -1,23 +1,23 @@
 import { useEffect, useLayoutEffect, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
-import { Loader2 } from 'lucide-react';
-import { useSetAtom } from 'jotai';
-import useInfinitePosts from '@/hooks/post/useInfinitePosts';
+import { useNavigate, useParams } from 'react-router-dom';
 import { selectedPostIdAtom } from '@/atoms/postAtoms';
-import PostItem from '../PostItem/PostItem';
-import ItemSkeleton from '@/components/common/ItemSkeleton/ItemSkeleton';
-import { MESSAGES } from '@/constants/messages';
-import { useUpdateLatestPost } from '@/hooks/post/useSetLatestPost';
-import * as S from './PostList.styles';
 import { usePostSubscription } from '@/stomp/hooks/usePostSubscriptions';
-import { useChannelLogic } from '@/hooks/channel/useChannelLogic';
-import { ROUTE_PATH } from '@/constants/routePaths';
+import { useSetAtom } from 'jotai';
+import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
+import { useChannelLogic } from '@/hooks/channel/useChannelLogic';
+import { useInfinitePosts } from '@/hooks/post/useInfinitePosts';
+import { useUpdateLatestPost } from '@/hooks/post/useSetLatestPost';
+import { MESSAGES } from '@/constants/messages';
+import { ROUTE_PATH } from '@/constants/routePaths';
+import { PostItem } from '../PostItem/PostItem';
+import * as S from './PostList.styles';
 
 const SCROLL_POSITION_KEY = 'post_list_scroll_position';
 
-const PostList = () => {
+export const PostList = () => {
   const { channelData } = useChannelLogic();
   const navigate = useNavigate();
   const { channelId } = useParams<{ channelId: string }>();
@@ -26,7 +26,7 @@ const PostList = () => {
   const setSelectedPostId = useSetAtom(selectedPostIdAtom);
   const updateLatestPost = useUpdateLatestPost();
 
-  usePostSubscription(numericChannelId)
+  usePostSubscription(numericChannelId);
 
   const {
     data: postsData,
@@ -35,9 +35,9 @@ const PostList = () => {
     isFetchingNextPage,
     isLoading: isLoadingPosts,
   } = useInfinitePosts(numericChannelId, {
-    enabled: !!numericChannelId
+    enabled: !!numericChannelId,
   });
-  
+
   const { ref: inViewRef } = useInView({
     threshold: 0.5,
     onChange: (inView) => {
@@ -53,11 +53,11 @@ const PostList = () => {
     if (!channelData) return;
 
     const { settings } = channelData.channelInfo;
-    const { isJoined } = channelData;
+    const isJoined = channelData.membership;
 
-    if (settings.contentVisibility === "PRIVATE" && !isJoined) {
+    if (settings.contentVisibility === 'PRIVATE' && !isJoined) {
       navigate(ROUTE_PATH.main);
-      toast.error("해당 채널은 비공개 채널입니다.");
+      toast.error('해당 채널은 비공개 채널입니다.');
     }
   }, [channelData, navigate]);
 
@@ -82,10 +82,7 @@ const PostList = () => {
     const handleScroll = () => {
       if (throttleTimer) return;
       throttleTimer = setTimeout(() => {
-        sessionStorage.setItem(
-          `${SCROLL_POSITION_KEY}_${numericChannelId}`,
-          parentScroller.scrollTop.toString()
-        );
+        sessionStorage.setItem(`${SCROLL_POSITION_KEY}_${numericChannelId}`, parentScroller.scrollTop.toString());
         throttleTimer = null;
       }, 200);
     };
@@ -102,8 +99,14 @@ const PostList = () => {
     navigate(`/channels/${numericChannelId}/posts/${postId}`);
   };
 
-  if (isLoadingPosts || !postsData) { 
-    return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
+  if (isLoadingPosts || !postsData) {
+    return (
+      <>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <ItemSkeleton key={i} />
+        ))}
+      </>
+    );
   }
 
   const posts = postsData.posts || [];
@@ -133,10 +136,8 @@ const PostList = () => {
         );
       })}
 
-      {hasNextPage && !isFetchingNextPage && (
-        <div ref={inViewRef} style={{ height: '1px' }} />
-      )}
-        
+      {hasNextPage && !isFetchingNextPage && <div ref={inViewRef} style={{ height: '1px' }} />}
+
       {isFetchingNextPage && (
         <div className={S.loadingMoreContainer}>
           <Loader2 className={S.loadingMoreIcon} size={S.loadingMoreIconSize} />
@@ -145,5 +146,3 @@ const PostList = () => {
     </div>
   );
 };
-
-export default PostList;

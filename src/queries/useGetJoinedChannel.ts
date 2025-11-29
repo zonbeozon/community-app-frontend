@@ -5,7 +5,7 @@ import { useAtomValue } from 'jotai';
 import { JoinedChannelsResponse, Channel } from '@/types/channel.type';
 import { serverMemberAtom } from '@/atoms/authAtoms';
 
-const useGetJoinedChannels = () => {
+export const useGetJoinedChannels = () => {
 
   const serverMember = useAtomValue(serverMemberAtom);
 
@@ -19,5 +19,3 @@ const useGetJoinedChannels = () => {
     select: (data) => data.channels, 
   });
 };
-
-export default useGetJoinedChannels;

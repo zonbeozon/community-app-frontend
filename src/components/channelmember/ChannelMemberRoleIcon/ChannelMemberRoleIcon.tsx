@@ -1,28 +1,28 @@
 import { Crown, User, UserStar } from 'lucide-react';
-import { ChannelRole } from '@/types/channelMember.type';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import type { ChannelRole } from '@/types/channelMember.type';
 
 const roleDetails: Record<ChannelRole, { Icon: React.ElementType; className: string; label: string }> = {
   CHANNEL_OWNER: {
     Icon: Crown,
     className: 'text-yellow-500',
-    label: 'Owner'
+    label: 'Owner',
   },
   CHANNEL_ADMIN: {
     Icon: UserStar,
     className: 'text-blue-500',
-    label: 'Admin'
+    label: 'Admin',
   },
   CHANNEL_MEMBER: {
     Icon: User,
     className: 'text-gray-500',
-    label: 'Member'
-  }
+    label: 'Member',
+  },
 };
 
 const ROLE_ICON_SIZE = 16;
 
-const ChannelMemberRoleIcon = ({ role }: {role : ChannelRole}) => {
+export const ChannelMemberRoleIcon = ({ role }: { role: ChannelRole }) => {
   const details = roleDetails[role] || roleDetails['CHANNEL_MEMBER'];
 
   return (
@@ -41,4 +41,3 @@ const ChannelMemberRoleIcon = ({ role }: {role : ChannelRole}) => {
   );
 };
 
-export default ChannelMemberRoleIcon;

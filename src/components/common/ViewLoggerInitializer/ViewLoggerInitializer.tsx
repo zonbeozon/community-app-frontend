@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import usePostViewLogger from "@/hooks/viewLogger/usePostViewLogger";
+import { useEffect } from 'react';
+import { usePostViewLogger } from '@/hooks/viewLogger/usePostViewLogger';
 
 export const ViewLoggerInitializer = () => {
   const { manualFlush } = usePostViewLogger();

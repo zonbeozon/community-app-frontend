@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { MoreHorizontal } from "lucide-react";
-import { ChannelMemberDropdownProps } from "@/types/channelMember.type";
+import type { ChannelMemberProps } from "@/types/channelMember.type";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import ChannelMemberBanDialog from "../ChannelMemberBanDialog/ChannelMemberBanDialog";
-import ChannelMemberRoleChangeDialog from "../ChannelMemberRoleChangeDialog/ChannelMemberRoleChangeDialog";
+import { ChannelMemberBanDialog } from "@/components/channelmember/ChannelMemberBanDialog/ChannelMemberBanDialog";
+import { ChannelMemberRoleChangeDialog } from "@/components/channelmember/ChannelMemberRoleChangeDialog/ChannelMemberRoleChangeDialog";
 
 type DialogType = "ban" | "role" | null;
 
-const ChannelMemberDropdown = ({ channelId, targetMember }: ChannelMemberDropdownProps) => {
+export const ChannelMemberDropdown = ({ channelId, targetMember }: ChannelMemberProps) => {
   const [dialog, setDialog] = useState<DialogType>(null);
 
   return (
@@ -34,18 +34,16 @@ const ChannelMemberDropdown = ({ channelId, targetMember }: ChannelMemberDropdow
 
       <ChannelMemberRoleChangeDialog
         open={dialog === "role"}
-        onOpenChange={(isOpen) => !isOpen && setDialog(null)}
+        onOpenChange={(isOpen: boolean) => !isOpen && setDialog(null)}
         channelId={channelId}
         targetMember={targetMember}
       />
       <ChannelMemberBanDialog
         open={dialog === "ban"}
-        onOpenChange={(isOpen) => !isOpen && setDialog(null)}
+        onOpenChange={(isOpen: boolean) => !isOpen && setDialog(null)}
         channelId={channelId}
         targetMember={targetMember}
       />
     </>
   );
 };
-
-export default ChannelMemberDropdown;

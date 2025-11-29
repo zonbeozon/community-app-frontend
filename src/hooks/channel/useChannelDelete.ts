@@ -1,25 +1,26 @@
+import { deleteChannel } from '@/apis/http/channel.api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { deleteChannel } from '@/apis/http/channel.api';
+import { SERVER_ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/constants/messages';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/messages";
 
-const useDeleteChannel = () => {
+export const useChannelDelete = () => {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  const mutation = useMutation({
     mutationFn: (channelId: number) => deleteChannel(channelId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.channels.joinedLists() });
       toast.success(SUCCESS_MESSAGES.CHANNEL_DELETE_SUCCESS);
     },
     onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message ||
-          SERVER_ERROR_MESSAGES.CHANNEL_DELETE_FAILED
-      );
+      toast.error(error.response?.data?.message || SERVER_ERROR_MESSAGES.CHANNEL_DELETE_FAILED);
     },
   });
-};
 
-export default useDeleteChannel;
+  return {
+    deleteChannel: mutation.mutate,
+    isDeleting: mutation.isPending,
+    ...mutation,
+  };
+};

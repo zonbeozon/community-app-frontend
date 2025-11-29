@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useGetChannelById } from "@/queries/useGetChannelById";
 import ChannelRoleManager from "@/utils/channelRoleManager";
-import useGetJoinedChannels from "@/queries/useGetJoinedChannel";
+import { useGetJoinedChannels } from "@/queries/useGetJoinedChannel";
 import { selectedChannelIdAtom } from '@/atoms/channelAtoms';
 import { ROUTE_PATH } from "@/constants/routePaths";
 

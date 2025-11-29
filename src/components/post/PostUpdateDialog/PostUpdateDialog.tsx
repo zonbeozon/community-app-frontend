@@ -1,46 +1,71 @@
-import { usePostUpdateDialog } from "@/hooks/post/postdialog/usePostUpdateDialog";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { PostDialogProps } from "@/types/post.type";
-import PostForm from "../PostForm/PostForm";
-import * as S from "./PostUpdateDialog.styles";
+import { useEffect } from 'react';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import { useForm } from '@/hooks/common/useForm';
+import { useUpdatePost } from '@/hooks/post/useUpdatePost';
+import { DEFAULT_POST_VALUES } from '@/constants/constants';
+import { validatePost } from '@/validations/validatePost';
+import type { PostDialogProps, PostRequest } from '@/types/post.type';
+import { PostForm } from '../PostForm/PostForm';
+import * as S from './PostUpdateDialog.styles';
 
-const PostUpdateDialog = ({ open, onOpenChange, post, channelId }: PostDialogProps) => {
+export const PostUpdateDialog = ({ open, onOpenChange, post, channelId }: PostDialogProps) => {
   const {
-    formValues,
-    formErrors,
-    formHandler,
-    isFormValid,
-    isSubmitting,
+    values,
+    errors,
+    handler,
+    isValid,
+    reset,
+    setValues,
     handleSubmit,
-    imagePreview,
-  } = usePostUpdateDialog({
-    open,
-    post,
-    channelId,
-    onSuccess: () => onOpenChange(false),
+    isSubmitting: isFormSubmitting,
+  } = useForm<PostRequest>(DEFAULT_POST_VALUES, validatePost);
+
+  const { mutate: updatePost, isPending: isUpdating } = useUpdatePost();
+
+  useEffect(() => {
+    if (open && post) {
+      setValues({
+        content: post.content,
+        imageIds: post.
+      });
+    } else if (!open) {
+      reset();
+    }
+  }, [open, post, setValues, reset]);
+
+  const onSubmit = handleSubmit(async (submitValues) => {
+    if (!channelId) return;
+
+    updatePost(
+      {
+        postId: post.postId,
+        channelId: channelId,
+        payload: submitValues,
+      },
+      {
+        onSuccess: () => {
+          onOpenChange(false);
+        },
+      },
+    );
   });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={S.dialog}>
         <DialogTitle className={S.srOnly}>포스트 수정</DialogTitle>
-        <DialogDescription className={S.srOnly}>
-          기존 포스트의 내용과 이미지를 수정하는 양식입니다.
-        </DialogDescription>
-        
+        <DialogDescription className={S.srOnly}>기존 포스트의 내용과 이미지를 수정하는 양식입니다.</DialogDescription>
+
         <PostForm
-          content={formValues}
-          errors={formErrors}
-          handler={formHandler}
-          imagePreview={imagePreview}
+          content={values}
+          errors={errors}
+          handler={handler}
           isEdit={true}
-          isValid={isFormValid}
-          isSubmitting={isSubmitting}
-          onSubmit={handleSubmit}
+          isValid={isValid}
+          isSubmitting={isUpdating || isFormSubmitting}
+          onSubmit={onSubmit}
         />
       </DialogContent>
     </Dialog>
   );
 };
-
-export default PostUpdateDialog;

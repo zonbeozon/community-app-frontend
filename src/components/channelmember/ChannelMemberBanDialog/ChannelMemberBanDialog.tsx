@@ -1,27 +1,21 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import useBanChannelMember from "@/hooks/channelmember/useBanChannelMember";
-import { ChannelMember } from "@/types/channelMember.type";
-import * as S from "./ChannelMemberBanDialog.styles";
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useBanChannelMember } from '@/hooks/channelmember/useBanChannelMember';
+import type { ChannelMemberDialogProps } from '@/types/channelMember.type';
+import * as S from './ChannelMemberBanDialog.styles';
 
-interface MemberDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  channelId: number;
-  targetMember: ChannelMember;
-  onSuccess?: () => void;
-}
-
-const ChannelMemberBanDialog = ({ open, onOpenChange, channelId, targetMember, onSuccess }: MemberDialogProps) => {
+export const ChannelMemberBanDialog = ({ open, onOpenChange, channelId, targetMember }: ChannelMemberDialogProps) => {
   const { mutate: banMember, isPending } = useBanChannelMember();
 
   const handleBan = () => {
-    banMember({ channelId, targetMemberId: targetMember.memberId }, {
-      onSuccess: () => {
-        onSuccess?.();
-        onOpenChange(false);
+    banMember(
+      { channelId, targetMemberId: targetMember.memberId },
+      {
+        onSuccess: () => {
+          onOpenChange(false);
+        },
       },
-    });
+    );
   };
 
   if (!targetMember) {
@@ -42,12 +36,10 @@ const ChannelMemberBanDialog = ({ open, onOpenChange, channelId, targetMember, o
             취소
           </Button>
           <Button type="button" variant="destructive" onClick={handleBan} disabled={isPending}>
-            {isPending ? "처리 중..." : "추방하기"}
+            {isPending ? '추방 중...' : '추방'}
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 };
-
-export default ChannelMemberBanDialog;

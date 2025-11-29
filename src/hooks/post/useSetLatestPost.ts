@@ -1,6 +1,6 @@
-import { useSetAtom } from "jotai";
-import { latestPostByChannelAtom } from "@/atoms/postAtoms";
-import { Post } from "@/types/post.type";
+import { latestPostByChannelAtom } from '@/atoms/postAtoms';
+import { useSetAtom } from 'jotai';
+import type { Post } from '@/types/post.type';
 
 export const useUpdateLatestPost = () => {
   const setLatestPostMap = useSetAtom(latestPostByChannelAtom);

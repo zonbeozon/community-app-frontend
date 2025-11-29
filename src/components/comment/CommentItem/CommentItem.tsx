@@ -1,26 +1,12 @@
-import { Comment } from "@/types/comment.type";
-import { ChannelMember } from "@/types/channelMember.type";
-import ChannelMemberInfoDialog from "@/components/channelmember/ChannelMemberInfoDialog/ChannelMemberInfoDialog";
-import ServerMemberInfoDialog from "@/components/servermember/ServerMemberInfoDialog/ServerMemberInfoDialog";
-import CommentDropdown from "../CommentDropdown/CommentDropdown";
-import TimeDisplay from "@/components/common/TimeDisplay/TimeDisplay";
-import * as S from "./CommentItem.styles";
+import { ChannelMemberInfoDialog } from '@/components/channelmember/ChannelMemberInfoDialog/ChannelMemberInfoDialog';
+import { CommentDropdown } from '@/components/comment/CommentDropdown/CommentDropdown';
+import { TimeDisplay } from '@/components/common/TimeDisplay/TimeDisplay';
+import ServerMemberInfoDialog from '@/components/servermember/ServerMemberInfoDialog/ServerMemberInfoDialog';
+import type { CommentItemProps } from '@/types/comment.type';
+import * as S from './CommentItem.styles';
 
-interface CommentItemProps {
-  comment: Comment;
-  author: ChannelMember;
-  isCurrentUser: boolean;
-  channelId: number;
-}
-
-export default function CommentItem({ 
-  comment, 
-  author, 
-  isCurrentUser, 
-  channelId 
-}: CommentItemProps) {
+export const CommentItem = ({ comment, author, isCurrentUser, channelId }: CommentItemProps) => {
   const { content, createdAt } = comment;
-
 
   if (!author) {
     return null;
@@ -29,11 +15,7 @@ export default function CommentItem({
   return (
     <div className="relative">
       <div className={`${S.commentRow} group`}>
-        {isCurrentUser ? (
-          <ServerMemberInfoDialog/>
-        ) : (
-          <ChannelMemberInfoDialog channelMember={author}/>
-        )}
+        {isCurrentUser ? <ServerMemberInfoDialog /> : <ChannelMemberInfoDialog channelMember={author} />}
         <div className={S.commentContent}>
           <div className={S.commentHeader}>
             <span className={S.username}>{author.username}</span>
@@ -44,10 +26,7 @@ export default function CommentItem({
       </div>
       <div className={S.dropdownContainer}>
         <div className={S.dropdownButtonWrapper}>
-          <CommentDropdown
-            channelId={channelId}
-            comment={comment}
-          />
+          <CommentDropdown channelId={channelId} comment={comment} />
         </div>
       </div>
     </div>

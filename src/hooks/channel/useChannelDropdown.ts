@@ -1,45 +1,46 @@
-import { useState } from "react";
-import { Channel } from "@/types/channel.type";
-import ChannelRoleManager from "@/utils/channelRoleManager";
-import { DropdownAction } from "@/components/common/ActionDropdown/ActionDropdown";
+import { useState } from 'react';
+import { useDialog } from '@/hooks/common/useDialog'; 
+import type { Channel } from '@/types/channel.type';
+import ChannelRoleManager from '@/utils/channelRoleManager';
+import { DropdownAction } from '@/components/common/ActionDropdown/ActionDropdown';
 
 export const useChannelDropdown = (channel: Channel) => {
-  const [isManageDialogOpen, setIsManageDialogOpen] = useState(false);
-  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
-  const [isLeaveDialogOpen, setIsLeaveDialogOpen] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const manageDialog = useDialog();
+  const updateDialog = useDialog();
+  const leaveDialog = useDialog();
+  const deleteDialog = useDialog();
 
   const isChannelOwner = ChannelRoleManager.isOwner(channel.membership?.channelRole);
 
-  const createSelectHandler = (openDialog: () => void) => {
+  const handleSelect = (openDialogFn: () => void) => {
     return () => {
-      openDialog();
-      setIsDropdownOpen(false); 
+      setIsDropdownOpen(false);
+      openDialogFn();          
     };
   };
-  
+
   const actions: DropdownAction[] = [
     {
       label: "채널 관리",
-      onSelect: createSelectHandler(() => setIsManageDialogOpen(true)),
+      onSelect: handleSelect(manageDialog.open),
       isRendered: isChannelOwner,
     },
     {
       label: "채널 수정",
-      onSelect: createSelectHandler(() => setIsUpdateDialogOpen(true)),
+      onSelect: handleSelect(updateDialog.open),
       isRendered: isChannelOwner,
     },
     {
       label: "채널 나가기",
-      onSelect: createSelectHandler(() => setIsLeaveDialogOpen(true)),
+      onSelect: handleSelect(leaveDialog.open),
       isRendered: !isChannelOwner,
       isDestructive: true,
     },
     {
       label: "채널 삭제",
-      onSelect: createSelectHandler(() => setIsDeleteDialogOpen(true)),
+      onSelect: handleSelect(deleteDialog.open),
       isRendered: isChannelOwner,
       isDestructive: true,
     },
@@ -50,22 +51,10 @@ export const useChannelDropdown = (channel: Channel) => {
       open: isDropdownOpen,
       onOpenChange: setIsDropdownOpen,
     },
-    manageDialog: {
-      open: isManageDialogOpen,
-      onOpenChange: setIsManageDialogOpen,
-    },
-    updateDialog: {
-      open: isUpdateDialogOpen,
-      onOpenChange: setIsUpdateDialogOpen,
-    },
-    deleteDialog: {
-      open: isDeleteDialogOpen,
-      onOpenChange: setIsDeleteDialogOpen,
-    },
-    leaveDialog: {
-      open: isLeaveDialogOpen,
-      onOpenChange: setIsLeaveDialogOpen,
-    },
+    manageDialog: manageDialog.props,
+    updateDialog: updateDialog.props,
+    deleteDialog: deleteDialog.props,
+    leaveDialog: leaveDialog.props,
     actions,
   };
 };

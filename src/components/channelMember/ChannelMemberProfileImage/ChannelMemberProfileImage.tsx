@@ -1,31 +1,17 @@
-import { forwardRef } from "react";
-import { ChannelMemberProfileImageProps } from "@/types/channelMember.type";
+import { forwardRef } from 'react';
+import { ChannelMemberProfileImageProps } from '@/types/channelMember.type';
 
-const ChannelMemberProfileImage = forwardRef<
-  HTMLImageElement, 
-  ChannelMemberProfileImageProps
->(
-
+export const ChannelMemberProfileImage = forwardRef<HTMLImageElement, ChannelMemberProfileImageProps>(
   ({ profile, username, className, ...rest }, ref) => {
     const imageUrl = profile?.imageUrl;
-    const altText = `${username || "사용자"}의 프로필 사진`;
+    const altText = `${username || '사용자'}의 프로필 사진`;
 
     if (imageUrl) {
-      return (
-        <img
-          src={imageUrl}
-          alt={altText}
-          className={className}
-          ref={ref} 
-          {...rest} 
-        />
-      );
+      return <img src={imageUrl} alt={altText} className={className} ref={ref} {...rest} />;
     }
-    
-    return null; 
-  }
+
+    return null;
+  },
 );
 
-ChannelMemberProfileImage.displayName = "ChannelMemberProfileImage";
-
-export default ChannelMemberProfileImage; 
+ChannelMemberProfileImage.displayName = 'ChannelMemberProfileImage';

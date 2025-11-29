@@ -1,25 +1,21 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import useUnbanChannelMember from "@/hooks/channelmember/useUnbanChannelMember";
-import { ChannelMember } from "@/types/channelMember.type";
-import * as S from "./ChannelMemberUnbanDialog.styles";
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useUnbanChannelMember } from '@/hooks/channelmember/useUnbanChannelMember';
+import type { ChannelMemberDialogProps } from '@/types/channelMember.type';
+import * as S from './ChannelMemberUnbanDialog.styles';
 
-interface MemberDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  channelId: number;
-  targetMember: ChannelMember;
-}
-
-const ChannelMemberUnbanDialog = ({ open, onOpenChange, channelId, targetMember }: MemberDialogProps) => {
+export const ChannelMemberUnbanDialog = ({ open, onOpenChange, channelId, targetMember }: ChannelMemberDialogProps) => {
   const { mutate: unbanMember, isPending } = useUnbanChannelMember();
 
   const handleUnban = () => {
-    unbanMember({ channelId, targetMemberId: targetMember.memberId }, {
-      onSuccess: () => {
-        onOpenChange(false);
+    unbanMember(
+      { channelId, targetMemberId: targetMember.memberId },
+      {
+        onSuccess: () => {
+          onOpenChange(false);
+        },
       },
-    });
+    );
   };
 
   if (!targetMember) {
@@ -32,7 +28,7 @@ const ChannelMemberUnbanDialog = ({ open, onOpenChange, channelId, targetMember 
         <DialogHeader>
           <DialogTitle>멤버 추방 해제</DialogTitle>
           <DialogDescription>
-           <strong>{targetMember.username}</strong> 님의 채널 추방 상태를 해제하시겠습니까?
+            <strong>{targetMember.username}</strong> 님의 채널 추방 상태를 해제하시겠습니까?
           </DialogDescription>
         </DialogHeader>
 
@@ -42,12 +38,10 @@ const ChannelMemberUnbanDialog = ({ open, onOpenChange, channelId, targetMember 
           </Button>
 
           <Button type="button" variant="destructive" onClick={handleUnban} disabled={isPending}>
-            {isPending ? "처리 중..." : "추방 해제"}
+            {isPending ? '처리 중...' : '추방 해제'}
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 };
-
-export default ChannelMemberUnbanDialog;

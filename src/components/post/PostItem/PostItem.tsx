@@ -1,43 +1,26 @@
-import { useRef, useEffect } from "react";
-import { useAtomValue } from "jotai";
-import { serverMemberAtom } from "@/atoms/authAtoms";
-import { Post } from "@/types/post.type";
-import { ChannelMember } from "@/types/channelMember.type";
-import useCreateReaction from "@/hooks/reaction/useCreateReaction";
-import useDeleteReaction from "@/hooks/reaction/useDeleteReaction";
-import usePostViewLogger from "@/hooks/viewLogger/usePostViewLogger";
-import PostDropdown from "../PostDropdown/PostDropdown";
-import ServerMemberInfoDialog from "@/components/servermember/ServerMemberInfoDialog/ServerMemberInfoDialog";
-import ChannelMemberInfoDialog from "@/components/channelmember/ChannelMemberInfoDialog/ChannelMemberInfoDialog";
-import TimeDisplay from "@/components/common/TimeDisplay/TimeDisplay";
-import ThumbsUpIcon from "../../reaction/LikeButton/LikeButton";
-import ThumbsDownIcon from "../../reaction/DislikeButton/DislikeButton";
-import CommentButton from "@/components/comment/CommentButton/CommentButton";
-import ViewCount from "@/components/common/ViewCount/ViewCount";
-import { Image } from "@/types/common.type";
-import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
-import * as S from "./PostItem.styles";
-
-interface PostItemProps {
-  post: Post;
-  author: ChannelMember;
-  channelId: number;
-  onClick?: () => void;
-  onCommentClick?: ((postId: number) => void) | null; 
-  hideActions: boolean;
-}
+import { useEffect, useRef } from 'react';
+import { serverMemberAtom } from '@/atoms/authAtoms';
+import { useAtomValue } from 'jotai';
+import { ChannelMemberInfoDialog } from '@/components/channelmember/ChannelMemberInfoDialog/ChannelMemberInfoDialog';
+import { CommentButton } from '@/components/comment/CommentButton/CommentButton';
+import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
+import { TimeDisplay } from '@/components/common/TimeDisplay/TimeDisplay';
+import { ViewCount } from '@/components/common/ViewCount/ViewCount';
+import ServerMemberInfoDialog from '@/components/servermember/ServerMemberInfoDialog/ServerMemberInfoDialog';
+import useCreateReaction from '@/hooks/reaction/useCreateReaction';
+import useDeleteReaction from '@/hooks/reaction/useDeleteReaction';
+import { usePostViewLogger } from '@/hooks/viewLogger/usePostViewLogger';
+import { Image } from '@/types/common.type';
+import type { PostItemProps } from '@/types/post.type';
+import ThumbsDownIcon from '../../reaction/DislikeButton/DislikeButton';
+import ThumbsUpIcon from '../../reaction/LikeButton/LikeButton';
+import PostDropdown from '../PostDropdown/PostDropdown';
+import * as S from './PostItem.styles';
 
 const VIEW_THRESHOLD_PERCENT = 0.5;
 const VIEW_DEBOUNCE_TIME_MS = 500;
 
-const PostItem = ({
-  post,
-  author,
-  channelId,
-  onCommentClick,
-  onClick,
-  hideActions,
-}: PostItemProps) => {
+export const PostItem = ({ post, author, channelId, onCommentClick, onClick, hideActions }: PostItemProps) => {
   const myInfo = useAtomValue(serverMemberAtom);
   const { mutate: createReaction } = useCreateReaction();
   const { mutate: deleteReaction } = useDeleteReaction();
@@ -50,10 +33,7 @@ const PostItem = ({
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (
-            entry.isIntersecting &&
-            entry.intersectionRatio >= VIEW_THRESHOLD_PERCENT
-          ) {
+          if (entry.isIntersecting && entry.intersectionRatio >= VIEW_THRESHOLD_PERCENT) {
             if (!viewTimer.current) {
               viewTimer.current = setTimeout(() => {
                 logView(post.postId);
@@ -69,7 +49,7 @@ const PostItem = ({
           }
         });
       },
-      { threshold: VIEW_THRESHOLD_PERCENT }
+      { threshold: VIEW_THRESHOLD_PERCENT },
     );
 
     const currentRef = itemRef.current;
@@ -96,7 +76,7 @@ const PostItem = ({
     const variables = {
       postId: post.postId,
       channelId,
-      reactionType: "LIKE" as const,
+      reactionType: 'LIKE' as const,
     };
     isLiked ? deleteReaction(variables) : createReaction(variables);
   };
@@ -105,7 +85,7 @@ const PostItem = ({
     const variables = {
       postId: post.postId,
       channelId,
-      reactionType: "DISLIKE" as const,
+      reactionType: 'DISLIKE' as const,
     };
     isDisliked ? deleteReaction(variables) : createReaction(variables);
   };
@@ -116,11 +96,7 @@ const PostItem = ({
     <div className={S.wrapper} ref={itemRef} onClick={onClick}>
       <div className={S.postRow}>
         <div className="flex-shrink-0">
-          {isMyPost ? (
-            <ServerMemberInfoDialog />
-          ) : (
-            <ChannelMemberInfoDialog channelMember={author} />
-          )}
+          {isMyPost ? <ServerMemberInfoDialog /> : <ChannelMemberInfoDialog channelMember={author} />}
         </div>
 
         <div className={S.contentContainer}>
@@ -149,20 +125,9 @@ const PostItem = ({
           <div className={S.reactionContainer}>
             {!hideActions && (
               <>
-                <ThumbsUpIcon
-                  isLiked={isLiked}
-                  count={likeCount}
-                  onClick={handleLikeClick}
-                />
-                <ThumbsDownIcon
-                  isDisliked={isDisliked}
-                  count={dislikeCount}
-                  onClick={handleDislikeClick}
-                />
-                <CommentButton
-                  post={post}
-                  onClick={() => onCommentClick(post.postId)}
-                />
+                <ThumbsUpIcon isLiked={isLiked} count={likeCount} onClick={handleLikeClick} />
+                <ThumbsDownIcon isDisliked={isDisliked} count={dislikeCount} onClick={handleDislikeClick} />
+                <CommentButton post={post} onClick={() => onCommentClick(post.postId)} />
 
                 <ViewCount post={post} />
               </>
@@ -178,5 +143,3 @@ const PostItem = ({
     </div>
   );
 };
-
-export default PostItem;

@@ -1,8 +1,8 @@
-import React from 'react';
+import { forwardRef } from 'react';
 import type { ChannelProfileImageProps } from '@/types/channel.type';
 import * as S from './ChannelProfileImage.styles';
 
-export const ChannelProfileImage = React.forwardRef<HTMLDivElement, ChannelProfileImageProps>(
+export const ChannelProfileImage = forwardRef<HTMLDivElement, ChannelProfileImageProps>(
   ({ channelInfo, size, className, ...props }, ref) => {
     const firstLetter = channelInfo.title[0].toUpperCase();
     const wrapperClass = size === 'sm' ? S.trigger.wrapper : undefined;

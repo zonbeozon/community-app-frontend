@@ -1,30 +1,10 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import useApproveChannelMember from "@/hooks/channelmember/useApproveChannelMember";
-import { ChannelMember } from "@/types/channelMember.type";
-import * as S from "./ChannelMemberApproveDialog.styles";
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useApproveChannelMember } from '@/hooks/channelmember/useApproveChannelMember';
+import type { ChannelMemberDialogProps } from '@/types/channelMember.type';
+import * as S from './ChannelMemberApproveDialog.styles';
 
-interface MemberDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  channelId: number;
-  targetMember: ChannelMember;
-}
-
-const ChannelMemberApproveDialog = ({
-  open,
-  onOpenChange,
-  channelId,
-  targetMember,
-}: MemberDialogProps) => {
+const ChannelMemberApproveDialog = ({ open, onOpenChange, channelId, targetMember }: ChannelMemberDialogProps) => {
   const { mutate: approveMember, isPending } = useApproveChannelMember();
 
   const handleApprove = () => {
@@ -34,7 +14,7 @@ const ChannelMemberApproveDialog = ({
         onSuccess: () => {
           onOpenChange(false);
         },
-      }
+      },
     );
   };
 
@@ -50,26 +30,17 @@ const ChannelMemberApproveDialog = ({
         </Button>
       </DialogTrigger>
       <DialogContent className={S.content}>
-        <DialogHeader>
-          <DialogTitle>멤버 입장 요청 수락</DialogTitle>
-          <DialogDescription>
-            <strong>{targetMember.username}</strong> 님의 참가 요청을
-            수락하시겠습니까?
-          </DialogDescription>
-        </DialogHeader>
+        <DialogTitle>멤버 입장 요청 수락</DialogTitle>
+        <DialogDescription>
+          <strong>{targetMember.username}</strong> 님의 참가 요청을 수락하시겠습니까?
+        </DialogDescription>
 
-        <DialogFooter>
-          <Button type="button" onClick={handleApprove} disabled={isPending}>
-            {isPending ? "처리 중..." : "수락"}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => onOpenChange(false)}
-          >
-            취소
-          </Button>
-        </DialogFooter>
+        <Button type="button" onClick={handleApprove} disabled={isPending}>
+          {isPending ? '수락 중...' : '수락'}
+        </Button>
+        <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+          취소
+        </Button>
       </DialogContent>
     </Dialog>
   );
