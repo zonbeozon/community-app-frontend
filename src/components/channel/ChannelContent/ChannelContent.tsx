@@ -1,13 +1,14 @@
 import { Outlet } from 'react-router-dom';
 import { ChannelHeader } from '@/components/channel/ChannelHeader/ChannelHeader';
+import { Spinner } from '@/components/ui/spinner';
 import { useChannelLogic } from '@/hooks/channel/useChannelLogic';
 import * as S from './ChannelContent.styles';
 
-export const ChannelContent = () => {
+const ChannelContent = () => {
   const { showBackButton, channelData, isMember, isLoading, selectedChannel, canCreatePost } = useChannelLogic();
 
   if (isLoading) {
-    return null;
+    return <Spinner />;
   }
 
   if (!channelData) {
@@ -31,3 +32,5 @@ export const ChannelContent = () => {
     </div>
   );
 };
+
+export default ChannelContent;

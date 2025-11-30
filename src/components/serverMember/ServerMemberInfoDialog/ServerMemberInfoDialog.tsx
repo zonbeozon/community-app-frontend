@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/dialog";
 import { useAtomValue } from "jotai";
 import { serverMemberAtom } from "@/atoms/authAtoms";
-import LogOutButton from "@/components/common/SignOutButton/SignOutButton";
-import useDialog from "@/hooks/common/useDialog";
+import { SignOutButton } from "@/components/common/SignOutButton/SignOutButton";
+import { useDialog } from "@/hooks/common/useDialog";
 import ServerMemberProfileImage from "../ServerMemberProfileImage/ServerMemberProfileImage";
 import ServerMemberName from "../ServerMemberName/ServerMemberName";
 import { Button } from "@/components/ui/button";
@@ -52,7 +52,7 @@ const ServerMemberInfoDialog = () => {
           <ServerMemberName />
 
           <div className={S.buttonContainer}>
-            <div><LogOutButton /></div>
+            <div><SignOutButton /></div>
             <DialogClose asChild>
               <Button type="button" variant="ghost" className={S.closeButton}>닫기</Button>
             </DialogClose>

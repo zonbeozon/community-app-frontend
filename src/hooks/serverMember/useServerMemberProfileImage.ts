@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useAtom } from 'jotai';
 import { serverMemberAtom } from '@/atoms/authAtoms';
-import useUploadImage from '@/hooks/common/image/useUploadImage';
+import { useUploadImage } from '@/hooks/common/image/useUploadImage';
 import useUpdateServerMemberProfile from './useUpdateServerMemberProfile';
 
 export const useServerMemberProfileImage = () => {

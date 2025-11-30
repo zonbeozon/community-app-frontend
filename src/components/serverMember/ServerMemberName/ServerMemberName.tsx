@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 import { serverMemberAtom } from "@/atoms/authAtoms";
 import useUpdateServerMemberUsername from "@/hooks/servermember/useUpdateServerMemberUsername";
-import validateServerMember from "@/validations/validateServerMember";
+import { validateServerMember } from "@/validations/validateServerMember";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Pencil, Check, Loader2 } from "lucide-react";

@@ -8,7 +8,7 @@ import * as S from '@/components/post/PostList/PostList.styles';
 import localizeTimezone from '@/utils/localizeTimezone';
 import { MESSAGES } from '@/constants/messages';
 
-export const RecommendedPostList = () => {
+const RecommendedPostList = () => {
   const navigate = useNavigate();
   const { data: posts, lastUpdated, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetRecommendedPosts();
 
@@ -73,3 +73,5 @@ export const RecommendedPostList = () => {
     </>
   );
 };
+
+export default RecommendedPostList;

@@ -1,31 +1,18 @@
-import React from "react";
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  Outlet,
-} from "react-router-dom";
-import { ROUTE_PATH } from "@/constants/routePaths";
-import Layout from "@/components/common/Layout/Layout";
-import AuthGuard from "./AuthGuard";
+import React from 'react';
+import { Outlet, Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
+import { Layout } from '@/components/common/Layout/Layout';
+import { ROUTE_PATH } from '@/constants/routePaths';
+import AuthGuard from './AuthGuard';
 
-const Main = React.lazy(() => import("@/pages/Main/Main"));
-const ChannelContent = React.lazy(
-  () => import("@/components/channel/ChannelContent/ChannelContent")
-);
-const PostList = React.lazy(
-  () => import("@/components/post/PostList/PostList")
-);
-const PostDetail = React.lazy(
-  () => import("@/components/post/PostDetail/PostDetail")
-);
-const Callback = React.lazy(() => import("@/pages/Callback/Callback"));
-const Landing = React.lazy(() => import("@/pages/Landing/Landing"));
-const ErrorPage = React.lazy(() => import("@/pages/Error/Error"));
+const Main = React.lazy(() => import('@/pages/Main/Main'));
+const ChannelContent = React.lazy(() => import('@/components/channel/ChannelContent/ChannelContent'));
+const PostList = React.lazy(() => import('@/components/post/PostList/PostList'));
+const PostDetail = React.lazy(() => import('@/components/post/PostDetail/PostDetail'));
+const Callback = React.lazy(() => import('@/pages/Callback/Callback'));
+const Landing = React.lazy(() => import('@/pages/Landing/Landing'));
+const ErrorPage = React.lazy(() => import('@/pages/Error/Error'));
 
-const RecommendedPostList = React.lazy(
-  () => import("@/components/post/RecommendedPostList/RecommendedPostList")
-);
+const RecommendedPostList = React.lazy(() => import('@/components/post/RecommendedPostList/RecommendedPostList'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -54,8 +41,8 @@ const router = createBrowserRouter(
 
       <Route path={ROUTE_PATH.authCallback} element={<Callback />} />
       <Route path="*" element={<ErrorPage />} />
-    </>
-  )
+    </>,
+  ),
 );
 
 export default router;

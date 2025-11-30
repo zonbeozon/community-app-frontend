@@ -3,7 +3,7 @@ import type { IMessage, StompSubscription } from "@stomp/stompjs";
 import { useAtomValue } from 'jotai';
 import { useStomp } from "../StompProvider";
 import { serverMemberAtom } from "@/atoms/authAtoms";
-import useGetJoinedChannels from "@/queries/useGetJoinedChannel";
+import { useGetJoinedChannels } from "@/queries/useGetJoinedChannel";
 import { selectedChannelIdAtom } from "@/atoms/channelAtoms";
 import { STOMP_DESTINATIONS } from "../destinations";
 import { handleChannelEvent } from "../handlers/channelEventHandler";

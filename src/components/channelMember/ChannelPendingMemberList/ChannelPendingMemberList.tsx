@@ -3,7 +3,7 @@ import useGetPendingChannelMembers from '@/queries/useGetPendingChannelMembers';
 import ChannelMemberApproveDialog from '@/components/channelmember/ChannelMemberApproveDialog/ChannelMemberApproveDialog';
 import { ChannelMemberDenyDialog } from '@/components/channelmember/ChannelMemberDenyDialog/ChannelMemberDenyDialog';
 import { ChannelMemberItem } from '@/components/channelmember/ChannelMemberItem/ChannelMemberItem';
-import ItemSkeleton from '@/components/common/ItemSkeleton/ItemSkeleton';
+import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
 import { Button } from '@/components/ui/button';
 import { DEFAULT_PAGE_REQUEST } from '@/constants/constants';
 import { ChannelMember } from '@/types/channelMember.type';

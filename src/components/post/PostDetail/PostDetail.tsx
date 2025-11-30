@@ -14,7 +14,7 @@ import { useCreateComment } from '@/hooks/comment/useCreateComment';
 import { ROUTE_PATH } from '@/constants/routePaths';
 import * as S from './PostDetail.styles';
 
-export const PostDetail = () => {
+const PostDetail = () => {
   const { channelId, postId } = useParams<{
     channelId: string;
     postId: string;
@@ -80,3 +80,5 @@ export const PostDetail = () => {
     </div>
   );
 };
+
+export default PostDetail;

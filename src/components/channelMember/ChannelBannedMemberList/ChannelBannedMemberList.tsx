@@ -2,7 +2,7 @@ import { useState } from 'react';
 import useGetBannedChannelMembers from '@/queries/useGetBannedChannelMembers.ts';
 import { ChannelMemberItem } from '@/components/channelmember/ChannelMemberItem/ChannelMemberItem';
 import { ChannelMemberUnbanDialog } from '@/components/channelmember/ChannelMemberUnbanDialog/ChannelMemberUnbanDialog';
-import ItemSkeleton from '@/components/common/ItemSkeleton/ItemSkeleton';
+import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
 import { Button } from '@/components/ui/button';
 import { DEFAULT_PAGE_REQUEST } from '@/constants/constants';
 import type { ChannelMember } from '@/types/channelMember.type';
