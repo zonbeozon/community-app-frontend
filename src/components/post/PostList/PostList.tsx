@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { selectedPostIdAtom } from '@/atoms/postAtoms';
 import { usePostSubscription } from '@/stomp/hooks/usePostSubscriptions';
 import { useSetAtom } from 'jotai';
-import { Loader2 } from 'lucide-react';
+import { Loader2, AlertCircle } from 'lucide-react'; 
 import { toast } from 'sonner';
 import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
 import { useChannelLogic } from '@/hooks/channel/useChannelLogic';
@@ -17,7 +17,7 @@ import * as S from './PostList.styles';
 
 const SCROLL_POSITION_KEY = 'post_list_scroll_position';
 
-export const PostList = () => {
+const PostList = () => {
   const { channelData } = useChannelLogic();
   const navigate = useNavigate();
   const { channelId } = useParams<{ channelId: string }>();
@@ -34,9 +34,15 @@ export const PostList = () => {
     hasNextPage,
     isFetchingNextPage,
     isLoading: isLoadingPosts,
+    isError, 
+    error,   
   } = useInfinitePosts(numericChannelId, {
-    enabled: !!numericChannelId,
+    enabled: !!numericChannelId && !isNaN(numericChannelId), 
   });
+
+  useEffect(() => {
+    console.log('PostList Debug:', { numericChannelId, isLoadingPosts, isError, hasData: !!postsData });
+  }, [numericChannelId, isLoadingPosts, isError, postsData]);
 
   const { ref: inViewRef } = useInView({
     threshold: 0.5,
@@ -78,7 +84,7 @@ export const PostList = () => {
       parentScroller.scrollTop = parseInt(savedPosition, 10);
     }
 
-    let throttleTimer: NodeJS.Timeout | null = null;
+    let throttleTimer: number | null = null;
     const handleScroll = () => {
       if (throttleTimer) return;
       throttleTimer = setTimeout(() => {
@@ -99,7 +105,21 @@ export const PostList = () => {
     navigate(`/channels/${numericChannelId}/posts/${postId}`);
   };
 
-  if (isLoadingPosts || !postsData) {
+  if (!numericChannelId || isNaN(numericChannelId)) {
+    return <div className={S.statusContainer}>잘못된 채널 접근입니다.</div>;
+  }
+
+  if (isError) {
+    return (
+      <div className={S.statusContainer} style={{flexDirection: 'column', gap: '10px'}}>
+        <AlertCircle size={40} color="red" />
+        <p>게시글을 불러오는 중 오류가 발생했습니다.</p>
+        <p style={{fontSize: '0.8em', color: '#666'}}>{error?.message || '잠시 후 다시 시도해주세요.'}</p>
+      </div>
+    );
+  }
+
+  if (isLoadingPosts) {
     return (
       <>
         {Array.from({ length: 5 }).map((_, i) => (
@@ -107,6 +127,10 @@ export const PostList = () => {
         ))}
       </>
     );
+  }
+
+  if (!postsData) {
+     return null;
   }
 
   const posts = postsData.posts || [];
@@ -123,13 +147,12 @@ export const PostList = () => {
   return (
     <div ref={scrollRef} id="main-content" style={{ overflowY: 'auto', height: '100%' }}>
       {posts.map((post) => {
-        const authorInfo = authors[post.authorId];
         return (
           <PostItem
             channelId={numericChannelId}
             key={post.postId}
             post={post}
-            author={authorInfo}
+            author={post.author}
             onCommentClick={handleCommentClick}
             hideActions={false}
           />
@@ -146,3 +169,5 @@ export const PostList = () => {
     </div>
   );
 };
+
+export default PostList;

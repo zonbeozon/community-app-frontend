@@ -26,7 +26,7 @@ export const PostUpdateDialog = ({ open, onOpenChange, post, channelId }: PostDi
     if (open && post) {
       setValues({
         content: post.content,
-        imageIds: post.
+        imageIds: post.images?.map((img) => img.imageId) ?? [], 
       });
     } else if (!open) {
       reset();

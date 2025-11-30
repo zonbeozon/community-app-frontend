@@ -27,7 +27,7 @@ export const PostItem = ({ post, author, channelId, onCommentClick, onClick, hid
   const { logView } = usePostViewLogger();
 
   const itemRef = useRef<HTMLDivElement>(null);
-  const viewTimer = useRef<NodeJS.Timeout | null>(null);
+  const viewTimer = useRef<number | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -64,6 +64,7 @@ export const PostItem = ({ post, author, channelId, onCommentClick, onClick, hid
   }, [post.postId, logView]);
 
   if (!post || !author) {
+    console.log(post, author)
     return <ItemSkeleton />;
   }
 
@@ -127,7 +128,7 @@ export const PostItem = ({ post, author, channelId, onCommentClick, onClick, hid
               <>
                 <ThumbsUpIcon isLiked={isLiked} count={likeCount} onClick={handleLikeClick} />
                 <ThumbsDownIcon isDisliked={isDisliked} count={dislikeCount} onClick={handleDislikeClick} />
-                <CommentButton post={post} onClick={() => onCommentClick(post.postId)} />
+                <CommentButton post={post} onClick={() => onCommentClick?.(post.postId)} />
 
                 <ViewCount post={post} />
               </>
