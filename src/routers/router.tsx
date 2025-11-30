@@ -30,6 +30,7 @@ const router = createBrowserRouter(
           <Route element={<AuthGuard />}>
             <Route element={<Main />}>
               <Route path={ROUTE_PATH.main} element={<RecommendedPostList />} />
+              <Route path={ROUTE_PATH.chattingGroupId} element={<ChatContent />}></Route>
               <Route path={ROUTE_PATH.channelId} element={<ChannelContent />}>
                 <Route index element={<PostList />} />
                 <Route path={ROUTE_PATH.postId} element={<PostDetail />} />

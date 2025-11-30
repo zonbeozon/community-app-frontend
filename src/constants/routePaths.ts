@@ -7,6 +7,7 @@ export const ROUTE_PATH = {
   authCallback: '/auth/success',
 
   //Dynamic
+  chattingGroupId: '/chats/chattingGroupId',
   channelId: '/channels/:channelId',
   postId: 'posts/:postId',
 };
