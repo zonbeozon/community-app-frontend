@@ -1,8 +1,9 @@
-export interface Crypto {
+export interface Coin {
   symbol: string;
   logo: string;
   name: string;
   rank: number;
+  chattingGroupId: number;
 }
 
 export interface CryptoBySymbol {
