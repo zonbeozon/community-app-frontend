@@ -58,4 +58,8 @@ export const QUERY_KEYS = {
     detail: (userId: number | string | null) => [...QUERY_KEYS.serverMember.details(), userId] as const,
     me: () => [...QUERY_KEYS.serverMember.details(), 'me'] as const,
   },
+
+   coins: {
+    all: ['coins', 'list'],
+  },
 };
