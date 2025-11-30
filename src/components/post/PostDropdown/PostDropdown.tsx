@@ -18,7 +18,7 @@ const PostDropdown = ({ post, author, channelId }: PostDropdownProps) => {
   const myServerInfo = useAtomValue(serverMemberAtom);
   const { data: myChannels } = useGetJoinedChannels();
 
-  const myId = myServerInfo?.memberId;
+  const myId = myServerInfo?.memberId
   const myInfoInChannel = useMemo(() => {
     if (!myChannels) return null;
     return myChannels.find((c) => c.channelInfo.channelId === channelId)?.membership;
@@ -28,7 +28,7 @@ const PostDropdown = ({ post, author, channelId }: PostDropdownProps) => {
     return null;
   }
 
-  const isMyPost = myId === post.authorId;
+  const isMyPost = myId === author.memberId;
   const canManagePost = ChannelRoleManager.isRoleHigher(myInfoInChannel.channelRole, author.channelRole);
 
   const canEdit = isMyPost;

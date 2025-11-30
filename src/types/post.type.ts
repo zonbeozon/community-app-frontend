@@ -18,7 +18,7 @@ export interface PostRequest {
 export interface Post extends Omit<PostRequest, "imageIds">{
   postId: number;
   images: Image[];
-  authorId: number;
+  author: ChannelMember;
   metric: Metric;
   isLikedByRequester: boolean;
   isDislikedByRequester: boolean;
@@ -31,10 +31,6 @@ export interface InfinitePostsData {
   authors: Record<number, ChannelMember>;
 }
 
-export interface PostResponse extends Omit<Post, 'authorId'> {
-  author: ChannelMember;
-};
-
 export interface PostItemProps {
   post: Post;
   author: ChannelMember;
@@ -45,7 +41,6 @@ export interface PostItemProps {
 }
 
 export interface PostsResponse {
-  authors: ChannelMember[];
   posts: Post[];
   size: number;
   nextCursor: number | null;

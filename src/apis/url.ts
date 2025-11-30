@@ -1,4 +1,4 @@
-export const BASE_URL = '';
+export const BASE_URL = import.meta.env.VITE_API_URL
 
 export const ENDPOINT = {
   //Channel
@@ -23,9 +23,9 @@ export const ENDPOINT = {
   POST_RECOMMED: '/posts/recommend',
 
   //Chatting
-  CHAT_ID: (chatId: number) => `/chat/${chatId}`,
-  CHAT_IMAGE: (chatId: number) => `/chat/${chatId}/image`,
-  CHAT_GROUP: (chattingGroupName: string) => `/chattingGroup/${chattingGroupName}/chat`,
+  CHAT_ID: (chatId: number) => `/chats/${chatId}`,
+  CHAT_IMAGE: (chatId: number) => `/chats/${chatId}/images`,
+  CHAT_GROUP: (chattingGroupId: number) => `/chattingGroups/${chattingGroupId}/chats`,
 
   //Comment
   COMMENT: (postId: number) => `/posts/${postId}/comments`,

@@ -2,15 +2,15 @@ import fetcher from '@/apis/fetcher';
 import { BASE_URL, ENDPOINT } from '@/apis/url';
 import type { Chat, ChattingGroupResponse } from '@/types/chat.type';
 
-export const getChattingGroups = async (chattingGroupName: string): Promise<ChattingGroupResponse> => {
+export const getChattingGroups = async (chattingGroupId: number): Promise<ChattingGroupResponse> => {
   return fetcher.get<ChattingGroupResponse>({
-    url: BASE_URL + ENDPOINT.CHAT_GROUP(chattingGroupName),
+    url: BASE_URL + ENDPOINT.CHAT_GROUP(chattingGroupId),
   });
 };
 
-export const createChat = async (chattingGroupName: string, payload: Chat): Promise<void> => {
+export const createChat = async (chattingGroupId: number, payload: Chat): Promise<void> => {
   return fetcher.post<void>({
-    url: BASE_URL + ENDPOINT.CHAT_GROUP(chattingGroupName),
+    url: BASE_URL + ENDPOINT.CHAT_GROUP(chattingGroupId),
     body: payload,
   });
 };
