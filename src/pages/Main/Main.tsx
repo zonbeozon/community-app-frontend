@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useQueryClient } from '@tanstack/react-query';
 import { useGetJoinedChannels } from "@/queries/useGetJoinedChannel";
+import { useCoinList } from "@/queries/useCoinList";
 import { QUERY_KEYS } from "@/constants/queryKeys";
 import useGetPosts from "@/queries/useGetPosts";
 import * as S from "@/pages/Main/Main.styles";
@@ -9,6 +10,8 @@ import { ChannelSidebar } from "@/components/channel/ChannelSidebar/ChannelSideb
 
 export default function Main() {
   const { data: channels, isSuccess: areChannelsLoaded } = useGetJoinedChannels();
+
+  const { data: coinList } = useCoinList();
 
   const queryClient = useQueryClient();
 
