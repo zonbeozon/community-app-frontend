@@ -1,3 +1,4 @@
+import { Coin } from "./coin.type";
 import { Image } from "./common.type";
 import { ServerMember } from "./serverMember.type";
 
@@ -22,4 +23,14 @@ export interface ChattingGroupResponse {
     createdAt: string;
     chatId: number;
   };
+}
+
+export interface ChattingGroupProps {
+  title: string;
+  chattingGroups: Coin[];
+}
+
+export interface ChattingHeaderProps {
+  showBackButton: boolean;
+  coinData: Coin
 }

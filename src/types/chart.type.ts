@@ -1,7 +1,6 @@
 import type {
   IChartApi,
   CandlestickData,
-  LineData,
   Time,
 } from "lightweight-charts";
 import type { InfiniteData } from "@tanstack/react-query";
@@ -16,7 +15,6 @@ export interface ChartProps {
     interval: string;
     limit: number;
   };
-  indicatorData: { [key: string]: LineData[] };
 }
 
 export interface InfiniteScrollParams {
@@ -51,4 +49,11 @@ export type BinanceRestKline = [
 
 export interface KlinesData {
   klines: BinanceRestKline[];
+}
+
+export interface GetKlinesParams {
+  symbol: string;
+  interval: string;
+  endTime?: number;
+  limit?: number;
 }
