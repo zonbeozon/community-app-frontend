@@ -1,9 +1,9 @@
 import fetcher from '@/apis/fetcher';
 import { BASE_URL, ENDPOINT } from '@/apis/url';
-import type { Crypto, CryptoBySymbol } from '@/types/coin.type';
+import type { Coin, CryptoBySymbol } from '@/types/coin.type';
 
-export const getCoins = async (): Promise<Crypto[]> => {
-  return fetcher.get<Crypto[]>({
+export const getCoins = async (): Promise<Coin[]> => {
+  return fetcher.get<Coin[]>({
     url: BASE_URL + ENDPOINT.CRYPTOS,
   });
 };

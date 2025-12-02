@@ -1,24 +1,32 @@
-import { Coin } from "./coin.type";
-import { Image } from "./common.type";
-import { ServerMember } from "./serverMember.type";
+import { Coin } from './coin.type';
+import { Image } from './common.type';
+import { ServerMember } from './serverMember.type';
 
 export interface Chat {
+  chatId: number;
   content: string;
-  imageIds: number[];
-  parentId: number;
+  chatImages: Image[];
+  author: ServerMember;
+  replies: string[];
+  createdAt: string;
+  updatedAt: string;
+  parentId?: number | null;
 }
 
 export interface ChattingGroupResponse {
   chattingGroupId: number;
   content: {
+    chatId: number;
     content: string;
     chatImages: Image[];
     author: ServerMember;
+    replies: string[]
     createdAt: string;
     updatedAt: string;
   }[];
-  totalPages: number;
+  size: number;
   totalElements: number;
+  isLast: boolean;
   nextCursor: {
     createdAt: string;
     chatId: number;
@@ -32,5 +40,18 @@ export interface ChattingGroupProps {
 
 export interface ChattingHeaderProps {
   showBackButton: boolean;
-  coinData: Coin
+  coinData: Coin;
+}
+
+export interface ChatInputProps {
+  onSubmit: (content: string) => void;
+}
+
+export interface CreateChatProps {
+  chattingGroupId: number;
+  payload: {
+    content: string;
+    imageIds: number[]
+    parentId: number;
+  }
 }

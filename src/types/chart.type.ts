@@ -53,7 +53,7 @@ export interface KlinesData {
 
 export interface GetKlinesParams {
   symbol: string;
-  interval: string;
+  interval?: string;
   endTime?: number;
   limit?: number;
 }
