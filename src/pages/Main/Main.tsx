@@ -6,7 +6,7 @@ import { useCoinList } from "@/queries/useCoinList";
 import { QUERY_KEYS } from "@/constants/queryKeys";
 import useGetPosts from "@/queries/useGetPosts";
 import * as S from "@/pages/Main/Main.styles";
-import { ChannelSidebar } from "@/components/channel/ChannelSidebar/ChannelSidebar";
+import { Sidebar } from "@/components/common/Sidebar/Sidebar";
 
 export default function Main() {
   const { data: channels, isSuccess: areChannelsLoaded } = useGetJoinedChannels();
@@ -31,7 +31,7 @@ export default function Main() {
   return (
     <>
       <div className={S.leftSidebar}>
-        <ChannelSidebar />
+        <Sidebar />
       </div>
       <main className={S.main}>
         <Outlet />
