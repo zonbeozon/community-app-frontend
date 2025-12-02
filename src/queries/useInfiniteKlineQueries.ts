@@ -5,9 +5,9 @@ import {
     type UseInfiniteQueryOptions,
   } from "@tanstack/react-query";
   import { QUERY_KEYS } from "@/constants/queryKeys";
-  import { getKlines } from "@/apis/klines.api";
-  import type { GetKlinesParams } from "@/types/kline.type";
-  import type { KlinesData } from "@/types/kline.type";
+  import { getKlines } from "@/apis/http/kline.api";
+  import type { GetKlinesParams } from "@/types/chart.type";
+  import type { KlinesData } from "@/types/chart.type";
   
   export const useInfiniteKlinesQuery = (
     params: GetKlinesParams,
