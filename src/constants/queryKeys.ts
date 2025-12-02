@@ -1,3 +1,4 @@
+import { GetKlinesParams } from '@/types/chart.type';
 import { PageRequest } from '@/types/common.type';
 
 export const QUERY_KEYS = {
@@ -61,5 +62,19 @@ export const QUERY_KEYS = {
 
    coins: {
     all: ['coins', 'list'],
+  },
+
+  klines: {
+    all: ["klines"] as const,
+    lists: () => [...QUERY_KEYS.klines.all, "list"] as const,
+    list: (params: GetKlinesParams) =>
+      [...QUERY_KEYS.klines.lists(), params] as const,
+  },
+
+   chats: {
+    all: ['chats'] as const,
+    lists: () => [...QUERY_KEYS.chats.all, 'list'] as const,
+    list: (chattingGroupId: number | string) => 
+      [...QUERY_KEYS.chats.lists(), chattingGroupId] as const,
   },
 };
