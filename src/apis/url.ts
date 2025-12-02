@@ -54,4 +54,7 @@ export const ENDPOINT = {
 
   //Image
   IMAGE: `/images`,
+
+  //Kline
+  KLINE: "/proxy-api/api/v3/klines",
 };
