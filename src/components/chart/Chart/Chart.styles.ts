@@ -28,4 +28,4 @@ export const statusContainer = 'flex items-center justify-center';
 
 export const errorContainer = `${statusContainer} text-red-500`;
 
-export const chart = 'relative w-full h-full rounded-lg overflow-hidden shadow-sm';
+export const chart = 'relative w-auto h-[40vh] m-4 rounded-lg overflow-hidden shadow-sm border border-gray-200';
