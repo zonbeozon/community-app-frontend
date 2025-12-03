@@ -1,15 +1,14 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { updateServerMemberUserName } from "@/apis/http/serverMember.api";
-import { QUERY_KEYS } from "@/constants/queryKeys";
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/messages";
+import { updateServerMemberUserName } from '@/apis/http/serverMember.api';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { SERVER_ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/constants/messages';
+import { QUERY_KEYS } from '@/constants/queryKeys';
 
-const useUpdateServerMemberUsername = () => {
+export const useUpdateServerMemberUsername = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: { username: string }) =>
-      updateServerMemberUserName(payload),
+    mutationFn: (payload: { username: string }) => updateServerMemberUserName(payload),
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.serverMember.me() });
@@ -29,5 +28,3 @@ const useUpdateServerMemberUsername = () => {
     },
   });
 };
-
-export default useUpdateServerMemberUsername;

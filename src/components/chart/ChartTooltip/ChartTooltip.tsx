@@ -1,22 +1,16 @@
-import ReactDOM from "react-dom";
-import type { ChartTooltipProps } from "@/types/chart.type";
+import ReactDOM from 'react-dom';
 import { motion } from 'motion/react';
-import * as S from "./ChartTooltip.styles";
+import type { ChartTooltipProps } from '@/types/chart.type';
+import * as S from './ChartTooltip.styles';
 
-export const ChartTooltip = ({
-  top,
-  left,
-  candle,
-  time,
-  visible,
-}: ChartTooltipProps) => {
+export const ChartTooltip = ({ top, left, candle, time, visible }: ChartTooltipProps) => {
   if (!visible || !candle || !time) {
     return null;
   }
 
   const price = candle.close;
   const date = new Date((time as number) * 1000);
-  const dateStr = date.toLocaleString("ko-KR");
+  const dateStr = date.toLocaleString('ko-KR');
 
   const tooltipContent = (
     <motion.div
@@ -25,14 +19,14 @@ export const ChartTooltip = ({
         x: left,
         y: top,
         opacity: 1,
-        scale: 1
+        scale: 1,
       }}
       initial={{ opacity: 0, scale: 0.9 }}
       transition={{
-        type: "spring",
+        type: 'spring',
         damping: 25,
         stiffness: 500,
-        mass: 0.5
+        mass: 0.5,
       }}
       style={{
         top: 0,

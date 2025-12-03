@@ -1,15 +1,9 @@
-import { useMemo } from "react";
-import type { KlinesData } from "@/types/chart.type";
-import type { InfiniteData } from "@tanstack/react-query";
-import type {
-  CandlestickData,
-  HistogramData,
-  UTCTimestamp,
-} from "lightweight-charts";
+import { useMemo } from 'react';
+import type { InfiniteData } from '@tanstack/react-query';
+import type { CandlestickData, HistogramData, UTCTimestamp } from 'lightweight-charts';
+import type { KlinesData } from '@/types/chart.type';
 
-export const useFormattedChartData = (
-  data: InfiniteData<KlinesData> | undefined
-) => {
+export const useFormattedChartData = (data: InfiniteData<KlinesData> | undefined) => {
   const formattedData = useMemo(() => {
     if (!data?.pages || data.pages.length === 0) {
       return { candlestickData: [], volumeData: [] };
@@ -19,9 +13,7 @@ export const useFormattedChartData = (
 
     combinedRawKlines.sort((a, b) => a[0] - b[0]);
 
-    const uniqueKlines = combinedRawKlines.filter(
-      (kline, idx, arr) => idx === 0 || kline[0] !== arr[idx - 1][0]
-    );
+    const uniqueKlines = combinedRawKlines.filter((kline, idx, arr) => idx === 0 || kline[0] !== arr[idx - 1][0]);
 
     const candlestickData: CandlestickData[] = [];
     const volumeData: HistogramData[] = [];
@@ -38,8 +30,7 @@ export const useFormattedChartData = (
       volumeData.push({
         time,
         value: volume,
-        color:
-          close >= open ? "rgba(0, 150, 136, 0.8)" : "rgba(255, 82, 82, 0.8)",
+        color: close >= open ? 'rgba(0, 150, 136, 0.8)' : 'rgba(255, 82, 82, 0.8)',
       });
     });
 

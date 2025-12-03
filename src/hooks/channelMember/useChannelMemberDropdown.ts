@@ -2,9 +2,9 @@ import { useMemo, useState } from 'react';
 import { serverMemberAtom } from '@/atoms/authAtoms';
 import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
 import { useAtomValue } from 'jotai';
-import { DropdownAction } from '@/components/common/ActionDropdown/ActionDropdown';
 import ChannelRoleManager from '@/utils/channelRoleManager';
 import type { ChannelMemberProps } from '@/types/channelMember.type';
+import type { DropdownAction } from '@/types/common.type';
 
 export const useChannelMemberDropdown = ({ channelId, targetMember }: ChannelMemberProps) => {
   const [isRoleDialogOpen, setIsRoleDialogOpen] = useState(false);

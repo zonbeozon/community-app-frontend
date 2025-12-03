@@ -6,7 +6,7 @@ import { ROUTE_PATH } from "@/constants/routePaths";
 import { Spinner } from "@/components/ui/spinner";
 import { reissue } from "@/apis/http/reissue.api";
 
-const AuthGuard = () => {
+export const AuthGuard = () => {
   const setAccessToken = useSetAtom(accessTokenAtom);
   const setServerMember = useSetAtom(serverMemberAtom);
   const location = useLocation();
@@ -67,5 +67,3 @@ const AuthGuard = () => {
 
   return <Outlet />;
 };
-
-export default AuthGuard;

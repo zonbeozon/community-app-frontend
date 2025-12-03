@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { selectedPostIdAtom } from '@/atoms/postAtoms';
 import { usePostSubscription } from '@/stomp/hooks/usePostSubscriptions';
 import { useSetAtom } from 'jotai';
-import { Loader2, AlertCircle } from 'lucide-react'; 
+import { AlertCircle, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
 import { useChannelLogic } from '@/hooks/channel/useChannelLogic';
@@ -34,10 +34,10 @@ const PostList = () => {
     hasNextPage,
     isFetchingNextPage,
     isLoading: isLoadingPosts,
-    isError, 
-    error,   
+    isError,
+    error,
   } = useInfinitePosts(numericChannelId, {
-    enabled: !!numericChannelId && !isNaN(numericChannelId), 
+    enabled: !!numericChannelId && !isNaN(numericChannelId),
   });
 
   useEffect(() => {
@@ -111,10 +111,10 @@ const PostList = () => {
 
   if (isError) {
     return (
-      <div className={S.statusContainer} style={{flexDirection: 'column', gap: '10px'}}>
+      <div className={S.statusContainer} style={{ flexDirection: 'column', gap: '10px' }}>
         <AlertCircle size={40} color="red" />
         <p>게시글을 불러오는 중 오류가 발생했습니다.</p>
-        <p style={{fontSize: '0.8em', color: '#666'}}>{error?.message || '잠시 후 다시 시도해주세요.'}</p>
+        <p style={{ fontSize: '0.8em', color: '#666' }}>{error?.message || '잠시 후 다시 시도해주세요.'}</p>
       </div>
     );
   }
@@ -130,11 +130,10 @@ const PostList = () => {
   }
 
   if (!postsData) {
-     return null;
+    return null;
   }
 
   const posts = postsData.posts || [];
-  const authors = postsData.authors || {};
 
   if (posts.length === 0) {
     return (

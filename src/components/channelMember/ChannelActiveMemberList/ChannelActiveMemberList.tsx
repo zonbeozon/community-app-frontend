@@ -1,5 +1,5 @@
 import { serverMemberAtom } from '@/atoms/authAtoms';
-import useGetChannelMembers from '@/queries/useGetChannelMembers';
+import { useGetChannelMembers } from '@/queries/useGetChannelMembers';
 import { useAtomValue } from 'jotai';
 import { ChannelMemberDropdown } from '@/components/channelmember/ChannelMemberDropdown/ChannelMemberDropdown';
 import { ChannelMemberItem } from '@/components/channelmember/ChannelMemberItem/ChannelMemberItem';

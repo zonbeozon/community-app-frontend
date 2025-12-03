@@ -32,18 +32,11 @@ export const ChannelJoinButton = ({ channel, onJoinSuccess }: ChannelJoinButtonP
 
   return (
     <>
-      <Button
-        className={S.button}
-        onClick={open}
-      >
+      <Button className={S.button} onClick={open}>
         참여
       </Button>
 
-      <ChannelJoinDialog
-        {...dialogProps}
-        channel={channel}
-        onJoinSuccess={handleJoinSuccess}
-      />
+      <ChannelJoinDialog {...dialogProps} channel={channel} onJoinSuccess={handleJoinSuccess} />
     </>
   );
 };

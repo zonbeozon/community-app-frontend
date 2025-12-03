@@ -1,7 +1,7 @@
-import { useRef, useCallback } from "react";
-import { FETCHPAGE_THRESHOLD } from "@/constants/constants";
-import type { LogicalRange } from "lightweight-charts";
-import type { InfiniteScrollParams } from "@/types/chart.type";
+import { useCallback, useRef } from 'react';
+import { FETCHPAGE_THRESHOLD } from '@/constants/constants';
+import type { LogicalRange } from 'lightweight-charts';
+import type { InfiniteScrollParams } from '@/types/chart.type';
 
 export const useChartInfiniteScroll = ({
   chartRef,
@@ -21,13 +21,11 @@ export const useChartInfiniteScroll = ({
 
       if (isNearLeftEdge && hasNextPage && !isFetchingNextPage) {
         scrollLockRef.current = true;
-        visibleRangeRef.current = chartRef.current
-          .timeScale()
-          .getVisibleLogicalRange();
+        visibleRangeRef.current = chartRef.current.timeScale().getVisibleLogicalRange();
         fetchNextPage();
       }
     },
-    [chartRef, hasNextPage, isFetchingNextPage, fetchNextPage]
+    [chartRef, hasNextPage, isFetchingNextPage, fetchNextPage],
   );
 
   return { handleVisibleLogicalRangeChange, visibleRangeRef, scrollLockRef };

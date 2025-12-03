@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useDialog } from '@/hooks/common/useDialog'; 
-import type { Channel } from '@/types/channel.type';
+import { useDialog } from '@/hooks/common/useDialog';
 import ChannelRoleManager from '@/utils/channelRoleManager';
-import { DropdownAction } from '@/components/common/ActionDropdown/ActionDropdown';
+import type { Channel } from '@/types/channel.type';
+import type { DropdownAction } from '@/types/common.type';
 
 export const useChannelDropdown = (channel: Channel) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -17,29 +17,29 @@ export const useChannelDropdown = (channel: Channel) => {
   const handleSelect = (openDialogFn: () => void) => {
     return () => {
       setIsDropdownOpen(false);
-      openDialogFn();          
+      openDialogFn();
     };
   };
 
   const actions: DropdownAction[] = [
     {
-      label: "채널 관리",
+      label: '채널 관리',
       onSelect: handleSelect(manageDialog.open),
       isRendered: isChannelOwner,
     },
     {
-      label: "채널 수정",
+      label: '채널 수정',
       onSelect: handleSelect(updateDialog.open),
       isRendered: isChannelOwner,
     },
     {
-      label: "채널 나가기",
+      label: '채널 나가기',
       onSelect: handleSelect(leaveDialog.open),
       isRendered: !isChannelOwner,
       isDestructive: true,
     },
     {
-      label: "채널 삭제",
+      label: '채널 삭제',
       onSelect: handleSelect(deleteDialog.open),
       isRendered: isChannelOwner,
       isDestructive: true,

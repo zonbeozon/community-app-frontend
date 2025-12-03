@@ -1,7 +1,7 @@
-import { useEffect, useCallback, useRef } from "react";
-import { useAtom } from "jotai";
-import { postViewQueueAtom } from "@/atoms/postViewsAtoms";
-import useFlushPostViews from "@/queries/useFlushPostViews";
+import { useCallback, useEffect, useRef } from 'react';
+import { postViewQueueAtom } from '@/atoms/postViewsAtoms';
+import useFlushPostViews from '@/queries/useFlushPostViews';
+import { useAtom } from 'jotai';
 
 export const usePostViewLogger = () => {
   const [queue, setQueue] = useAtom(postViewQueueAtom);
@@ -26,7 +26,7 @@ export const usePostViewLogger = () => {
         flush(newQueue);
       }
     },
-    [queue, setQueue, flush, isPending]
+    [queue, setQueue, flush, isPending],
   );
 
   const manualFlush = useCallback(() => {

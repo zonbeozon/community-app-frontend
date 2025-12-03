@@ -1,20 +1,9 @@
-import { EllipsisVertical } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import * as S from "./ActionDropdown.styles";
-import type { ActionDropdownProps } from "@/types/common.type";
+import { EllipsisVertical } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import type { ActionDropdownProps } from '@/types/common.type';
+import * as S from './ActionDropdown.styles';
 
-export const ActionDropdown = ({
-  actions,
-  triggerClassName,
-  open,
-  onOpenChange,
-  ...rest
-}: ActionDropdownProps) => {
+export const ActionDropdown = ({ actions, triggerClassName, open, onOpenChange, ...rest }: ActionDropdownProps) => {
   const visibleActions = actions.filter((action) => action.isRendered !== false);
 
   if (visibleActions.length === 0) {
@@ -24,20 +13,13 @@ export const ActionDropdown = ({
   return (
     <DropdownMenu open={open} onOpenChange={onOpenChange}>
       <DropdownMenuTrigger asChild>
-        <button
-          className={`${S.triggerButton} ${triggerClassName || ''}`}
-          {...rest}
-        >
+        <button className={`${S.triggerButton} ${triggerClassName || ''}`} {...rest}>
           <EllipsisVertical size={S.iconSize} />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {visibleActions.map((action) => (
-          <DropdownMenuItem
-            key={action.label}
-            onSelect={action.onSelect}
-            className={S.menuItem(action.isDestructive)}
-          >
+          <DropdownMenuItem key={action.label} onSelect={action.onSelect} className={S.menuItem(action.isDestructive)}>
             {action.label}
           </DropdownMenuItem>
         ))}

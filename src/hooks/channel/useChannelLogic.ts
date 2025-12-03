@@ -1,11 +1,11 @@
-import { useEffect, useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAtomValue, useSetAtom } from 'jotai';
-import { useGetChannelById } from "@/queries/useGetChannelById";
-import ChannelRoleManager from "@/utils/channelRoleManager";
-import { useGetJoinedChannels } from "@/queries/useGetJoinedChannel";
+import { useEffect, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { selectedChannelIdAtom } from '@/atoms/channelAtoms';
-import { ROUTE_PATH } from "@/constants/routePaths";
+import { useGetChannelById } from '@/queries/useGetChannelById';
+import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
+import { useAtomValue, useSetAtom } from 'jotai';
+import ChannelRoleManager from '@/utils/channelRoleManager';
+import { ROUTE_PATH } from '@/constants/routePaths';
 
 export const useChannelLogic = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export const useChannelLogic = () => {
 
   useEffect(() => {
     if (isError && (error as any)?.response?.status === 404) {
-      alert("존재하지 않는 채널입니다.");
+      alert('존재하지 않는 채널입니다.');
       navigate(ROUTE_PATH.main);
     }
   }, [isError, error, navigate]);
@@ -34,11 +34,9 @@ export const useChannelLogic = () => {
     if (!myChannels || !selectedChannelId) {
       return null;
     }
-    return myChannels.find(
-      (channel) => channel.channelInfo.channelId === selectedChannelId
-    );
+    return myChannels.find((channel) => channel.channelInfo.channelId === selectedChannelId);
   }, [myChannels, selectedChannelId]);
-  
+
   useEffect(() => {
     if (currentChannelData) {
       setSelectedChannelId(currentChannelData.channelInfo.channelId);

@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
-import { useAtom } from "jotai";
-import { serverMemberAtom } from "@/atoms/authAtoms";
-import useUpdateServerMemberUsername from "@/hooks/servermember/useUpdateServerMemberUsername";
-import { validateServerMember } from "@/validations/validateServerMember";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Pencil, Check, Loader2 } from "lucide-react";
-import * as S from "./ServerMemberName.styles"
+import { useEffect, useState } from 'react';
+import { serverMemberAtom } from '@/atoms/authAtoms';
+import { useAtom } from 'jotai';
+import { Check, Loader2, Pencil } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useUpdateServerMemberUsername } from '@/hooks/servermember/useUpdateServerMemberUsername';
+import { validateServerMember } from '@/validations/validateServerMember';
+import * as S from './ServerMemberName.styles';
 
-const ServerMemberName = () => {
+export const ServerMemberName = () => {
   const [serverMember, setServerMember] = useAtom(serverMemberAtom);
   const { mutate: updateUsername, isPending: isUpdatingUsername } = useUpdateServerMemberUsername();
 
   const [isEditing, setIsEditing] = useState(false);
-  const [newUsername, setNewUsername] = useState(serverMember?.username || "");
+  const [newUsername, setNewUsername] = useState(serverMember?.username || '');
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -31,12 +31,15 @@ const ServerMemberName = () => {
 
   const handleSave = () => {
     if (error || isUpdatingUsername || newUsername === serverMember?.username) return;
-    updateUsername({ username: newUsername }, {
-      onSuccess: () => {
-        if (serverMember) setServerMember({ ...serverMember, username: newUsername });
-        setIsEditing(false);
-      }
-    });
+    updateUsername(
+      { username: newUsername },
+      {
+        onSuccess: () => {
+          if (serverMember) setServerMember({ ...serverMember, username: newUsername });
+          setIsEditing(false);
+        },
+      },
+    );
   };
 
   const startEditing = () => {
@@ -53,7 +56,13 @@ const ServerMemberName = () => {
             <Input value={newUsername} onChange={handleUsernameChange} className={S.usernameInput} autoFocus />
             {error && <p className={S.errorMessage}>{error}</p>}
           </div>
-          <Button variant="ghost" size="icon" onClick={handleSave} className={S.saveButton} disabled={!!error || isUpdatingUsername || newUsername === serverMember?.username}>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleSave}
+            className={S.saveButton}
+            disabled={!!error || isUpdatingUsername || newUsername === serverMember?.username}
+          >
             {isUpdatingUsername ? <Loader2 size={18} className="animate-spin" /> : <Check size={18} />}
           </Button>
         </div>
@@ -68,5 +77,3 @@ const ServerMemberName = () => {
     </div>
   );
 };
-
-export default ServerMemberName;

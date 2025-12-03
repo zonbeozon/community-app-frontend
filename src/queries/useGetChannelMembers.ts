@@ -1,18 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
 import { getChannelMembers } from '@/apis/http/channelMember.api';
+import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { PageRequest, Page } from '@/types/common.type';
-import { ChannelMembersResponse, ChannelMember } from '@/types/channelMember.type';
+import { ChannelMember, ChannelMembersResponse } from '@/types/channelMember.type';
+import { Page, PageRequest } from '@/types/common.type';
 
 interface MembersData {
   members: ChannelMember[];
   pageInfo: Page<ChannelMember>;
 }
 
-const useGetChannelMembers = (
-  channelId: number,
-  pageRequest: PageRequest
-) => {
+export const useGetChannelMembers = (channelId: number, pageRequest: PageRequest) => {
   return useQuery<ChannelMembersResponse, Error, MembersData>({
     queryKey: QUERY_KEYS.channelMember.list(channelId, pageRequest),
     queryFn: () => getChannelMembers(channelId, pageRequest),
@@ -25,5 +22,3 @@ const useGetChannelMembers = (
     },
   });
 };
-
-export default useGetChannelMembers;

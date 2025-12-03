@@ -16,7 +16,7 @@ export const ChattingGroup = ({ title, chattingGroups }: ChattingGroupProps) => 
   return (
     <div>
       <h3>{title}</h3>
-      <ul className={S.list}>
+      <ul>
         {chattingGroups.map((coin) => (
           <ChattingGroupItem 
             key={coin.chattingGroupId} 

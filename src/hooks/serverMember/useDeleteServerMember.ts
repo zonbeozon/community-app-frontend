@@ -1,11 +1,10 @@
+import { deleteServerMember } from '@/apis/http/serverMember.api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useSignOut } from '@/hooks/auth/useSignOut';
+import { SERVER_ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/constants/messages';
 
-import { deleteServerMember } from '@/apis/http/serverMember.api';
-import useSignOut from '../auth/useSignOut';
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/messages";
-
-const useDeleteServerMember = () => {
+export const useDeleteServerMember = () => {
   const queryClient = useQueryClient();
   const { mutate: signOut } = useSignOut();
 
@@ -19,12 +18,7 @@ const useDeleteServerMember = () => {
     },
 
     onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message ||
-          SERVER_ERROR_MESSAGES.SERVERMEMBER_DELETE_FAILED
-      );
+      toast.error(error.response?.data?.message || SERVER_ERROR_MESSAGES.SERVERMEMBER_DELETE_FAILED);
     },
   });
 };
-
-export default useDeleteServerMember;

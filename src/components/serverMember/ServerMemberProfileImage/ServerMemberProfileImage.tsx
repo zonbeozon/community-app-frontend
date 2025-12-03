@@ -1,16 +1,10 @@
+import { Loader2, Pencil } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Pencil, Loader2 } from 'lucide-react';
 import { useServerMemberProfileImage } from '@/hooks/servermember/useServerMemberProfileImage';
-import * as S from "./ServerMemberProfileImage.styles";
+import * as S from './ServerMemberProfileImage.styles';
 
-const ServerMemberProfileImage = () => {
-  const {
-    serverMember,
-    isBusy,
-    fileInputRef,
-    handleFileChange,
-    handleEditClick,
-  } = useServerMemberProfileImage();
+export const ServerMemberProfileImage = () => {
+  const { serverMember, isBusy, fileInputRef, handleFileChange, handleEditClick } = useServerMemberProfileImage();
 
   if (!serverMember) {
     return <div className={S.container} />;
@@ -32,7 +26,7 @@ const ServerMemberProfileImage = () => {
         <Button variant="ghost" size="icon" onClick={handleEditClick} className={S.editButton} disabled={isBusy}>
           <Pencil size={16} />
         </Button>
-        
+
         {isBusy && (
           <div className={S.loaderOverlay}>
             <Loader2 size={24} className="animate-spin" />
@@ -49,5 +43,3 @@ const ServerMemberProfileImage = () => {
     </>
   );
 };
-
-export default ServerMemberProfileImage;

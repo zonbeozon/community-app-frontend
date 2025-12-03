@@ -16,7 +16,7 @@ export const ChannelGroup = ({ title, channels }: ChannelGroupProps) => {
   return (
     <div>
       <h3>{title}</h3>
-      <ul className={S.list}>
+      <ul>
         {channels.map((channel) => (
           <ChannelItem key={channel.channelInfo.channelId} channel={channel} />
         ))}

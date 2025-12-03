@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { serverMemberAtom } from '@/atoms/authAtoms';
 import { useAtomValue } from 'jotai';
 import { ChannelCreateDialog } from '@/components/channel/ChannelCreateDialog/ChannelCreateDialog';
-import ServerMemberInfoDialog from '@/components/servermember/ServerMemberInfoDialog/ServerMemberInfoDialog';
+import { ServerMemberInfoDialog } from '@/components/servermember/ServerMemberInfoDialog/ServerMemberInfoDialog';
 import { Button } from '@/components/ui/button';
 import { useDialog } from '@/hooks/common/useDialog';
 import { ROUTE_PATH } from '@/constants/routePaths';

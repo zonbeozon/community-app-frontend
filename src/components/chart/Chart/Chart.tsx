@@ -1,49 +1,35 @@
-import { useRef, useEffect, useState } from "react";
-import { createChart } from "lightweight-charts";
-import { ChartTooltip } from "../ChartTooltip/ChartTooltip";
-import { useFormattedChartData } from "@/hooks/chart/useFormattedChartData";
-import { useChartInfiniteScroll } from "@/hooks/chart/useChartInfiniteScroll";
-import { useRealTimeTrade } from "@/hooks/chart/useRealTimeTrade";
+import { useEffect, useRef, useState } from 'react';
+import { createChart } from 'lightweight-charts';
+import { ChartTooltip } from '@/components/chart/ChartTooltip/ChartTooltip';
+import { useChartInfiniteScroll } from '@/hooks/chart/useChartInfiniteScroll';
+import { useFormattedChartData } from '@/hooks/chart/useFormattedChartData';
+import { useRealTimeTrade } from '@/hooks/chart/useRealTimeTrade';
 import {
   CANDLESTICK_SERIES_OPTIONS,
-  VOLUME_SERIES_OPTIONS,
-  VOLUME_SCALE_OPTIONS,
-  VOLUME_PRICE_SCALE_ID,
   INITIAL_TOOLTIP_STATE,
-} from "@/constants/constants";
-import type {
-  IChartApi,
-  ISeriesApi,
-  CandlestickData,
-  HistogramData,
-} from "lightweight-charts";
-import type { ChartProps, ChartTooltipProps } from "@/types/chart.type";
-import * as S from "./Chart.styles";
+  VOLUME_PRICE_SCALE_ID,
+  VOLUME_SCALE_OPTIONS,
+  VOLUME_SERIES_OPTIONS,
+} from '@/constants/constants';
+import type { CandlestickData, HistogramData, IChartApi, ISeriesApi } from 'lightweight-charts';
+import type { ChartProps, ChartTooltipProps } from '@/types/chart.type';
+import * as S from './Chart.styles';
 
-export const Chart = ({
-  data,
-  fetchNextPage,
-  hasNextPage,
-  isFetchingNextPage,
-  params,
-}: ChartProps) => {
+export const Chart = ({ data, fetchNextPage, hasNextPage, isFetchingNextPage, params }: ChartProps) => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
-  const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
-  const volumeSeriesRef = useRef<ISeriesApi<"Histogram"> | null>(null);
+  const candleSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
+  const volumeSeriesRef = useRef<ISeriesApi<'Histogram'> | null>(null);
 
-  const [tooltipState, setTooltipState] = useState<ChartTooltipProps>(
-    INITIAL_TOOLTIP_STATE
-  );
+  const [tooltipState, setTooltipState] = useState<ChartTooltipProps>(INITIAL_TOOLTIP_STATE);
 
   const { candlestickData, volumeData } = useFormattedChartData(data);
-  const { handleVisibleLogicalRangeChange, visibleRangeRef, scrollLockRef } =
-    useChartInfiniteScroll({
-      chartRef,
-      fetchNextPage,
-      hasNextPage,
-      isFetchingNextPage,
-    });
+  const { handleVisibleLogicalRangeChange, visibleRangeRef, scrollLockRef } = useChartInfiniteScroll({
+    chartRef,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  });
 
   const latestPriceRef = useRealTimeTrade(params.symbol);
 
@@ -51,12 +37,10 @@ export const Chart = ({
     if (!chartContainerRef.current) return;
 
     const chart = createChart(chartContainerRef.current, S.chartOptions);
-    
-    chart
-      .timeScale()
-      .subscribeVisibleLogicalRangeChange(handleVisibleLogicalRangeChange);
 
-    chart.priceScale("right").applyOptions({
+    chart.timeScale().subscribeVisibleLogicalRangeChange(handleVisibleLogicalRangeChange);
+
+    chart.priceScale('right').applyOptions({
       scaleMargins: {
         top: 0.1,
         bottom: 0.1,
@@ -72,10 +56,7 @@ export const Chart = ({
     volumeSeriesRef.current = volumeSeries;
 
     const resizeObserver = new ResizeObserver((entries) => {
-      if (
-        entries.length === 0 ||
-        entries[0].target !== chartContainerRef.current
-      ) {
+      if (entries.length === 0 || entries[0].target !== chartContainerRef.current) {
         return;
       }
       const newRect = entries[0].contentRect;
@@ -86,7 +67,7 @@ export const Chart = ({
     chart.subscribeCrosshairMove((param) => {
       const container = chartContainerRef.current;
       const series = candleSeriesRef.current;
-      
+
       if (!container || !series || !param.point || !param.time) {
         setTooltipState((prev) => ({ ...prev, visible: false }));
         return;
@@ -124,12 +105,12 @@ export const Chart = ({
 
     return () => {
       resizeObserver.disconnect();
-      chart.remove(); 
+      chart.remove();
       chartRef.current = null;
       candleSeriesRef.current = null;
       volumeSeriesRef.current = null;
     };
-  }, [handleVisibleLogicalRangeChange]); 
+  }, [handleVisibleLogicalRangeChange]);
 
   useEffect(() => {
     if (!candleSeriesRef.current || !volumeSeriesRef.current) return;
@@ -139,16 +120,14 @@ export const Chart = ({
 
     if (visibleRangeRef.current && data?.pages) {
       const addedDataCount = data.pages[0]?.klines.length ?? 0;
-      
+
       if (addedDataCount > 0) {
         const newFrom = visibleRangeRef.current.from + addedDataCount;
         const newTo = visibleRangeRef.current.to + addedDataCount;
 
-        chartRef.current
-          ?.timeScale()
-          .setVisibleLogicalRange({ from: newFrom, to: newTo });
+        chartRef.current?.timeScale().setVisibleLogicalRange({ from: newFrom, to: newTo });
       }
-      
+
       visibleRangeRef.current = null;
 
       setTimeout(() => {
@@ -165,7 +144,7 @@ export const Chart = ({
       if (!series || !lastPrice || candlestickData.length === 0) return;
 
       const lastCandle = candlestickData[candlestickData.length - 1];
-      
+
       const newTick: CandlestickData = {
         time: lastCandle.time,
         open: lastCandle.open,
@@ -173,7 +152,7 @@ export const Chart = ({
         low: Math.min(lastCandle.low, lastPrice),
         close: lastPrice,
       };
-      
+
       series.update(newTick);
     }, 200);
 

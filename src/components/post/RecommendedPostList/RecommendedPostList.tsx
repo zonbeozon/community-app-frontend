@@ -1,6 +1,6 @@
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
-import useGetRecommendedPosts from '@/queries/useGetRecommendedPosts';
+import { useGetRecommendedPosts } from '@/queries/useGetRecommendedPosts';
 import { Sparkles } from 'lucide-react';
 import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
 import { PostItem } from '@/components/post/PostItem/PostItem';

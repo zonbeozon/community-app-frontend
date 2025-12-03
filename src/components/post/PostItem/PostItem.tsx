@@ -6,15 +6,15 @@ import { CommentButton } from '@/components/comment/CommentButton/CommentButton'
 import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
 import { TimeDisplay } from '@/components/common/TimeDisplay/TimeDisplay';
 import { ViewCount } from '@/components/common/ViewCount/ViewCount';
-import ServerMemberInfoDialog from '@/components/servermember/ServerMemberInfoDialog/ServerMemberInfoDialog';
+import { PostDropdown } from '@/components/post/PostDropdown/PostDropdown';
+import { DislikeButton } from '@/components/reaction/DislikeButton/DislikeButton';
+import { LikeButton } from '@/components/reaction/LikeButton/LikeButton';
+import { ServerMemberInfoDialog } from '@/components/servermember/ServerMemberInfoDialog/ServerMemberInfoDialog';
 import useCreateReaction from '@/hooks/reaction/useCreateReaction';
 import useDeleteReaction from '@/hooks/reaction/useDeleteReaction';
 import { usePostViewLogger } from '@/hooks/viewLogger/usePostViewLogger';
 import { Image } from '@/types/common.type';
 import type { PostItemProps } from '@/types/post.type';
-import ThumbsDownIcon from '../../reaction/DislikeButton/DislikeButton';
-import ThumbsUpIcon from '../../reaction/LikeButton/LikeButton';
-import PostDropdown from '../PostDropdown/PostDropdown';
 import * as S from './PostItem.styles';
 
 const VIEW_THRESHOLD_PERCENT = 0.5;
@@ -64,7 +64,7 @@ export const PostItem = ({ post, author, channelId, onCommentClick, onClick, hid
   }, [post.postId, logView]);
 
   if (!post || !author) {
-    console.log(post, author)
+    console.log(post, author);
     return <ItemSkeleton />;
   }
 
@@ -126,8 +126,8 @@ export const PostItem = ({ post, author, channelId, onCommentClick, onClick, hid
           <div className={S.reactionContainer}>
             {!hideActions && (
               <>
-                <ThumbsUpIcon isLiked={isLiked} count={likeCount} onClick={handleLikeClick} />
-                <ThumbsDownIcon isDisliked={isDisliked} count={dislikeCount} onClick={handleDislikeClick} />
+                <LikeButton isLiked={isLiked} count={likeCount} onClick={handleLikeClick} />
+                <DislikeButton isDisliked={isDisliked} count={dislikeCount} onClick={handleDislikeClick} />
                 <CommentButton post={post} onClick={() => onCommentClick?.(post.postId)} />
 
                 <ViewCount post={post} />

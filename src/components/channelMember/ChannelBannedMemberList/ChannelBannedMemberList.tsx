@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useGetBannedChannelMembers from '@/queries/useGetBannedChannelMembers.ts';
+import { useGetBannedChannelMembers } from '@/queries/useGetBannedChannelMembers.ts';
 import { ChannelMemberItem } from '@/components/channelmember/ChannelMemberItem/ChannelMemberItem';
 import { ChannelMemberUnbanDialog } from '@/components/channelmember/ChannelMemberUnbanDialog/ChannelMemberUnbanDialog';
 import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';

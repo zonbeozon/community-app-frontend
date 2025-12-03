@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai';
 import { accessTokenAtom } from '@/atoms/authAtoms';
 import { getServerMemberById } from '@/apis/http/serverMember.api';
 
-const useGetMyInfo = (memberId: number) => {
+export const useGetMyInfo = (memberId: number) => {
   const accessToken = useAtomValue(accessTokenAtom);
 
   return useQuery({
@@ -13,5 +13,3 @@ const useGetMyInfo = (memberId: number) => {
     enabled: !!accessToken && !!memberId,
   });
 };
-
-export default useGetMyInfo;

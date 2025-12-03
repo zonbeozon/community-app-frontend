@@ -1,15 +1,15 @@
 import { useRef } from 'react';
-import { useAtom } from 'jotai';
 import { serverMemberAtom } from '@/atoms/authAtoms';
+import { useAtom } from 'jotai';
 import { useUploadImage } from '@/hooks/common/image/useUploadImage';
-import useUpdateServerMemberProfile from './useUpdateServerMemberProfile';
+import { useUpdateServerMemberProfile } from './useUpdateServerMemberProfile';
 
 export const useServerMemberProfileImage = () => {
   const [serverMember, setServerMember] = useAtom(serverMemberAtom);
-  
+
   const { upload: uploadImage, isUploading } = useUploadImage();
   const { mutate: updateProfile, isPending: isUpdating } = useUpdateServerMemberProfile();
-  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,24 +22,27 @@ export const useServerMemberProfileImage = () => {
       formData.append('type', 'profile');
 
       const { imageId, imageUrl } = await uploadImage(formData);
-      
-      updateProfile({ imageId }, {
-        onSuccess: () => {
-          setServerMember({
-            ...serverMember,
-            profile: { ...serverMember.profile, imageId, imageUrl },
-          });
-        }
-      });
+
+      updateProfile(
+        { imageId },
+        {
+          onSuccess: () => {
+            setServerMember({
+              ...serverMember,
+              profile: { ...serverMember.profile, imageId, imageUrl },
+            });
+          },
+        },
+      );
     } finally {
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
   const handleEditClick = () => {
     fileInputRef.current?.click();
   };
-  
+
   return {
     serverMember,
     isBusy: isUploading || isUpdating,

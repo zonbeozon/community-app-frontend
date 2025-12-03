@@ -1,10 +1,10 @@
+import { updateServerMemberProfile } from '@/apis/http/serverMember.api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { updateServerMemberProfile } from '@/apis/http/serverMember.api'; 
+import { SERVER_ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/constants/messages';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/messages";
 
-const useUpdateServerMemberProfile = () => {
+export const useUpdateServerMemberProfile = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -16,12 +16,7 @@ const useUpdateServerMemberProfile = () => {
     },
 
     onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message ||
-          SERVER_ERROR_MESSAGES.SERVERMEMBER_PROFILE_UPDATE_FAILED
-      );
+      toast.error(error.response?.data?.message || SERVER_ERROR_MESSAGES.SERVERMEMBER_PROFILE_UPDATE_FAILED);
     },
   });
 };
-
-export default useUpdateServerMemberProfile;

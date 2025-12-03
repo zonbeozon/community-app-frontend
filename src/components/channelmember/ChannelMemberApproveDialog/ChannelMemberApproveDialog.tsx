@@ -4,7 +4,7 @@ import { useApproveChannelMember } from '@/hooks/channelmember/useApproveChannel
 import type { ChannelMemberDialogProps } from '@/types/channelMember.type';
 import * as S from './ChannelMemberApproveDialog.styles';
 
-const ChannelMemberApproveDialog = ({ open, onOpenChange, channelId, targetMember }: ChannelMemberDialogProps) => {
+export const ChannelMemberApproveDialog = ({ open, onOpenChange, channelId, targetMember }: ChannelMemberDialogProps) => {
   const { mutate: approveMember, isPending } = useApproveChannelMember();
 
   const handleApprove = () => {
@@ -45,5 +45,3 @@ const ChannelMemberApproveDialog = ({ open, onOpenChange, channelId, targetMembe
     </Dialog>
   );
 };
-
-export default ChannelMemberApproveDialog;

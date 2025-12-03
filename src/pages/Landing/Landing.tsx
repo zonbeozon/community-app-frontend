@@ -1,10 +1,10 @@
-import { GOOGLE_AUTH_URL } from "@/constants/oAuth";
-import { serverMemberAtom } from "@/atoms/authAtoms";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { serverMemberAtom } from '@/atoms/authAtoms';
 import { useAtomValue } from 'jotai';
-import { ROUTE_PATH } from "@/constants/routePaths";
-import * as S from "./Landing.styles";
+import { GOOGLE_AUTH_URL } from '@/constants/oAuth';
+import { ROUTE_PATH } from '@/constants/routePaths';
+import * as S from './Landing.styles';
 
 const GoogleIcon = () => (
   <div className={S.gsiIconWrapper}>
@@ -39,7 +39,7 @@ const Landing = () => {
   return (
     <div className={S.container}>
       <h1 className={S.logo}>zonbeozon</h1>
-      
+
       <button className={S.gsiButton} onClick={handleGoogleLogin}>
         <div className={S.gsiState}></div>
         <div className={S.gsiContentWrapper}>

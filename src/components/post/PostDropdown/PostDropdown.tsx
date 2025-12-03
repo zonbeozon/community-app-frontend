@@ -10,7 +10,7 @@ import { PostDeleteDialog } from '../PostDeleteDialog/PostDeleteDialog';
 import { PostUpdateDialog } from '../PostUpdateDialog/PostUpdateDialog';
 import * as S from './PostDropdown.styles';
 
-const PostDropdown = ({ post, author, channelId }: PostDropdownProps) => {
+export const PostDropdown = ({ post, author, channelId }: PostDropdownProps) => {
   const [isPatchDialogOpen, setPatchDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -79,5 +79,3 @@ const PostDropdown = ({ post, author, channelId }: PostDropdownProps) => {
     </>
   );
 };
-
-export default PostDropdown;

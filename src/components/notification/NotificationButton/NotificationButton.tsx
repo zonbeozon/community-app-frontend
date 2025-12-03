@@ -1,4 +1,4 @@
-import useGetNotifications from '@/queries/useGetNotification';
+import { useGetNotifications } from '@/queries/useGetNotification';
 import { Bell } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useMarkNotificationsAsRead } from '@/hooks/notification/useNotificationAsRead';

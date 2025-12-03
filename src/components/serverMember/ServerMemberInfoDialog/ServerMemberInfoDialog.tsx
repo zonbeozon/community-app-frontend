@@ -1,22 +1,22 @@
+import { serverMemberAtom } from '@/atoms/authAtoms';
+import { useAtomValue } from 'jotai';
+import { SignOutButton } from '@/components/common/SignOutButton/SignOutButton';
+import { ServerMemberName } from '@/components/servermember/ServerMemberName/ServerMemberName';
+import { ServerMemberProfileImage } from '@/components/servermember/ServerMemberProfileImage/ServerMemberProfileImage';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
   DialogTrigger,
-  DialogClose
-} from "@/components/ui/dialog";
-import { useAtomValue } from "jotai";
-import { serverMemberAtom } from "@/atoms/authAtoms";
-import { SignOutButton } from "@/components/common/SignOutButton/SignOutButton";
-import { useDialog } from "@/hooks/common/useDialog";
-import ServerMemberProfileImage from "../ServerMemberProfileImage/ServerMemberProfileImage";
-import ServerMemberName from "../ServerMemberName/ServerMemberName";
-import { Button } from "@/components/ui/button";
-import * as S from "./ServerMemberInfoDialog.styles";
+} from '@/components/ui/dialog';
+import { useDialog } from '@/hooks/common/useDialog';
+import * as S from './ServerMemberInfoDialog.styles';
 
-const ServerMemberInfoDialog = () => {
+export const ServerMemberInfoDialog = () => {
   const { props: dialogProps } = useDialog();
   const serverMember = useAtomValue(serverMemberAtom);
 
@@ -24,8 +24,8 @@ const ServerMemberInfoDialog = () => {
     return null;
   }
 
-  const username = serverMember.username || "";
-  const profile = serverMember.profile?.imageUrl || "";
+  const username = serverMember.username || '';
+  const profile = serverMember.profile?.imageUrl || '';
 
   return (
     <Dialog {...dialogProps}>
@@ -33,18 +33,14 @@ const ServerMemberInfoDialog = () => {
         {profile ? (
           <img src={profile} alt={`${username}의 프로필`} className={S.triggerImage} />
         ) : (
-          <div className={`${S.triggerImage}`}>
-            {username ? username[0].toUpperCase() : '?'}
-          </div>
+          <div className={`${S.triggerImage}`}>{username ? username[0].toUpperCase() : '?'}</div>
         )}
       </DialogTrigger>
 
       <DialogContent className={S.dialogContent}>
         <DialogHeader>
           <DialogTitle>내 프로필</DialogTitle>
-          <DialogDescription className="sr-only">
-            서버 프로필을 확인하고 수정할 수 있습니다.
-          </DialogDescription>
+          <DialogDescription className="sr-only">서버 프로필을 확인하고 수정할 수 있습니다.</DialogDescription>
         </DialogHeader>
 
         <div className={S.contentWrapper}>
@@ -52,9 +48,13 @@ const ServerMemberInfoDialog = () => {
           <ServerMemberName />
 
           <div className={S.buttonContainer}>
-            <div><SignOutButton /></div>
+            <div>
+              <SignOutButton />
+            </div>
             <DialogClose asChild>
-              <Button type="button" variant="ghost" className={S.closeButton}>닫기</Button>
+              <Button type="button" variant="ghost" className={S.closeButton}>
+                닫기
+              </Button>
             </DialogClose>
           </div>
         </div>
@@ -62,5 +62,3 @@ const ServerMemberInfoDialog = () => {
     </Dialog>
   );
 };
-
-export default ServerMemberInfoDialog;

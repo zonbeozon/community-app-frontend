@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getPost } from '@/apis/http/post.api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { PostResponse, Post } from '@/types/post.type'; 
+import { Post } from '@/types/post.type'; 
 import { ChannelMember } from '@/types/channelMember.type';
 import { InfiniteData } from '@tanstack/react-query'; 
 
@@ -18,7 +18,7 @@ interface PostListPage {
 const useGetPost = (postId: number, channelId: number) => {
   const queryClient = useQueryClient();
 
-  return useQuery<PostResponse, Error, PostDetailData>({
+  return useQuery<Post, Error, PostDetailData>({
     queryKey: QUERY_KEYS.posts.detail(postId),
     queryFn: () => getPost(postId),
     enabled: !!postId && postId > 0,
@@ -53,7 +53,7 @@ const useGetPost = (postId: number, channelId: number) => {
       return undefined;
     },
 
-    select: (data: PostResponse) => {
+    select: (data: Post) => {
       
       const { author, ...postProperties } = data;
       

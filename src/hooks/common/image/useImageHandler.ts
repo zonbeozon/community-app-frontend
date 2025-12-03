@@ -1,6 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { ImageHandlerProps } from '@/types/common.type';
-
 
 export const useImageHandler = ({ initialImageUrl = null }: ImageHandlerProps) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -18,18 +17,21 @@ export const useImageHandler = ({ initialImageUrl = null }: ImageHandlerProps) =
     setPreviewUrl(initialImageUrl);
   }, [initialImageUrl]);
 
-  const handleImageChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (e.target) e.target.value = '';
-    if (!file) return;
+  const handleImageChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (e.target) e.target.value = '';
+      if (!file) return;
 
-    if (previewUrl && previewUrl.startsWith('blob:')) {
-      URL.revokeObjectURL(previewUrl);
-    }
-    
-    setImageFile(file);
-    setPreviewUrl(URL.createObjectURL(file));
-  }, [previewUrl]);
+      if (previewUrl && previewUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(previewUrl);
+      }
+
+      setImageFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    },
+    [previewUrl],
+  );
 
   const handleRemoveImage = useCallback(() => {
     if (previewUrl && previewUrl.startsWith('blob:')) {

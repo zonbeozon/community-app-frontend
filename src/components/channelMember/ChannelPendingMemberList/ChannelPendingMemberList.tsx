@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import useGetPendingChannelMembers from '@/queries/useGetPendingChannelMembers';
-import ChannelMemberApproveDialog from '@/components/channelmember/ChannelMemberApproveDialog/ChannelMemberApproveDialog';
+import { useGetPendingChannelMembers } from '@/queries/useGetPendingChannelMembers';
+import { ChannelMemberApproveDialog } from '@/components/channelmember/ChannelMemberApproveDialog/ChannelMemberApproveDialog';
 import { ChannelMemberDenyDialog } from '@/components/channelmember/ChannelMemberDenyDialog/ChannelMemberDenyDialog';
 import { ChannelMemberItem } from '@/components/channelmember/ChannelMemberItem/ChannelMemberItem';
 import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';

@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { toast } from 'sonner';
 import { useSignIn } from '@/hooks/auth/useSignIn';
 import { ROUTE_PATH } from '@/constants/routePaths';
-import { toast } from 'sonner';
 
 const Callback = () => {
   const [searchParams] = useSearchParams();
@@ -15,16 +15,15 @@ const Callback = () => {
     if (token) {
       signIn(token);
     } else {
-      toast.error("로그인 정보가 올바르지 않습니다.");
+      toast.error('로그인 정보가 올바르지 않습니다.');
       navigate(ROUTE_PATH.root);
     }
-    
   }, [signIn, searchParams, navigate]);
 
   if (isPending) {
     return <div>로그인 처리 중입니다...</div>;
   }
-  
+
   return null;
 };
 
