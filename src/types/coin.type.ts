@@ -3,10 +3,10 @@ export interface Coin {
   logo: string;
   name: string;
   rank: number;
-  chattingGroupId: number;
+  chattingGroupId?: number;
 }
 
-export interface CryptoBySymbol {
+export interface CoinBySymbol {
   symbol: string;
   logo: string;
   localizedInfo: {
@@ -24,4 +24,5 @@ export interface CryptoBySymbol {
     volume24h: number;
   }
   tickerLastUpdated: string;
+  chattingGroupId: number;
 }

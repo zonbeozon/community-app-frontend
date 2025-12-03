@@ -1,22 +1,29 @@
 import { Outlet, useParams } from 'react-router-dom';
-import { useCoinList } from '@/queries/useCoinList';
+import { useGetCoinList } from '@/queries/useGetCoinList'; 
+import { useGetCoinBySymbol } from '@/queries/useGetCoinBySymbol';
 import { Spinner } from '@/components/ui/spinner';
 import * as S from './ChattingGroupContent.styles';
 import { useMemo } from 'react';
 import { keepPreviousData } from "@tanstack/react-query";
-import { useInfiniteKlinesQuery } from '@/queries/useInfiniteKlineQueries';
+import { useGetInfiniteKlinesQuery } from '@/queries/useInfiniteKlineQueries';
 import { Chart } from '@/components/chart/Chart/Chart';
 import { ChattingGroupHeader } from '../ChattingGroupHeader/ChattingGroupHeader';
 import { ChatInput } from '../ChatInput/ChatInput';
+import { ChatList } from '../ChatList/ChatList';
 
 const ChattingGroupContent = () => {
   const { chattingGroupId } = useParams<{ chattingGroupId: string }>();
   
-  const { data: coins, isLoading: isCoinLoading } = useCoinList();
+  const { data: coins } = useGetCoinList();
 
-  const currentCoin = useMemo(() => {
-    return coins?.find((c) => String(c.chattingGroupId) === chattingGroupId);
+  const targetSymbol = useMemo(() => {
+    return coins?.find((c) => String(c.chattingGroupId) === chattingGroupId)?.symbol;
   }, [coins, chattingGroupId]);
+
+  const { 
+    data: currentCoin, 
+    isLoading: isCoinLoading 
+  } = useGetCoinBySymbol(targetSymbol);
 
   const chartParams = {
     symbol: currentCoin?.symbol ? `${currentCoin.symbol}USDT` : "", 
@@ -25,12 +32,12 @@ const ChattingGroupContent = () => {
   };
 
   const {
-    data,
+    data: chartData,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     isLoading: isChartLoading,
-  } = useInfiniteKlinesQuery(chartParams, {
+  } = useGetInfiniteKlinesQuery(chartParams, {
     placeholderData: keepPreviousData,
     enabled: !!currentCoin?.symbol, 
   });
@@ -46,15 +53,21 @@ const ChattingGroupContent = () => {
   return (
     <div className={S.layout}>
       <ChattingGroupHeader showBackButton={false} coinData={currentCoin}/>
+      
       <Chart
-          data={data}
+          data={chartData}
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
           params={chartParams}
       />
+      
       <div className={S.contentWrapper}>
         <Outlet context={{ coin: currentCoin }} /> 
+      </div>
+      
+      <div>
+        <ChatList />
       </div>
       <div>
         <ChatInput />
