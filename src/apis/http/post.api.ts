@@ -1,6 +1,6 @@
-import fetcher from '@/apis/fetcher';
+import { fetcher } from '@/apis/fetcher';
 import { BASE_URL, ENDPOINT } from '@/apis/url';
-import type { PostRequest, PostResponse, PostsParams, PostsResponse, RecommendedPostResponse } from '@/types/post.type';
+import type { Post, PostRequest, PostsParams, PostsResponse, RecommendedPostResponse } from '@/types/post.type';
 
 export const getPosts = async (channelId: number, params: PostsParams = {}): Promise<PostsResponse> => {
   const queryParams = {
@@ -14,8 +14,8 @@ export const getPosts = async (channelId: number, params: PostsParams = {}): Pro
   });
 };
 
-export const getPost = async (postId: number): Promise<PostResponse> => {
-  return fetcher.get<PostResponse>({
+export const getPost = async (postId: number): Promise<Post> => {
+  return fetcher.get<Post>({
     url: BASE_URL + ENDPOINT.POST_BY_ID(postId),
   });
 };
