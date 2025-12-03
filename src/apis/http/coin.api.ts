@@ -1,4 +1,4 @@
-import fetcher from '@/apis/fetcher';
+import { fetcher } from '@/apis/fetcher';
 import { BASE_URL, ENDPOINT } from '@/apis/url';
 import type { Coin, CoinBySymbol } from '@/types/coin.type';
 

@@ -1,5 +1,5 @@
-import fetcher from '@/apis/fetcher';
-import api from '@/apis/interceptor';
+import { fetcher } from '@/apis/fetcher';
+import { api } from '@/apis/interceptor';
 import { BASE_URL, ENDPOINT } from '@/apis/url';
 import type { ChannelMembersResponse, ChannelRole } from '@/types/channelMember.type';
 import type { PageRequest } from '@/types/common.type';

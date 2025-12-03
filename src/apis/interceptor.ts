@@ -1,9 +1,9 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
-import * as Sentry from "@sentry/react";
-import { jotaiStore } from "@/atoms/store";
-import { accessTokenAtom } from "@/atoms/authAtoms";
-import { reissue } from "./http/reissue.api";
-import { ENDPOINT } from "./url";
+import { reissue } from '@/apis/http/reissue.api';
+import { ENDPOINT } from '@/apis/url';
+import { accessTokenAtom } from '@/atoms/authAtoms';
+import { jotaiStore } from '@/atoms/store';
+import * as Sentry from '@sentry/react';
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 let isRefreshing = false;
 let refreshQueue: Array<(token: string | null) => void> = [];
@@ -13,15 +13,15 @@ const processQueue = (newToken: string | null) => {
   refreshQueue = [];
 };
 
-const api = axios.create({
-  baseURL: "",
+export const api = axios.create({
+  baseURL: '',
   withCredentials: true,
 });
 
 api.interceptors.request.use(
   (config) => {
-    const tokenString = localStorage.getItem("accessToken");
-    if (tokenString && tokenString !== "null" && config.headers) {
+    const tokenString = localStorage.getItem('accessToken');
+    if (tokenString && tokenString !== 'null' && config.headers) {
       try {
         const token = tokenString.startsWith('"') ? JSON.parse(tokenString) : tokenString;
         config.headers.Authorization = `Bearer ${token}`;
@@ -31,7 +31,7 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 api.interceptors.response.use(
@@ -45,8 +45,8 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    const tokenString = localStorage.getItem("accessToken");
-    if (!tokenString || tokenString === "null") {
+    const tokenString = localStorage.getItem('accessToken');
+    if (!tokenString || tokenString === 'null') {
       if (window.location.pathname !== '/') {
         window.location.href = '/';
       }
@@ -73,10 +73,10 @@ api.interceptors.response.use(
       try {
         const newAccessToken = await reissue();
 
-        if (!newAccessToken) throw new Error("Failed to refresh token");
+        if (!newAccessToken) throw new Error('Failed to refresh token');
 
         jotaiStore.set(accessTokenAtom, newAccessToken);
-        localStorage.setItem("accessToken", JSON.stringify(newAccessToken));
+        localStorage.setItem('accessToken', JSON.stringify(newAccessToken));
 
         processQueue(newAccessToken);
 
@@ -85,15 +85,14 @@ api.interceptors.response.use(
         }
 
         return api(originalRequest);
-
       } catch (reissueError) {
         processQueue(null);
         Sentry.captureException(reissueError);
-        
-        jotaiStore.set(accessTokenAtom, null);
-        localStorage.removeItem("accessToken");
 
-        window.location.href = "/";
+        jotaiStore.set(accessTokenAtom, null);
+        localStorage.removeItem('accessToken');
+
+        window.location.href = '/';
 
         return Promise.reject(reissueError);
       } finally {
@@ -103,7 +102,5 @@ api.interceptors.response.use(
 
     Sentry.captureException(error);
     return Promise.reject(error);
-  }
+  },
 );
-
-export default api;

@@ -1,4 +1,4 @@
-import api from '@/apis/interceptor';
+import { api } from '@/apis/interceptor';
 import { ENDPOINT } from '@/apis/url';
 
 export const reissue = async (): Promise<string> => {

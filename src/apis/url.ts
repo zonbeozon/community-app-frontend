@@ -1,4 +1,4 @@
-export const BASE_URL = import.meta.env.VITE_API_URL
+export const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const ENDPOINT = {
   //Channel
@@ -56,5 +56,5 @@ export const ENDPOINT = {
   IMAGE: `/images`,
 
   //Kline
-  KLINE: "/proxy-api/api/v3/klines",
+  KLINE: '/proxy-api/api/v3/klines',
 };

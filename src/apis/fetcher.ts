@@ -1,4 +1,4 @@
-import api from '@/apis/interceptor';
+import { api } from '@/apis/interceptor';
 import { AxiosRequestConfig } from 'axios';
 
 interface RequestProps {
@@ -10,7 +10,7 @@ interface RequestProps {
   params?: Record<string, any>;
 }
 
-const fetcher = {
+export const fetcher = {
   async request<T = any>({ url, method = 'GET', body, headers, params }: RequestProps): Promise<T> {
     try {
       const config: AxiosRequestConfig = {
@@ -44,5 +44,3 @@ const fetcher = {
     return this.request<T>({ ...props, method: 'PUT' });
   },
 };
-
-export default fetcher;
