@@ -1,18 +1,23 @@
-export const wrapper = 'sticky top-0 z-20 w-full h-14 bg-white border-b flex items-center px-4';
-
-export const icon = 'w-13 h-13 rounded-full object-cover mr-3';
-
-export const titleWrapper = 'flex flex-col grow';
-
-export const name = 'text-md pl-3';
-
-export const image = 'justify-center items-center rounded-full object-cover';
-
-export const dropdownButton = `
-  h-8 w-8 flex items-center justify-center rounded-full
-  hover:bg-muted transition-colors
+export const wrapper = `
+  sticky top-0 z-50 w-full h-14 
+  bg-white 
+  border-b
+  flex items-center justify-between 
+  px-4 transition-all
 `;
 
-export const button = 'pr-3';
+export const leftGroup = 'flex items-center gap-3 overflow-hidden';
 
-export const goBackButtonWrapper = 'flex items-center';
+export const imageWrapper = 'shrink-0 flex items-center justify-center';
+
+export const textContainer = 'flex items-baseline gap-1.5 min-w-0';
+
+export const name = 'text-md truncate';
+
+export const symbol = 'text-sm text-gray-400';
+
+export const rightGroup = 'flex flex-col items-end justify-center shrink-0 ml-4';
+
+export const mainStat = 'text-sm font-semibold text-gray-700 tabular-nums';
+
+export const subStat = 'text-xs font-medium text-gray-400 mt-0.5 tabular-nums';
