@@ -38,11 +38,6 @@ export interface ChattingGroupProps {
   chattingGroups: Coin[];
 }
 
-export interface ChattingHeaderProps {
-  showBackButton: boolean;
-  coinData: Coin;
-}
-
 export interface ChatInputProps {
   onSubmit: (content: string) => void;
 }

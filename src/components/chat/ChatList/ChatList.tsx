@@ -1,17 +1,22 @@
 import { useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
 import { useGetChats } from '@/queries/useGetChats';
 import { ChatItem } from '../ChatItem/ChatItem';
 import { useAtomValue } from 'jotai';
 import { serverMemberAtom } from '@/atoms/authAtoms';
+import { useChatSubscription } from '@/stomp/hooks/useChatSubscription';
 import * as S from './ChatList.styles';
 
-export const ChatList = () => {
-  const { chattingGroupId } = useParams<{ chattingGroupId: string }>();
+interface ChatListProps {
+  chattingGroupId: number;
+}
+
+export const ChatList = ({ chattingGroupId }: ChatListProps) => {
   const bottomRef = useRef<HTMLDivElement>(null);
-  const { data: chatList, isLoading } = useGetChats(Number(chattingGroupId));
+  const { data: chatList, isLoading } = useGetChats(chattingGroupId);
 
   const myInfo = useAtomValue(serverMemberAtom);
+
+  useChatSubscription(chattingGroupId)
 
   useEffect(() => {
     if (bottomRef.current) {

@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom'; 
 import { Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import * as S from './ChatInput.styles';
 import { useCreateChat } from '@/hooks/chat/useCreateChat';
 
-export const ChatInput = () => {
-  const { chattingGroupId } = useParams<{ chattingGroupId: string }>();
+
+export const ChatInput = ({ chattingGroupId }: { chattingGroupId: number }) => {
   
   const inputRef = useRef<HTMLInputElement>(null);
   const [chat, setChat] = useState('');
@@ -22,13 +21,14 @@ export const ChatInput = () => {
 
   const handleSubmit = () => {
     const trimmedChat = chat.trim();
+    
     if (!trimmedChat || !chattingGroupId) return;
 
     createChat({ 
-      chattingGroupId: Number(chattingGroupId),
+      chattingGroupId, 
       payload: { 
         content: trimmedChat,
-        imageIds: []
+        imageIds: [],
       } 
     });
     

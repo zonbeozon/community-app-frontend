@@ -1,9 +1,7 @@
 import { Outlet, useParams } from 'react-router-dom';
-import { useGetCoinList } from '@/queries/useGetCoinList'; 
-import { useGetCoinBySymbol } from '@/queries/useGetCoinBySymbol';
+import { useGetCoinBySymbol } from '@/queries/useGetCoinBySymbol'; // 상세 조회 훅
 import { Spinner } from '@/components/ui/spinner';
 import * as S from './ChattingGroupContent.styles';
-import { useMemo } from 'react';
 import { keepPreviousData } from "@tanstack/react-query";
 import { useGetInfiniteKlinesQuery } from '@/queries/useInfiniteKlineQueries';
 import { Chart } from '@/components/chart/Chart/Chart';
@@ -12,18 +10,12 @@ import { ChatInput } from '../ChatInput/ChatInput';
 import { ChatList } from '../ChatList/ChatList';
 
 const ChattingGroupContent = () => {
-  const { chattingGroupId } = useParams<{ chattingGroupId: string }>();
+  const { symbol } = useParams<{ symbol: string }>();
   
-  const { data: coins } = useGetCoinList();
-
-  const targetSymbol = useMemo(() => {
-    return coins?.find((c) => String(c.chattingGroupId) === chattingGroupId)?.symbol;
-  }, [coins, chattingGroupId]);
-
   const { 
     data: currentCoin, 
     isLoading: isCoinLoading 
-  } = useGetCoinBySymbol(targetSymbol);
+  } = useGetCoinBySymbol(symbol);
 
   const chartParams = {
     symbol: currentCoin?.symbol ? `${currentCoin.symbol}USDT` : "", 
@@ -52,7 +44,7 @@ const ChattingGroupContent = () => {
 
   return (
     <div className={S.layout}>
-      <ChattingGroupHeader showBackButton={false} coinData={currentCoin}/>
+      <ChattingGroupHeader coin={currentCoin}/>
       
       <Chart
           data={chartData}
@@ -67,10 +59,10 @@ const ChattingGroupContent = () => {
       </div>
       
       <div>
-        <ChatList />
+        <ChatList chattingGroupId={currentCoin.chattingGroupId}/>
       </div>
       <div>
-        <ChatInput />
+        <ChatInput chattingGroupId={currentCoin.chattingGroupId}/>
       </div>
     </div>
   );
