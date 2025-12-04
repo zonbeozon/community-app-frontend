@@ -1,5 +1,5 @@
 import { Outlet, useParams } from 'react-router-dom';
-import { useGetCoinBySymbol } from '@/queries/useGetCoinBySymbol'; // 상세 조회 훅
+import { useGetCoinBySymbol } from '@/queries/useGetCoinBySymbol';
 import { Spinner } from '@/components/ui/spinner';
 import * as S from './ChattingGroupContent.styles';
 import { keepPreviousData } from "@tanstack/react-query";
@@ -44,25 +44,34 @@ const ChattingGroupContent = () => {
 
   return (
     <div className={S.layout}>
-      <ChattingGroupHeader coin={currentCoin}/>
-      
-      <Chart
-          data={chartData}
-          fetchNextPage={fetchNextPage}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-          params={chartParams}
-      />
-      
-      <div className={S.contentWrapper}>
-        <Outlet context={{ coin: currentCoin }} /> 
+      <div className={S.headerWrapper}>
+        <ChattingGroupHeader coin={currentCoin}/>
       </div>
       
-      <div>
-        <ChatList chattingGroupId={currentCoin.chattingGroupId}/>
+      <div className={S.chartWrapper}>
+        <Chart
+            data={chartData}
+            fetchNextPage={fetchNextPage}
+            hasNextPage={hasNextPage}
+            isFetchingNextPage={isFetchingNextPage}
+            params={chartParams}
+        />
       </div>
-      <div>
-        <ChatInput chattingGroupId={currentCoin.chattingGroupId}/>
+      
+      <div className={S.chatSection}>
+        
+        <div className={S.scrollArea}>
+          <div className={S.contentWrapper}>
+            <Outlet context={{ coin: currentCoin }} /> 
+          </div>
+          
+          <ChatList chattingGroupId={currentCoin.chattingGroupId}/>
+        </div>
+
+        <div className={S.inputWrapper}>
+          <ChatInput chattingGroupId={currentCoin.chattingGroupId}/>
+        </div>
+        
       </div>
     </div>
   );
