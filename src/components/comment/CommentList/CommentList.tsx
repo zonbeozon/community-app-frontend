@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { serverMemberAtom } from '@/atoms/authAtoms';
-import useGetComments from '@/queries/useGetComments';
+import { useGetComments } from '@/queries/useGetComments';
 import { useAtomValue } from 'jotai';
 import { CommentItem } from '@/components/comment/CommentItem/CommentItem';
 import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
