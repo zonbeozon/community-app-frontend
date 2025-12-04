@@ -13,7 +13,7 @@ export const ChattingGroupItem = ({ coin }: { coin: Coin }) => {
 
   return (
     <li className={S.wrapper}>
-      <Link to={`/chats/${chattingGroupId}`} className={S.itemWrapper(isSelected)}>
+      <Link to={`/info/coin/${symbol}`} className={S.itemWrapper(isSelected)}>
         <div className={S.profileImage}> 
            <img 
              src={logo} 
