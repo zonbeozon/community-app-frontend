@@ -1,15 +1,17 @@
 import { Link, useParams } from 'react-router-dom';
-import { useLatestPost } from '@/hooks/post/useLatestPost';
+import { useLatestChat } from '@/hooks/chat/useLatestChat';
 import * as S from './ChattingGroupItem.styles';
 import type { Coin } from '@/types/coin.type';
 
 export const ChattingGroupItem = ({ coin }: { coin: Coin }) => {
-  const { chattingGroupId: currentUrlChattingGroupId } = useParams<{ chattingGroupId: string }>();
+  const { symbol: currentUrlSymbol } = useParams<{ symbol: string }>();
   
   const { chattingGroupId, name, logo, symbol } = coin;
 
-  const latestChat = useLatestPost(chattingGroupId);
-  const isSelected = String(chattingGroupId) === currentUrlChattingGroupId;
+  const latestChat = useLatestChat(chattingGroupId);
+  const isSelected = String(coin.symbol) === currentUrlSymbol;
+
+  console.log(latestChat)
 
   return (
     <li className={S.wrapper}>
