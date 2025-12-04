@@ -1,19 +1,17 @@
 import { memo } from 'react';
 import type { Chat } from '@/types/chat.type';
+import { ChatDropdown } from '../ChatDropdown/ChatDropdown'; 
 import * as S from './ChatItem.styles';
+import { TimeDisplay } from '@/components/common/TimeDisplay/TimeDisplay';
 
 interface ChatItemProps {
   chat: Chat;
   isMe: boolean;
+  chattingGroupId: number;
 }
 
-export const ChatItem = memo(({ chat, isMe }: ChatItemProps) => {
-  const { content, author, createdAt } = chat;
-
-  const formattedTime = new Date(createdAt).toLocaleTimeString('ko-KR', {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+export const ChatItem = memo(({ chat, isMe, chattingGroupId }: ChatItemProps) => {
+  const { chatId, content, author, createdAt } = chat; 
 
   return (
     <li className={`${S.wrapper} ${isMe ? S.wrapperMe : S.wrapperOther}`}>
@@ -35,8 +33,17 @@ export const ChatItem = memo(({ chat, isMe }: ChatItemProps) => {
           <div className={`${S.bubble} ${isMe ? S.bubbleMe : S.bubbleOther}`}>
             {content}
           </div>
-
-          <span className={S.time}>{formattedTime}</span>
+          <span className={S.time}>
+          <TimeDisplay createdAt={createdAt}/>
+          </span>
+          {isMe && (
+            <div className="flex items-center ml-1">
+              <ChatDropdown 
+                chatId={chatId} 
+                chattingGroupId={chattingGroupId} 
+              />
+            </div>
+          )}
         </div>
       </div>
     </li>

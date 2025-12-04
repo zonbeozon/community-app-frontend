@@ -4,15 +4,15 @@ export const wrapperMe = 'justify-end';
 
 export const wrapperOther = 'justify-start items-start gap-2';
 
-export const profileImage = 'w-9 h-9 rounded-full bg-gray-200 object-cover border border-gray-100';
+export const profileImage = 'w-9 h-9 rounded-full bg-gray-200 object-cover border border-gray-100 ml-2';
 
 export const contentGroup = 'flex flex-col max-w-[70%]';
 
 export const contentGroupMe = 'items-end';
 
-export const contentGroupOther = 'items-start';
+export const contentGroupOther = 'items-start ml-2';
 
-export const nickname = 'text-[11px] text-gray-500 mb-1 ml-1';
+export const nickname = 'text-[11px] text-gray-500 mb-1';
 
 export const bubbleRow = 'flex items-end gap-1.5';
 

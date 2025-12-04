@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/input';
 import * as S from './ChatInput.styles';
 import { useCreateChat } from '@/hooks/chat/useCreateChat';
 
-
 export const ChatInput = ({ chattingGroupId }: { chattingGroupId: number }) => {
   
   const inputRef = useRef<HTMLInputElement>(null);
