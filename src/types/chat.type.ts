@@ -50,3 +50,9 @@ export interface CreateChatProps {
     parentId: number;
   }
 }
+
+export interface ChatDialogProps {
+  chatId: number;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
