@@ -52,7 +52,11 @@ const RecommendedPostList = () => {
             <h2 className="text-lg font-semibold text-gray-800">추천 포스트</h2>
           </div>
 
-          <span className="text-xs text-gray-500">마지막 업데이트: {localizeTimezone(lastUpdated)}</span>
+          {lastUpdated && (
+            <span className="text-xs text-gray-500">
+              마지막 업데이트: {localizeTimezone(lastUpdated)}
+            </span>
+          )}
         </div>
       </div>
 
