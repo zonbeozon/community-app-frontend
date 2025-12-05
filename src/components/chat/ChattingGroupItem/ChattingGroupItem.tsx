@@ -1,17 +1,14 @@
 import { Link, useParams } from 'react-router-dom';
-import { useLatestChat } from '@/hooks/chat/useLatestChat';
 import * as S from './ChattingGroupItem.styles';
 import type { Coin } from '@/types/coin.type';
 
 export const ChattingGroupItem = ({ coin }: { coin: Coin }) => {
   const { symbol: currentUrlSymbol } = useParams<{ symbol: string }>();
   
-  const { chattingGroupId, name, logo, symbol } = coin;
+  const { name, logo, symbol } = coin;
 
-  const latestChat = useLatestChat(chattingGroupId);
   const isSelected = String(coin.symbol) === currentUrlSymbol;
 
-  console.log(latestChat)
 
   return (
     <li className={S.wrapper}>
@@ -31,12 +28,6 @@ export const ChattingGroupItem = ({ coin }: { coin: Coin }) => {
               {symbol}
             </span>
           </div>
-
-          {latestChat ? (
-            <p className={S.latestChat}>{latestChat.content}</p>
-          ) : (
-            <p className={S.latestChat}>대화가 없습니다.</p>
-          )}
         </div>
       </Link>
     </li>
