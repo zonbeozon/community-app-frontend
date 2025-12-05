@@ -1,17 +1,14 @@
 import { CoinBySymbol } from '@/types/coin.type';
-import { CoinInfoDialog } from '../CoinInfoDialog/CoinInfoDialog';
+import { CoinInfoDialog } from '../../coin/CoinInfoDialog/CoinInfoDialog';
 import * as S from './ChattingGroupHeader.styles';
 
 export const ChattingGroupHeader = ({ coin }: { coin: CoinBySymbol }) => {
-  const formattedSupply = coin.totalSupply 
-    ? Number(coin.totalSupply).toLocaleString() 
-    : '-';
 
   return (
     <header className={S.wrapper}>
       <div className={S.leftGroup}>
         <div className={S.imageWrapper}>
-          <CoinInfoDialog coin={coin} />
+          <img className='rounded-full' src={coin.logo}/>
         </div>
         
         <div className={S.textContainer}>
@@ -20,6 +17,9 @@ export const ChattingGroupHeader = ({ coin }: { coin: CoinBySymbol }) => {
           </h1>
           <span className={S.symbol}>
             {coin.symbol}
+          </span>
+          <span className={S.infoIconWrapper}>
+            <CoinInfoDialog coin={coin}/>
           </span>
         </div>
       </div>
