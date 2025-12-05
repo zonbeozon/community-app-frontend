@@ -7,7 +7,7 @@ import { QUERY_KEYS } from '@/constants/queryKeys';
 
 interface DeleteChatVariables {
   chatId: number;
-  chattingGroupId: number; 
+  chattingGroupId: number;
 }
 
 export const useDeleteChat = () => {
@@ -27,13 +27,13 @@ export const useDeleteChat = () => {
     onSuccess: (_data, variables) => {
       const { chattingGroupId } = variables;
 
-      queryClient.invalidateQueries({
-        queryKey: [...QUERY_KEYS.chats.lists(), chattingGroupId.toString()],
-      });
-      
-      toast.success('채팅이 삭제되었습니다.');
-    },
+      const queryKeyToInvalidate = [...QUERY_KEYS.chats.lists(), chattingGroupId];
 
+      queryClient.invalidateQueries({
+        queryKey: queryKeyToInvalidate,
+        refetchType: 'all',
+      });
+    },
     onError: (error: any) => {
       if (error.message === 'Not logged in') return;
       toast.error(error.response?.data?.message);
