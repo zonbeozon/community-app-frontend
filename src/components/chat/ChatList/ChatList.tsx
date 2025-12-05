@@ -58,7 +58,7 @@ export const ChatList = ({ chattingGroupId }: ChatListProps) => {
             chattingGroupId={chattingGroupId}
           />
         ))}
-      <div ref={bottomRef} />
+      <div ref={bottomRef} style={{ height: 0, margin: 0, padding: 0, flexShrink: 0 }}/>
     </ul>
   );
 };
