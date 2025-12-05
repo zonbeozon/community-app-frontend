@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } 
 import { useDialog } from '@/hooks/common/useDialog';
 import { CoinBySymbol } from '@/types/coin.type';
 import * as S from './CoinInfoDialog.styles';
-import { TrendingUp, Coins, Globe } from 'lucide-react'; 
+import { TrendingUp, Coins, Globe, ZoomIn } from 'lucide-react'; 
 
 const formatCurrency = (value?: number) => {
   if (value === undefined || value === null) return '-';
@@ -29,11 +29,7 @@ export const CoinInfoDialog = ({ coin }: { coin: CoinBySymbol }) => {
   return (
     <Dialog {...dialogProps}>
       <DialogTrigger asChild>
-        <img 
-          className='cursor-pointer rounded-full w-10 h-10 hover:opacity-80 transition-opacity' 
-          src={coin.logo} 
-          alt={coin.symbol} 
-        />
+        <ZoomIn className='cursor-pointer w-5 h-5 text-gray-400'/>
       </DialogTrigger>
 
       <DialogContent className={S.dialogContent}>
