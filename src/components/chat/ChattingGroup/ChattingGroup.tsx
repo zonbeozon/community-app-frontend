@@ -15,7 +15,7 @@ export const ChattingGroup = ({ title, chattingGroups }: ChattingGroupProps) => 
 
   return (
     <div>
-      <h3>{title}</h3>
+      <h3 className={S.title}>{title}</h3>
       <ul>
         {chattingGroups.map((coin) => (
           <ChattingGroupItem 
