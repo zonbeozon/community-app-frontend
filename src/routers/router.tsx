@@ -15,7 +15,7 @@ const Landing = React.lazy(() => import('@/pages/Landing/Landing'));
 const ErrorPage = React.lazy(() => import('@/pages/Error/Error'));
 
 
-const router = createBrowserRouter(
+export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route element={<Outlet />}>
@@ -46,5 +46,3 @@ const router = createBrowserRouter(
     </>,
   ),
 );
-
-export default router;
