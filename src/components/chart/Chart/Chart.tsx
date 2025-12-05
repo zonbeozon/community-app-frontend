@@ -1,51 +1,74 @@
-import { useEffect, useRef, useState } from 'react';
-import { createChart } from 'lightweight-charts';
-import { ChartTooltip } from '@/components/chart/ChartTooltip/ChartTooltip';
-import { useChartInfiniteScroll } from '@/hooks/chart/useChartInfiniteScroll';
-import { useFormattedChartData } from '@/hooks/chart/useFormattedChartData';
-import { useRealTimeTrade } from '@/hooks/chart/useRealTimeTrade';
+import { useRef, useEffect, useState } from "react";
+import { createChart } from "lightweight-charts";
+import { useAtomValue } from "jotai/react";
+import { ChartTooltip } from "../ChartTooltip/ChartTooltip";
+import { useFormattedChartData } from "@/hooks/chart/useFormattedChartData";
+import { useChartInfiniteScroll } from "@/hooks/chart/useChartInfiniteScroll";
+import { useRealTimeTrade } from "@/hooks/chart/useRealTimeTrade";
+import { getRandomColor } from "@/utils/randomColorGenerator";
 import {
   CANDLESTICK_SERIES_OPTIONS,
-  INITIAL_TOOLTIP_STATE,
-  VOLUME_PRICE_SCALE_ID,
-  VOLUME_SCALE_OPTIONS,
   VOLUME_SERIES_OPTIONS,
-} from '@/constants/constants';
-import type { CandlestickData, HistogramData, IChartApi, ISeriesApi } from 'lightweight-charts';
-import type { ChartProps, ChartTooltipProps } from '@/types/chart.type';
-import * as S from './Chart.styles';
+  VOLUME_SCALE_OPTIONS,
+  VOLUME_PRICE_SCALE_ID,
+  INITIAL_TOOLTIP_STATE,
+} from "@/constants/constants";
+import type {
+  IChartApi,
+  ISeriesApi,
+  CandlestickData,
+  LineWidth
+} from "lightweight-charts";
+import type { ChartTooltipProps, ChartProps } from "@/types/chart.type";
+import * as S from "./Chart.styles";
 
-export const Chart = ({ data, fetchNextPage, hasNextPage, isFetchingNextPage, params }: ChartProps) => {
+export const Chart = ({
+  data,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  params,
+  indicatorData,
+}: ChartProps) => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
-  const candleSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
-  const volumeSeriesRef = useRef<ISeriesApi<'Histogram'> | null>(null);
+  const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
+  const volumeSeriesRef = useRef<ISeriesApi<"Histogram"> | null>(null);
 
-  const [tooltipState, setTooltipState] = useState<ChartTooltipProps>(INITIAL_TOOLTIP_STATE);
+  const OSCILLATORS = ["RSI", "MACD", "Stochastic", "ATR", "OBV"];
+
+  const indicatorSeriesRef = useRef(new Map<string, ISeriesApi<"Line">>());
+  const [tooltipState, setTooltipState] = useState<ChartTooltipProps>(
+    INITIAL_TOOLTIP_STATE
+  );
 
   const { candlestickData, volumeData } = useFormattedChartData(data);
-  const { handleVisibleLogicalRangeChange, visibleRangeRef, scrollLockRef } = useChartInfiniteScroll({
-    chartRef,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  });
+  const { handleVisibleLogicalRangeChange, visibleRangeRef, scrollLockRef } =
+    useChartInfiniteScroll({
+      chartRef,
+      fetchNextPage,
+      hasNextPage,
+      isFetchingNextPage,
+    });
 
   const latestPriceRef = useRealTimeTrade(params.symbol);
 
   useEffect(() => {
-    if (!chartContainerRef.current) return;
+    if (!chartContainerRef.current || chartRef.current) return;
 
-    const chart = createChart(chartContainerRef.current, S.chartOptions);
+    const chart = createChart(
+      chartContainerRef.current,
+      S.chartOptions
+    );
+    chart
+      .timeScale()
+      .subscribeVisibleLogicalRangeChange(handleVisibleLogicalRangeChange);
 
-    chart.timeScale().subscribeVisibleLogicalRangeChange(handleVisibleLogicalRangeChange);
-
-    chart.priceScale('right').applyOptions({
-      scaleMargins: {
-        top: 0.1,
-        bottom: 0.1,
-      },
-    });
+    new ResizeObserver(entries => {
+        if (entries.length === 0 || entries[0].target !== chartContainerRef.current) { return; }
+        const newRect = entries[0].contentRect;
+        chart.applyOptions({ height: newRect.height, width: newRect.width });
+      }).observe(chartContainerRef.current);  
 
     const candleSeries = chart.addCandlestickSeries(CANDLESTICK_SERIES_OPTIONS);
     const volumeSeries = chart.addHistogramSeries(VOLUME_SERIES_OPTIONS);
@@ -55,19 +78,9 @@ export const Chart = ({ data, fetchNextPage, hasNextPage, isFetchingNextPage, pa
     candleSeriesRef.current = candleSeries;
     volumeSeriesRef.current = volumeSeries;
 
-    const resizeObserver = new ResizeObserver((entries) => {
-      if (entries.length === 0 || entries[0].target !== chartContainerRef.current) {
-        return;
-      }
-      const newRect = entries[0].contentRect;
-      chart.applyOptions({ height: newRect.height, width: newRect.width });
-    });
-    resizeObserver.observe(chartContainerRef.current);
-
     chart.subscribeCrosshairMove((param) => {
       const container = chartContainerRef.current;
       const series = candleSeriesRef.current;
-
       if (!container || !series || !param.point || !param.time) {
         setTooltipState((prev) => ({ ...prev, visible: false }));
         return;
@@ -86,13 +99,13 @@ export const Chart = ({ data, fetchNextPage, hasNextPage, isFetchingNextPage, pa
       const tooltipHeight = 70;
       const margin = 15;
 
-      const isRightSide = param.point.x > containerWidth / 2;
+      const isRightSide = param.point.x > containerWidth / 2
 
       let left;
       if (isRightSide) {
         left = chartRect.left + param.point.x - tooltipWidth - margin;
       } else {
-        left = chartRect.left + param.point.x + margin;
+        left = chartRect.left + param.point.x + margin; 
       }
 
       let top = chartRect.top + param.point.y - tooltipHeight - margin;
@@ -104,11 +117,9 @@ export const Chart = ({ data, fetchNextPage, hasNextPage, isFetchingNextPage, pa
     });
 
     return () => {
-      resizeObserver.disconnect();
       chart.remove();
       chartRef.current = null;
-      candleSeriesRef.current = null;
-      volumeSeriesRef.current = null;
+      indicatorSeriesRef.current.clear(); 
     };
   }, [handleVisibleLogicalRangeChange]);
 
@@ -116,18 +127,16 @@ export const Chart = ({ data, fetchNextPage, hasNextPage, isFetchingNextPage, pa
     if (!candleSeriesRef.current || !volumeSeriesRef.current) return;
 
     candleSeriesRef.current.setData(candlestickData);
-    volumeSeriesRef.current.setData(volumeData as HistogramData[]);
+    volumeSeriesRef.current.setData(volumeData);
 
     if (visibleRangeRef.current && data?.pages) {
       const addedDataCount = data.pages[0]?.klines.length ?? 0;
+      const newFrom = visibleRangeRef.current.from + addedDataCount;
+      const newTo = visibleRangeRef.current.to + addedDataCount;
 
-      if (addedDataCount > 0) {
-        const newFrom = visibleRangeRef.current.from + addedDataCount;
-        const newTo = visibleRangeRef.current.to + addedDataCount;
-
-        chartRef.current?.timeScale().setVisibleLogicalRange({ from: newFrom, to: newTo });
-      }
-
+      chartRef.current
+        ?.timeScale()
+        .setVisibleLogicalRange({ from: newFrom, to: newTo });
       visibleRangeRef.current = null;
 
       setTimeout(() => {
@@ -137,23 +146,82 @@ export const Chart = ({ data, fetchNextPage, hasNextPage, isFetchingNextPage, pa
   }, [candlestickData, volumeData, data, visibleRangeRef, scrollLockRef]);
 
   useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart) return;
+
+    const currentIndicatorKeys = Object.keys(indicatorData);
+    const seriesMap = indicatorSeriesRef.current;
+
+    seriesMap.forEach((series, key) => {
+      if (!currentIndicatorKeys.includes(key)) {
+        chart.removeSeries(series);
+        seriesMap.delete(key);
+      }
+    });
+
+    const hasOscillator = currentIndicatorKeys.some((key) =>
+      OSCILLATORS.some((type) => key.includes(type))
+    );
+
+    chart.priceScale("right").applyOptions({
+      scaleMargins: {
+        top: 0.1,
+        bottom: hasOscillator ? 0.3 : 0.1,
+      },
+    });
+
+    currentIndicatorKeys.forEach((key) => {
+      const dataForSeries = indicatorData[key];
+      if (!dataForSeries) return;
+
+      const isOscillator = OSCILLATORS.some((type) => key.includes(type));
+
+      const existingSeries = seriesMap.get(key);
+
+      if (existingSeries) {
+        existingSeries.setData(dataForSeries);
+      } else {
+        const seriesOptions = {
+          color: getRandomColor(),
+          lineWidth: 2 as LineWidth,
+          priceScaleId: isOscillator ? "oscillator-scale" : "right",
+        };
+
+        const newSeries = chart.addLineSeries(seriesOptions);
+
+        if (isOscillator) {
+          chart.priceScale("oscillator-scale").applyOptions({
+            scaleMargins: {
+              top: 0.75,
+              bottom: 0,
+            },
+          });
+        }
+
+        newSeries.setData(dataForSeries);
+        seriesMap.set(key, newSeries);
+      }
+    });
+  }, [indicatorData]);
+
+  useEffect(() => {
+    if (!candleSeriesRef.current) return;
+
     const intervalId = setInterval(() => {
       const series = candleSeriesRef.current;
       const lastPrice = latestPriceRef.current;
 
-      if (!series || !lastPrice || candlestickData.length === 0) return;
+      if (!lastPrice || candlestickData.length === 0) return;
 
       const lastCandle = candlestickData[candlestickData.length - 1];
-
-      const newTick: CandlestickData = {
+      const newTick = {
         time: lastCandle.time,
         open: lastCandle.open,
         high: Math.max(lastCandle.high, lastPrice),
         low: Math.min(lastCandle.low, lastPrice),
         close: lastPrice,
       };
-
-      series.update(newTick);
+      series?.update(newTick as CandlestickData);
     }, 200);
 
     return () => clearInterval(intervalId);
