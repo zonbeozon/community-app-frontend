@@ -1,0 +1,34 @@
+import { INTERVALS } from "@/constants/constants";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import type { SelectorProps } from "@/types/chart.type";
+import * as S from "./IntervalSelector.styles";
+
+export const IntervalSelector = ({ value, onChange }: SelectorProps) => {
+  const handleValueChange = (newValue: string) => {
+    if (newValue) {
+      onChange(newValue);
+    }
+  };
+
+  return (
+    <div>
+      <ToggleGroup
+        type="single"
+        value={value}
+        onValueChange={handleValueChange}
+        className={S.toggleGroup}
+      >
+        {INTERVALS.map((interval) => (
+          <ToggleGroupItem
+            key={interval}
+            value={interval}
+            aria-label={`Select ${interval}`}
+            className={S.toggleGroupItems}
+          >
+            {interval}
+          </ToggleGroupItem>
+        ))}
+      </ToggleGroup>
+    </div>
+  );
+};
