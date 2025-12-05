@@ -81,6 +81,7 @@ export interface PostDropdownProps {
 export interface RecommendedPostResponse {
   content: {
     postId: number;
+    channelId: number;
     content: string;
     images: Image[];
     metric: Metric;
