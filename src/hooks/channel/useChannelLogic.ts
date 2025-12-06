@@ -1,14 +1,16 @@
-import { useEffect, useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useSetAtom } from 'jotai';
-import useGetJoinedChannels from "@/queries/useGetJoinedChannel";
+import { useEffect, useMemo } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { selectedChannelIdAtom } from '@/atoms/channelAtoms';
-import { ROUTE_PATH } from "@/constants/routePath";
+import { useGetChannelById } from '@/queries/useGetChannelById';
+import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
+import { useAtomValue, useSetAtom } from 'jotai';
+import ChannelRoleManager from '@/utils/channelRoleManager';
+import { ROUTE_PATH } from '@/constants/routePaths';
 
 export const useChannelLogic = () => {
   const navigate = useNavigate();
   const { channelId, postId } = useParams<{ channelId: string; postId?: string }>();
-  const { data: myChannels, isLoading } = useGetJoinedChannels();
+  const selectedChannelId = useAtomValue(selectedChannelIdAtom);
   const setSelectedChannelId = useSetAtom(selectedChannelIdAtom);
 
   const numericChannelId = useMemo(() => {
@@ -18,34 +20,38 @@ export const useChannelLogic = () => {
     return Number(channelId);
   }, [channelId]);
 
+  const { data: currentChannelData, isLoading: isChannelLoading, isError, error } = useGetChannelById(numericChannelId);
+  const { data: myChannels } = useGetJoinedChannels();
+
   useEffect(() => {
-    if (isLoading || !myChannels) {
-      return; 
-    }
-  
-    const channelExists = myChannels.some(
-      (channel) => channel.channelInfo.channelId === numericChannelId
-    );
-    
-    if (channelExists) {
-      setSelectedChannelId(numericChannelId);
-    } else {
+    if (isError && (error as any)?.response?.status === 404) {
+      alert('존재하지 않는 채널입니다.');
       navigate(ROUTE_PATH.main);
     }
-  }, [numericChannelId, myChannels, isLoading, setSelectedChannelId, navigate]);
+  }, [isError, error, navigate]);
 
-  const currentChannel = useMemo(() => {
-    if (!myChannels || numericChannelId === -1) {
+  const selectedChannel = useMemo(() => {
+    if (!myChannels || !selectedChannelId) {
       return null;
     }
-    return myChannels.find(
-      (channel) => channel.channelInfo.channelId === numericChannelId
-    ) || null;
-  }, [myChannels, numericChannelId]);
+    return myChannels.find((channel) => channel.channelInfo.channelId === selectedChannelId);
+  }, [myChannels, selectedChannelId]);
+
+  useEffect(() => {
+    if (currentChannelData) {
+      setSelectedChannelId(currentChannelData.channelInfo.channelId);
+    }
+  }, [currentChannelData, setSelectedChannelId]);
+
+  const isMember = !!selectedChannel?.membership;
+  const canCreatePost = isMember && ChannelRoleManager.isAdmin(selectedChannel.membership.channelRole);
 
   return {
-    numericChannelId,
-    currentChannel,
+    channelData: currentChannelData,
+    selectedChannel,
+    isLoading: isChannelLoading,
+    isMember,
+    canCreatePost,
     showBackButton: !!postId,
   };
 };

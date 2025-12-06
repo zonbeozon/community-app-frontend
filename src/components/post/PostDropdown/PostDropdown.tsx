@@ -1,69 +1,61 @@
-import { useState, useMemo } from "react";
-import { Post } from "@/types/post.type";
-import { ChannelMember } from "@/types/channelMember.type";
-import ChannelRoleManager from "@/utils/channelRoleManager";
-import useGetMyServerMember from "@/queries/useGetServerMemberById";
-import useGetJoinedChannels from "@/queries/useGetJoinedChannel";
-import { ActionDropdown, DropdownAction } from "@/components/common/ActionDropdown/ActionDropdown";
-import PostUpdateDialog from "../PostUpdateDialog/PostUpdateDialog";
-import DeletePostDialog from "@/components/post/PostDeleteDialog/PostDeleteDialog";
-import * as S from "./PostDropdown.styles";
+import { useMemo, useState } from 'react';
+import { serverMemberAtom } from '@/atoms/authAtoms';
+import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
+import { useAtomValue } from 'jotai';
+import { ActionDropdown } from '@/components/common/ActionDropdown/ActionDropdown';
+import ChannelRoleManager from '@/utils/channelRoleManager';
+import type { DropdownAction } from '@/types/common.type';
+import type { PostDropdownProps } from '@/types/post.type';
+import { PostDeleteDialog } from '../PostDeleteDialog/PostDeleteDialog';
+import { PostUpdateDialog } from '../PostUpdateDialog/PostUpdateDialog';
+import * as S from './PostDropdown.styles';
 
-interface PostDropdownProps {
-  post: Post;
-  author: ChannelMember;
-  channelId: number;
-}
-
-const PostDropdown = ({ post, author, channelId }: PostDropdownProps) => {
+export const PostDropdown = ({ post, author, channelId }: PostDropdownProps) => {
   const [isPatchDialogOpen, setPatchDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const { data: myServerInfo } = useGetMyServerMember();
+  const myServerInfo = useAtomValue(serverMemberAtom);
   const { data: myChannels } = useGetJoinedChannels();
 
-  const myId = myServerInfo?.memberId;
+  const myId = myServerInfo?.memberId
   const myInfoInChannel = useMemo(() => {
     if (!myChannels) return null;
-    return myChannels.find(c => c.channelInfo.channelId === channelId)?.requester;
+    return myChannels.find((c) => c.channelInfo.channelId === channelId)?.membership;
   }, [myChannels, channelId]);
 
   if (!myInfoInChannel || !author || !myId) {
     return null;
   }
-  
-  const isMyPost = myId === post.authorId;
-  const canManagePost = ChannelRoleManager.isRoleHigher(
-    myInfoInChannel.channelRole,
-    author.channelRole
-  );
+
+  const isMyPost = myId === author.memberId;
+  const canManagePost = ChannelRoleManager.isRoleHigher(myInfoInChannel.channelRole, author.channelRole);
 
   const canEdit = isMyPost;
   const canDelete = isMyPost || canManagePost;
 
   const createSelectHandler = (setter: (isOpen: boolean) => void) => {
     return () => {
-      setter(true); 
-      setIsDropdownOpen(false); 
+      setter(true);
+      setIsDropdownOpen(false);
     };
   };
-  
+
   const actions: DropdownAction[] = [
     {
-      label: "포스트 수정",
+      label: '포스트 수정',
       onSelect: createSelectHandler(setPatchDialogOpen),
       isRendered: canEdit,
     },
     {
-      label: "포스트 삭제",
+      label: '포스트 삭제',
       onSelect: createSelectHandler(setDeleteDialogOpen),
       isRendered: canDelete,
       isDestructive: true,
     },
   ];
 
-  const availableActions = actions.filter(action => action.isRendered);
+  const availableActions = actions.filter((action) => action.isRendered);
   if (availableActions.length === 0) {
     return null;
   }
@@ -77,23 +69,13 @@ const PostDropdown = ({ post, author, channelId }: PostDropdownProps) => {
         actions={availableActions}
         triggerClassName={S.dropdownButton}
       />
-      
+
       {canEdit && (
-        <PostUpdateDialog
-          open={isPatchDialogOpen}
-          onOpenChange={setPatchDialogOpen}
-          post={post} 
-        />
+        <PostUpdateDialog open={isPatchDialogOpen} onOpenChange={setPatchDialogOpen} post={post} channelId={channelId} />
       )}
       {canDelete && (
-        <DeletePostDialog 
-          open={isDeleteDialogOpen}
-          onOpenChange={setDeleteDialogOpen}
-          post={post}
-        />
+        <PostDeleteDialog open={isDeleteDialogOpen} onOpenChange={setDeleteDialogOpen} post={post} channelId={channelId} />
       )}
     </>
   );
 };
-
-export default PostDropdown;

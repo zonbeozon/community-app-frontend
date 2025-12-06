@@ -1,1 +1,1 @@
-export const timestamp = "text-xs text-gray-500";
+export const timestamp = 'text-xs text-gray-500';

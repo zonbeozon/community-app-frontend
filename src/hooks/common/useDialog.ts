@@ -1,6 +1,6 @@
-import { useState, useCallback } from "react";
+import { useCallback, useState } from 'react';
 
-const useDialog = () => {
+export const useDialog = (onClose?: () => void) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const open = useCallback(() => {
@@ -9,16 +9,25 @@ const useDialog = () => {
 
   const close = useCallback(() => {
     setIsOpen(false);
-  }, []);
+    onClose?.();
+  }, [onClose]);
+
+  const onOpenChange = useCallback(
+    (openState: boolean) => {
+      setIsOpen(openState);
+      if (!openState) {
+        onClose?.();
+      }
+    },
+    [onClose],
+  );
 
   return {
     open,
     close,
     props: {
       open: isOpen,
-      onOpenChange: setIsOpen,
+      onOpenChange,
     },
   };
 };
-
-export default useDialog;

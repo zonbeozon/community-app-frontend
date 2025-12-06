@@ -1,8 +1,9 @@
 export const STOMP_DESTINATIONS = {
   channelMember: () => `/user/queue/channel-membership`,
-  channel: (channelId: number) => `/topic/channel/${channelId}`,  
-  post: (channelId: number) => `/topic/channel/${channelId}/post`,
-  comment: (postId: number) => `/topic/post/${postId}/comment`,
-  commentCount: (channelId: number) => `/topic/channel/${channelId}/comment-count`,
-  notifications: () => `/user/queue/notifications`
+  channel: (channelId: number) => `/topic/channels/${channelId}`,
+  post: (channelId: number) => `/topic/channels/${channelId}/posts`,
+  chat: (chattingGroupId: number) => `/topic/chatting-groups/${chattingGroupId}/chats`,
+  comment: (postId: number) => `/topic/posts/${postId}/comments`,
+  commentCount: (channelId: number) => `/topic/channels/${channelId}/comment-count`,
+  notifications: () => `/user/queue/notifications`,
 };

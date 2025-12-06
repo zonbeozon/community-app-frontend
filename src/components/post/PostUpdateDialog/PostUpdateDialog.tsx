@@ -1,88 +1,71 @@
-import { useEffect } from "react";
-import useUpdatePost from "@/hooks/post/useUpdatePost";
-import useForm from "@/hooks/common/useForm";
-import validatePost from "@/validations/validatePost";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription
-} from "@/components/ui/dialog";
-import { PostDialogProps, PostRequest } from "@/types/post.type";
-import PostForm from "../PostForm/PostForm";
-import * as S from "./PostUpdateDialog.styles";
+import { useEffect } from 'react';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
+import { useForm } from '@/hooks/common/useForm';
+import { useUpdatePost } from '@/hooks/post/useUpdatePost';
+import { DEFAULT_POST_VALUES } from '@/constants/constants';
+import { validatePost } from '@/validations/validatePost';
+import type { PostDialogProps, PostRequest } from '@/types/post.type';
+import { PostForm } from '../PostForm/PostForm';
+import * as S from './PostUpdateDialog.styles';
 
-const PostUpdateDialog = ({ open, onOpenChange, post }: PostDialogProps) => {
-  const updatePostHandler = useUpdatePost();
-
-  if (!post) {
-    return null;
-  }
-
-  const postId = post.postId;
-
-  const initialPostState: PostRequest = {
-    imageIds: post.images ? post.images.map(img => img.imageId).filter(Boolean) as number[] : [],
-    content: post.content,
-  };
-
+export const PostUpdateDialog = ({ open, onOpenChange, post, channelId }: PostDialogProps) => {
   const {
     values,
     errors,
     handler,
-    reset,
     isValid,
+    reset,
     setValues,
-  } = useForm<PostRequest & { previewUrls?: [] }>(
-    initialPostState,
-    validatePost,
-  );
+    handleSubmit,
+    isSubmitting: isFormSubmitting,
+  } = useForm<PostRequest>(DEFAULT_POST_VALUES, validatePost);
+
+  const { mutate: updatePost, isPending: isUpdating } = useUpdatePost();
 
   useEffect(() => {
     if (open && post) {
       setValues({
-        imageIds: post.images ? post.images.map(img => img.imageId).filter(Boolean) as number[] : [],
         content: post.content,
+        imageIds: post.images?.map((img) => img.imageId) ?? [],
       });
+    } else if (!open) {
+      reset();
     }
-  }, [open, post, setValues]);
+  }, [open, post, setValues, reset]);
 
-  const handlePatch = async () => {
-    if (!isValid) return;
+  const onSubmit = handleSubmit(async (submitValues) => {
+    if (!channelId) return;
 
-    await updatePostHandler(postId, values);
-    reset();
-    onOpenChange(false);
-  };
+    updatePost(
+      {
+        postId: post.postId,
+        channelId: channelId,
+        payload: submitValues,
+      },
+      {
+        onSuccess: () => {
+          onOpenChange(false);
+        },
+      },
+    );
+  });
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(newOpen) => {
-        onOpenChange(newOpen);
-        if (!newOpen) {
-          reset();
-        }
-      }}
-    >
-      <DialogContent className={S.dialogContent}>
-        <DialogTitle className="sr-only">포스트 수정</DialogTitle>
-        <DialogDescription className="sr-only">
-          기존 포스트의 내용과 이미지를 수정하는 양식입니다.
-        </DialogDescription>
-        
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className={S.dialog}>
+        <DialogTitle className={S.srOnly}>포스트 수정</DialogTitle>
+        <DialogDescription className={S.srOnly}>기존 포스트의 내용과 이미지를 수정하는 양식입니다.</DialogDescription>
+
         <PostForm
           content={values}
           errors={errors}
           handler={handler}
-          imagePreview={post.images ? post.images.map(img => img.imageUrl).filter(Boolean) as string[] : []}
           isEdit={true}
           isValid={isValid}
-          onSubmit={handlePatch}
+          isSubmitting={isUpdating || isFormSubmitting}
+          onSubmit={onSubmit}
         />
       </DialogContent>
     </Dialog>
   );
 };
-
-export default PostUpdateDialog;

@@ -1,26 +1,12 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogClose
-} from "@/components/ui/dialog";
-import { ChannelMember } from "@/types/channelMember.type";
-import * as S from "./ChannelMemberInfoDialog.styles";
-import { Button } from "@/components/ui/button"; 
+import { ChannelMemberProfileImage } from '@/components/channelmember/ChannelMemberProfileImage/ChannelMemberProfileImage';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useDialog } from '@/hooks/common/useDialog';
+import type { ChannelMember } from '@/types/channelMember.type';
+import * as S from './ChannelMemberInfoDialog.styles';
 
-interface ChannelMemberInfoDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  channelMember: ChannelMember | null;
-}
-
-const ChannelMemberInfoDialog = ({
-  open,
-  onOpenChange,
-  channelMember,
-}: ChannelMemberInfoDialogProps) => {
+export const ChannelMemberInfoDialog = ({ channelMember }: { channelMember: ChannelMember }) => {
+  const { props: dialogProps } = useDialog();
 
   if (!channelMember) {
     return null;
@@ -29,27 +15,17 @@ const ChannelMemberInfoDialog = ({
   const { profile, username } = channelMember;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog {...dialogProps}>
       <DialogTrigger asChild>
-        <Button className={S.createButton}>
-          <img
-            src={profile?.imageUrl}
-            alt={`${username || "알 수 없는 사용자"}의 프로필 사진`}
-            className={S.avatar}
-          />
-        </Button>
+        <ChannelMemberProfileImage profile={profile} username={username} className={S.avatar} />
       </DialogTrigger>
       <DialogContent className={S.dialogContent}>
         <DialogHeader>
           <DialogTitle>유저 프로필</DialogTitle>
         </DialogHeader>
         <div className={S.content}>
-          <img
-            src={profile?.imageUrl}
-            alt={`${username || "알 수 없는 사용자"}의 프로필 사진`}
-            className={S.avatar}
-          />
-          <h2 className={S.username}>{username || "알 수 없는 사용자"}</h2>
+          <ChannelMemberProfileImage profile={profile} username={username} className={S.bigImg} />
+          <h2 className={S.username}>{username}</h2>
           <div>
             <DialogClose asChild>
               <Button type="button" variant="ghost" className={S.closeButton}>
@@ -62,5 +38,3 @@ const ChannelMemberInfoDialog = ({
     </Dialog>
   );
 };
-
-export default ChannelMemberInfoDialog;

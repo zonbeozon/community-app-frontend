@@ -1,32 +1,46 @@
-import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import useUpdateChannelMemberRole from "@/hooks/channelMember/useUpdateChannelMemberRole";
-import { ChannelMember, ChannelRole } from "@/types/channelMember.type";
-import * as S from "./ChannelMemberRoleChangeDialog.styles";
+import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Spinner } from '@/components/ui/spinner';
+import { useUpdateChannelMemberRole } from '@/hooks/channelmember/useUpdateChannelMemberRole';
+import type { ChannelMemberDialogProps, ChannelRole } from '@/types/channelMember.type';
+import * as S from './ChannelMemberRoleChangeDialog.styles';
 
-interface ChannelMemberDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  channelId: number;
-  targetMember: ChannelMember;
-}
+export const ChannelMemberRoleChangeDialog = ({ open, onOpenChange, channelId, targetMember }: ChannelMemberDialogProps) => {
+  const [selectedRole, setSelectedRole] = useState<ChannelRole>(targetMember.channelRole);
 
-const ChannelMemberRoleChangeDialog = ({ open, onOpenChange, channelId, targetMember }: ChannelMemberDialogProps) => {
-  const [newRole, setNewRole] = useState<ChannelRole>(targetMember.channelRole);
-  const updateChannelMemberRoleHandler = useUpdateChannelMemberRole();
+  const { mutate: updateChannelMemberRole, isPending: isUpdating } = useUpdateChannelMemberRole();
 
-  const handleChangeRole = async () => {
-    try {
-      await updateChannelMemberRoleHandler(channelId, targetMember.memberId, newRole);
-    } finally {
-      onOpenChange(false);
+  useEffect(() => {
+    if (open && targetMember) {
+      setSelectedRole(targetMember.channelRole);
     }
+  });
+
+  const handleRoleChange = (value: string) => {
+    setSelectedRole(value as ChannelRole);
   };
 
-  const isRoleUnchanged = targetMember.channelRole === newRole;
+  const isRoleUnchanged = targetMember.channelRole === selectedRole;
+
+  const handleSubmit = async () => {
+    if (!targetMember) return;
+
+    updateChannelMemberRole(
+      {
+        channelId,
+        targetMemberId: targetMember.memberId,
+        wantToRole: selectedRole,
+      },
+      {
+        onSuccess: () => {
+          onOpenChange(false);
+        },
+      },
+    );
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -39,11 +53,7 @@ const ChannelMemberRoleChangeDialog = ({ open, onOpenChange, channelId, targetMe
         </DialogHeader>
 
         <div className={S.radioGroupContainer}>
-          <RadioGroup
-            value={newRole}
-            onValueChange={(value) => setNewRole(value as ChannelRole)}
-            className={S.radioGroup}
-          >
+          <RadioGroup value={selectedRole} onValueChange={handleRoleChange} className={S.radioGroup}>
             <Label htmlFor="role-admin" className={S.radioLabel}>
               <RadioGroupItem value="CHANNEL_ADMIN" id="role-admin" />
               관리자 (Admin)
@@ -60,12 +70,8 @@ const ChannelMemberRoleChangeDialog = ({ open, onOpenChange, channelId, targetMe
             취소
           </Button>
 
-          <Button
-            type="button"
-            variant="destructive"
-            onClick={handleChangeRole}
-            disabled={isRoleUnchanged}
-          >
+          <Button type="button" onClick={handleSubmit} disabled={isRoleUnchanged || isUpdating}>
+            {isUpdating && <Spinner />}
             권한 수정
           </Button>
         </DialogFooter>
@@ -73,5 +79,3 @@ const ChannelMemberRoleChangeDialog = ({ open, onOpenChange, channelId, targetMe
     </Dialog>
   );
 };
-
-export default ChannelMemberRoleChangeDialog;

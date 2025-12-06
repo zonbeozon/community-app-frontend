@@ -1,10 +1,10 @@
-import { SERVER_ERROR_MESSAGES } from "@/constants/message";
+import { SERVER_ERROR_MESSAGES } from '@/constants/messages';
 
 const getErrorMessage = (errorCode: string): string => {
   return SERVER_ERROR_MESSAGES[errorCode as keyof typeof SERVER_ERROR_MESSAGES] ?? '알 수 없는 에러가 발생했습니다.';
 };
 
-class APIError extends Error {
+export class APIError extends Error {
   statusCode: number;
   errorCode: string;
   message: string;
@@ -21,5 +21,3 @@ class APIError extends Error {
     Object.setPrototypeOf(this, APIError.prototype);
   }
 }
-
-export default APIError;

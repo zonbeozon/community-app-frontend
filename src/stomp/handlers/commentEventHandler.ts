@@ -1,48 +1,85 @@
 import { queryClient } from '@/lib/queryClient';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { CommentsResponse, Comment } from '@/types/comment.type';
-import { Author } from '@/types/post.type';
-import { CommentEventBody, CommentCreatedEvent, CommentDeletedEvent } from "@/types/stompEvent.type";
+import { ChannelMember } from '@/types/channelMember.type';
 
-export const handleCommentEvent = (postId: number, eventBody: CommentEventBody) => {
-  if (!eventBody) return;
+interface CommentPayload {
+  type: "CREATED" | "DELETED";
+  commentId: number;
+  content?: string;
+  author?: ChannelMember;
+  createdAt?: string;
+  authorId?: number;
+}
+
+export const handleCommentEvent = (postId: number, payload: CommentPayload) => {
+  if (!payload || !payload.type) {
+    return;
+  }
 
   const commentsQueryKey = QUERY_KEYS.comments.list(postId, {});
-  const { type } = eventBody;
+  const postDetailQueryKey = QUERY_KEYS.posts.detail(postId);
+  const { type } = payload;
 
   switch (type) {
     case "CREATED": {
-      const { author, ...commentData } = eventBody as CommentCreatedEvent;
+      const { author, ...commentData } = payload;
+      if (!author) {
+        return;
+      }
+      const authorInfo = author as ChannelMember;
+
       const newComment: Comment = {
-        ...commentData,
-        authorId: author.memberId,
+        commentId: commentData.commentId,
+        content: commentData.content || '',
+        createdAt: commentData.createdAt || '',
+        authorId: authorInfo.memberId,
       };
 
       queryClient.setQueryData<CommentsResponse>(commentsQueryKey, (oldData) => {
         if (!oldData) {
-          return { comments: [newComment], authors: { [author.memberId]: author } };
+          return {
+            comments: [newComment],
+            authors: [authorInfo],
+            totalElements: 1,
+          };
         }
+
+        const authorExists = oldData.authors.some(
+          (existingAuthor) => existingAuthor.memberId === authorInfo.memberId
+        );
+
         return {
           ...oldData,
-          comments: [...oldData.comments, newComment],
-          authors: {
-            ...oldData.authors,
-            [author.memberId]: author,
-          },
+          comments: [newComment, ...oldData.comments],
+          authors: authorExists
+            ? oldData.authors
+            : [...oldData.authors, authorInfo],
+          totalElements: oldData.totalElements + 1,
         };
       });
+
+      queryClient.invalidateQueries({ queryKey: postDetailQueryKey });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.posts.lists() });
       break;
     }
-      
+
     case "DELETED": {
-      const { commentId } = eventBody as CommentDeletedEvent;
+      const { commentId } = payload;
       queryClient.setQueryData<CommentsResponse>(commentsQueryKey, (oldData) => {
-        if (!oldData) return;
+        if (!oldData) {
+          return undefined;
+        }
+
         return {
           ...oldData,
           comments: oldData.comments.filter(comment => comment.commentId !== commentId),
+          totalElements: Math.max(0, oldData.totalElements - 1),
         };
       });
+
+      queryClient.invalidateQueries({ queryKey: postDetailQueryKey });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.posts.lists() });
       break;
     }
   }

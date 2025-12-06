@@ -1,9 +1,10 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { GOOGLE_AUTH_URL } from "@/constants/oAuth";
-import { ROUTE_PATH } from "@/constants/routePath";
-import useGetMyServerMember from "@/queries/useGetServerMemberById";
-import * as S from "./Landing.styles";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { serverMemberAtom } from '@/atoms/authAtoms';
+import { useAtomValue } from 'jotai';
+import { GOOGLE_AUTH_URL } from '@/constants/oAuth';
+import { ROUTE_PATH } from '@/constants/routePaths';
+import * as S from './Landing.styles';
 
 const GoogleIcon = () => (
   <div className={S.gsiIconWrapper}>
@@ -19,27 +20,26 @@ const GoogleIcon = () => (
 
 const Landing = () => {
   const navigate = useNavigate();
-  const { data: myInfo, isSuccess } = useGetMyServerMember();
-  const isAuthenticated = isSuccess && !!myInfo;
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate(ROUTE_PATH.main, { replace: true });
-    }
-  }, [isAuthenticated, navigate]);
+  const serverMember = useAtomValue(serverMemberAtom);
 
   const handleGoogleLogin = () => {
     window.location.href = GOOGLE_AUTH_URL;
   };
 
-  if (isAuthenticated) {
+  useEffect(() => {
+    if (serverMember) {
+      navigate(ROUTE_PATH.main, { replace: true });
+    }
+  }, [serverMember, navigate]);
+
+  if (serverMember) {
     return null;
   }
 
   return (
     <div className={S.container}>
-      <h1 className={S.logo}>placeHolder</h1>
-      
+      <h1 className={S.logo}>zonbeozon</h1>
+
       <button className={S.gsiButton} onClick={handleGoogleLogin}>
         <div className={S.gsiState}></div>
         <div className={S.gsiContentWrapper}>

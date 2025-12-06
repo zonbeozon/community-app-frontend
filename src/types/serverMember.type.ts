@@ -21,10 +21,3 @@ export interface ServerMembersResponse {
   hasNext: boolean;
   hasPrevious: boolean;
 };
-
-export interface ServerMemberStore {
-  serverMember: ServerMember | null,    
-  loginStatus: LoginStatus;
-  setServerMember: (serverMember: ServerMember) => void;
-  clearServerMember: () => void;
-};

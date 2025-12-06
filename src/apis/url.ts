@@ -1,13 +1,8 @@
-import { API_URL } from "@/apis/config";
-import { BINANCE_URL } from "@/apis/config";
-
-export const BASE_URL = API_URL;
-export const PRICE_URL = BINANCE_URL;
+export const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const ENDPOINT = {
   //Channel
   CHANNEL: `/channels`,
-  CHANNEL_COMMUNITY: `/channels/community`,
   CHANNEL_BY_ID: (channelId: number) => `/channels/${channelId}`,
   CHANNEL_JOINED: `/channels/joined`,
   CHANNEL_JOINED_BY_ID: (channelId: number) => `/channels/joined/${channelId}`,
@@ -18,13 +13,19 @@ export const ENDPOINT = {
   CHANNELMEMBER_BAN: (channelId: number, memberId: number) => `/channels/${channelId}/members/${memberId}/ban`,
   CHANNELMEMBER_APPROVE: (channelId: number, memberId: number) => `/channels/${channelId}/members/${memberId}/approve`,
   CHANNELMEMBER_ROLE: (channelId: number, memberId: number) => `/channels/${channelId}/members/${memberId}/role`,
-  CHANNELMEMBER_PENDING: (channelId: number) => `/channels/${channelId}/members/pending`,  
+  CHANNELMEMBER_PENDING: (channelId: number) => `/channels/${channelId}/members/pending`,
   CHANNELMEMBER_BANNED: (channelId: number) => `/channels/${channelId}/members/ban`,
 
   //Post
   POST: (channelId: number) => `/channels/${channelId}/posts`,
   POST_BY_ID: (postId: number) => `/posts/${postId}`,
-  POST_VIEWCOUNT: `/posts/view-count`,
+  POST_VIEWCOUNT: '/posts/view-count',
+  POST_RECOMMED: '/posts/recommend',
+
+  //Chatting
+  CHAT_ID: (chatId: number) => `/chats/${chatId}`,
+  CHAT_IMAGE: (chatId: number) => `/chats/${chatId}/images`,
+  CHAT_GROUP: (chattingGroupId: number) => `/chattingGroups/${chattingGroupId}/chats`,
 
   //Comment
   COMMENT: (postId: number) => `/posts/${postId}/comments`,
@@ -47,6 +48,13 @@ export const ENDPOINT = {
   REISSUE: `/auth/reissue`,
   SIGNOUT: `/auth/logout`,
 
+  //Crypto
+  CRYPTOS: `/info/coin`,
+  CRYPTO_SYMBOL: (symbol: string) => `/info/coin/${symbol}`,
+
   //Image
-  IMAGE: `/images`
+  IMAGE: `/images`,
+
+  //Kline
+  KLINE: '/proxy-api/api/v3/klines',
 };

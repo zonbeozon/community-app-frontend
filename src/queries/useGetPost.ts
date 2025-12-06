@@ -1,22 +1,69 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getPost } from '@/apis/http/post.api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { PostResponse } from '@/types/post.type';
+import { Post } from '@/types/post.type'; 
+import { ChannelMember } from '@/types/channelMember.type';
+import { InfiniteData } from '@tanstack/react-query'; 
 
-const useGetPost = (postId: number) => {
-  return useQuery<PostResponse, Error>({
-    // 1. 쿼리 키: postId가 변경되면 자동으로 새로운 데이터를 요청합니다.
+interface PostDetailData {
+  post: Post;
+  author: ChannelMember;
+}
+
+interface PostListPage {
+  posts: Post[];
+  authors: ChannelMember[]; 
+}
+
+const useGetPost = (postId: number, channelId: number) => {
+  const queryClient = useQueryClient();
+
+  return useQuery<Post, Error, PostDetailData>({
     queryKey: QUERY_KEYS.posts.detail(postId),
-
-    // 2. 실제 API를 호출하는 함수
     queryFn: () => getPost(postId),
-
-    // 3. postId가 유효한 숫자일 때만 쿼리를 실행합니다.
     enabled: !!postId && postId > 0,
-    
-    // 4. (선택 사항) 캐시 시간 등을 설정할 수 있습니다.
-    // 게시물 내용은 자주 바뀌지 않으므로 staleTime을 길게 잡아도 좋습니다.
-    staleTime: 1000 * 60 * 5, // 5분
+    staleTime: 1000 * 60 * 5,
+
+    initialData: () => {
+      const queryKey = [QUERY_KEYS.posts.list, channelId];
+      const cachedListData = queryClient.getQueryData<InfiniteData<PostListPage>>(queryKey);
+
+      if (!cachedListData) return undefined;
+      
+      let foundPost: Post | undefined;
+      let foundAuthor: ChannelMember | undefined;
+
+      for (const page of cachedListData.pages) {
+        foundPost = page.posts?.find((p) => p.postId === postId);
+        if (foundPost) {
+          foundAuthor = page.authors?.find((a) => a.memberId === foundPost!.authorId);
+          break; 
+        }
+      }
+
+      if (foundPost && foundAuthor) {
+        const { authorId, ...restOfPost } = foundPost;
+        
+        return {
+          ...restOfPost, 
+          author: foundAuthor, 
+        };
+      }
+      
+      return undefined;
+    },
+
+    select: (data: Post) => {
+      
+      const { author, ...postProperties } = data;
+      
+      const post: Post = {
+        ...postProperties,
+        authorId: author.memberId,
+      };
+
+      return { post, author };
+    },
   });
 };
 

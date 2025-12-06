@@ -1,10 +1,10 @@
 export type ReactionType = "LIKE" | "DISLIKE";
 
-export interface Reaction {
+export interface Metric {
   likeCount: number;
   dislikeCount: number;
-  likedByCurrentMember: boolean;
-  dislikedByCurrentMember: boolean;
+  commentCount: number;
+  viewCount: number;
 };
 
 export interface LikeButtonProps {

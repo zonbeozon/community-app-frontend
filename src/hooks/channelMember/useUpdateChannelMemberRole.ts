@@ -1,38 +1,22 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-
 import { updateChannelMemberRole } from '@/apis/http/channelMember.api';
-import { ChannelRole } from '@/types/channelMember.type';
-import { QUERY_KEYS } from '@/constants/queryKeys';
-import { SUCCESS_MESSAGES, SERVER_ERROR_MESSAGES } from "@/constants/message";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { ChannelMemberRoleProps } from '@/types/channelMember.type';
 
-interface UpdateRoleVariables {
-  channelId: number;
-  targetMemberId: number;
-  newRole: ChannelRole;
-}
-
-const useUpdateChannelMemberRole = () => {
+export const useUpdateChannelMemberRole = () => {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: ({ channelId, targetMemberId, newRole }: UpdateRoleVariables) =>
-      updateChannelMemberRole(channelId, targetMemberId, newRole),
+  return useMutation<void, Error, ChannelMemberRoleProps>({
+    mutationFn: ({ channelId, targetMemberId, wantToRole }: ChannelMemberRoleProps) =>
+      updateChannelMemberRole(channelId, targetMemberId, wantToRole),
 
-    onSuccess: (_data, { channelId }) => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.channelMember.lists() });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.channels.detail(channelId) });
-
-      toast.success(SUCCESS_MESSAGES.CHANNELMEMBER_UPDATE_ROLE_SUCCESS);
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ['channelMembers', variables.channelId],
+      });
     },
 
-    onError: (error: any) => {
-      toast.error(
-        error.response?.data?.message ||
-          SERVER_ERROR_MESSAGES.CHANNELMEMBER_ROLE_UPDATE_FAILED
-      );
+    onError: (error) => {
+      console.error('멤버 역할 변경 API 호출에 실패했습니다:', error);
     },
   });
 };
-
-export default useUpdateChannelMemberRole;

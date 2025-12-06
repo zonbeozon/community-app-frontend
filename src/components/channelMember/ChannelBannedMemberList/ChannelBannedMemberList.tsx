@@ -1,17 +1,35 @@
-import { useState } from "react";
-import useGetBannedChannelMembers from "@/queries/useGetBannedChannelMembers.ts";
-import ChannelMemberItem from "../ChannelMemberItem/ChannelMemberItem";
-import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
-import * as S from "./ChannelBannedMemberList.styles";
+import { useState } from 'react';
+import { useGetBannedChannelMembers } from '@/queries/useGetBannedChannelMembers.ts';
+import { ChannelMemberItem } from '@/components/channelmember/ChannelMemberItem/ChannelMemberItem';
+import { ChannelMemberUnbanDialog } from '@/components/channelmember/ChannelMemberUnbanDialog/ChannelMemberUnbanDialog';
+import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
+import { Button } from '@/components/ui/button';
+import { DEFAULT_PAGE_REQUEST } from '@/constants/constants';
+import type { ChannelMember } from '@/types/channelMember.type';
+import * as S from './ChannelBannedMemberList.styles';
 
-const ChannelBannedMemberList = ({ channelId }: { channelId: number }) => {
-  const [pageRequest, setPageRequest] = useState({ page: 0, size: 20 });
-  const { data, isLoading, isError } = useGetBannedChannelMembers(channelId, pageRequest);
+export const ChannelBannedMemberList = ({ channelId }: { channelId: number }) => {
+  const { data, isLoading, isError } = useGetBannedChannelMembers(channelId, DEFAULT_PAGE_REQUEST);
+  const [selectedMember, setSelectedMember] = useState<ChannelMember | null>(null);
 
   const bannedMembers = data?.members || [];
 
+  const handleOpenUnbanDialog = (member: ChannelMember) => {
+    setSelectedMember(member);
+  };
+
+  const handleCloseDialog = () => {
+    setSelectedMember(null);
+  };
+
   if (isLoading) {
-    return <>{Array.from({ length: 5 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
+    return (
+      <>
+        {Array.from({ length: 1 }).map((_, i) => (
+          <ItemSkeleton key={i} />
+        ))}
+      </>
+    );
   }
 
   if (isError || bannedMembers.length === 0) {
@@ -21,17 +39,29 @@ const ChannelBannedMemberList = ({ channelId }: { channelId: number }) => {
   return (
     <div className={S.wrapper}>
       <ul className={S.list}>
-        {bannedMembers.map((member) => (
+        {bannedMembers.map((member: ChannelMember) => (
           <ChannelMemberItem
             key={member.memberId}
-            channelId={channelId}
             member={member}
-            type="banned"
+            actions={
+              <Button variant="outline" size="sm" onClick={() => handleOpenUnbanDialog(member)}>
+                추방 해제
+              </Button>
+            }
           />
         ))}
       </ul>
+
+      {selectedMember && (
+        <ChannelMemberUnbanDialog
+          open={!!selectedMember}
+          onOpenChange={(isOpen) => {
+            if (!isOpen) handleCloseDialog();
+          }}
+          channelId={channelId}
+          targetMember={selectedMember}
+        />
+      )}
     </div>
   );
 };
-
-export default ChannelBannedMemberList;

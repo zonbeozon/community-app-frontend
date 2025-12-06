@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useRef } from "react";
 import type { IMessage, StompSubscription } from "@stomp/stompjs";
-import { useNavigate } from "react-router-dom";
 import { useAtomValue } from 'jotai';
-import useGetMyServerMember from "@/queries/useGetServerMemberById";
-import useGetJoinedChannels from "@/queries/useGetJoinedChannel";
-import { selectedChannelIdAtom } from "@/atoms/channelAtoms";
 import { useStomp } from "../StompProvider";
+import { serverMemberAtom } from "@/atoms/authAtoms";
+import { useGetJoinedChannels } from "@/queries/useGetJoinedChannel";
+import { selectedChannelIdAtom } from "@/atoms/channelAtoms";
 import { STOMP_DESTINATIONS } from "../destinations";
 import { handleChannelEvent } from "../handlers/channelEventHandler";
 import { handleChannelMemberEvent } from "../handlers/channelMemberEventHandler";
@@ -15,9 +14,8 @@ import { handleCommentCountEvent } from '../handlers/commentCountEventHandler';
 
 export const useGlobalSubscriptions = () => {
   const { client, isConnected } = useStomp();
-  const navigate = useNavigate();
   
-  const { data: myInfo } = useGetMyServerMember();
+  const myInfo = useAtomValue(serverMemberAtom);
   const { data: myChannels } = useGetJoinedChannels();
   const selectedChannelId = useAtomValue(selectedChannelIdAtom);
   
@@ -42,7 +40,7 @@ export const useGlobalSubscriptions = () => {
   });
 
   useEffect(() => {
-    if (!isConnected || !client || !memberId || !myChannels) {
+    if (!isConnected || !client) {
       return;
     }
 
@@ -51,7 +49,7 @@ export const useGlobalSubscriptions = () => {
     if (!subs.member) {
       subs.member = client.subscribe(
         STOMP_DESTINATIONS.channelMember(),
-        (message: IMessage) => handleChannelMemberEvent(JSON.parse(message.body), navigate) 
+        (message: IMessage) => handleChannelMemberEvent(JSON.parse(message.body)) 
       );
     }
     
@@ -61,6 +59,14 @@ export const useGlobalSubscriptions = () => {
         (message: IMessage) => handleNotificationEvent(JSON.parse(message.body))
       );
     }
+  }, [isConnected, client, memberId]); 
+
+  useEffect(() => {
+    if (!isConnected || !client || joinedChannelIds.length === 0) {
+      return;
+    }
+
+    const subs = subscriptionsRef.current;
 
     joinedChannelIds.forEach((channelId) => {
       if (!subs.channels.has(channelId)) {
@@ -89,7 +95,7 @@ export const useGlobalSubscriptions = () => {
       }
     });
     
-  }, [isConnected, client, memberId, joinedChannelIds, myChannels, navigate]);
+  }, [isConnected, client, joinedChannelIds]); 
 
   useEffect(() => {
     if (!isConnected || !client) {
@@ -117,9 +123,9 @@ export const useGlobalSubscriptions = () => {
       const subs = subscriptionsRef.current;
       subs.member?.unsubscribe();
       subs.notifications?.unsubscribe();
+      subs.commentCount?.unsubscribe();
       subs.channels.forEach(sub => sub.unsubscribe());
       subs.posts.forEach(sub => sub.unsubscribe());
-      subs.commentCount?.unsubscribe();
     };
   }, []);
 };

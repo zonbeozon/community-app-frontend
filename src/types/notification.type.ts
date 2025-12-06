@@ -14,10 +14,8 @@ export interface NotificationResponse {
   totalUnreadCount: number;
 };
 
-export interface NotificationStore {
+export interface NotificationListProps {
   notifications: Notification[];
-  totalUnreadCount: number;
-  setInitialNotifications: (data: NotificationResponse) => void;
-  addNotification: (newNotification: Notification) => void;
-  markAllAsRead: () => void;
-};
+  isLoading: boolean;
+  isError: boolean;
+}

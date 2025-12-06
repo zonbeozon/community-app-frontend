@@ -1,19 +1,30 @@
-import { Outlet } from "react-router-dom";
-import ChannelHeader from "@/components/channel/ChannelHeader/ChannelHeader";
-import { useChannelLogic } from "@/hooks/channel/useChannelLogic";
-import * as S from "./ChannelContent.styles";
+import { Outlet } from 'react-router-dom';
+import { ChannelHeader } from '@/components/channel/ChannelHeader/ChannelHeader';
+import { Spinner } from '@/components/ui/spinner';
+import { useChannelLogic } from '@/hooks/channel/useChannelLogic';
+import * as S from './ChannelContent.styles';
 
 const ChannelContent = () => {
-  const { currentChannel, showBackButton } = useChannelLogic();
+  const { showBackButton, channelData, isMember, isLoading, selectedChannel, canCreatePost } = useChannelLogic();
 
-  if (!currentChannel) {
-    return <div>❓ 요청한 채널을 찾을 수 없습니다.</div>;
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (!channelData) {
+    return <div className={S.notFoundMessage}>❓ 요청한 채널을 찾을 수 없습니다.</div>;
   }
 
   return (
     <div className={S.layout}>
       <div className={S.headerWrapper}>
-        <ChannelHeader showBackButton={showBackButton} />
+        <ChannelHeader
+          showBackButton={showBackButton}
+          channelData={channelData}
+          isMember={isMember}
+          selectedChannel={selectedChannel}
+          canCreatePost={canCreatePost}
+        />
       </div>
       <div className={S.contentWrapper}>
         <Outlet />

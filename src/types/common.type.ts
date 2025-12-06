@@ -3,11 +3,16 @@ export interface Image {
   imageUrl: string;
 };
 
-export interface JwtCode {
-  sub: number;
-  exp: number;
+export interface ImageHandlerProps {
+  initialImageUrl?: string | null;
+}
+
+export interface JwtPayload {
+  sub: string;
+  role: string;
   iat: number;
-};
+  exp: number;
+}
 
 interface Sorted {
   sorted: boolean;
@@ -47,3 +52,41 @@ export interface DialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
+
+export interface ActionDropdownProps {
+  actions: DropdownAction[];
+  triggerClassName?: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  [key: string]: any;
+}
+
+
+export interface DropdownAction {
+  label: string;
+  onSelect: () => void;
+  isRendered?: boolean;
+  isDestructive?: boolean;
+}
+
+export interface ItemSkeletonProps {
+  count?: number; 
+}
+
+export interface LayoutProps {
+  children: React.ReactNode;
+}
+
+export interface ImageUploaderInputProps {
+  initialImageUrl?: string | null;
+  isUploading?: boolean; 
+  onUploadSuccess: (imageId: number | null) => void;
+}
+
+export interface MultiImageUploaderProps {
+  initialImageUrls?: string[];
+  initialImageIds?: number[];
+  onUploadChange: (imageIds: number[], imageUrls: string[]) => void;
+  uploadContext?: { [key: string]: string };
+  maxImages?: number;
+}

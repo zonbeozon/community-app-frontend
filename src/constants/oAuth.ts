@@ -1,3 +1,3 @@
-const VITE_API_URL = import.meta.env.VITE_API_URL;
+import { BASE_URL } from "@/apis/url";
 
-export const GOOGLE_AUTH_URL = `${VITE_API_URL}/oauth2/authorization/google`;
+export const GOOGLE_AUTH_URL = `${BASE_URL}/oauth2/authorization/google`;

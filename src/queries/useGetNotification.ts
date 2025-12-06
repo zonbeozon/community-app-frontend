@@ -1,16 +1,24 @@
+import { getNotifications } from '@/apis/http/notification.api';
 import { useQuery } from '@tanstack/react-query';
-import { getNotifications as fetchNotificationsAPI } from "@/apis/http/notification.api"; 
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { NotificationResponse } from '@/types/notification.type';
+import { Notification, NotificationResponse } from '@/types/notification.type';
 
-const useGetNotifications = () => {
-  return useQuery<NotificationResponse, Error>({
-    queryKey: QUERY_KEYS.notifications.lists(), 
+interface ProcessedNotifications {
+  notifications: Notification[];
+  unreadCount: number;
+}
 
-    queryFn: fetchNotificationsAPI, 
+export const useGetNotifications = () => {
+  return useQuery<NotificationResponse, Error, ProcessedNotifications>({
+    queryKey: [QUERY_KEYS.notifications],
+    queryFn: getNotifications,
     staleTime: 1000 * 60,
-    refetchInterval: 1000 * 60 * 2,
+
+    select: (data) => {
+      const notifications = data?.pagedNotifications?.content || [];
+      const unreadCount = data?.totalUnreadCount ?? 0;
+
+      return { notifications, unreadCount };
+    },
   });
 };
-
-export default useGetNotifications;

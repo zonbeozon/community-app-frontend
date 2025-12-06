@@ -1,32 +1,37 @@
-import { useMemo } from "react";
-import useGetComments from "@/queries/useGetComments";
-import useGetMyServerMember from "@/queries/useGetServerMemberById";
-import { Comment } from "@/types/comment.type";
-import { ChannelMember } from "@/types/channelMember.type";
-import CommentItem from "@/components/comment/CommentItem/CommentItem";
-import ItemSkeleton from "@/components/common/ItemSkeleton/ItemSkeleton";
-import { MESSAGES } from "@/constants/message";
-import * as S from "./CommentList.styles";
+import { useMemo } from 'react';
+import { serverMemberAtom } from '@/atoms/authAtoms';
+import { useGetComments } from '@/queries/useGetComments';
+import { useAtomValue } from 'jotai';
+import { CommentItem } from '@/components/comment/CommentItem/CommentItem';
+import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
+import { MESSAGES } from '@/constants/messages';
+import { ChannelMember } from '@/types/channelMember.type';
+import type { CommentListProps, CommentWithAuthor } from '@/types/comment.type';
+import * as S from './CommentList.styles';
 
-interface CommentListProps {
-  postId: number;
-  channelId: number;
-}
-
-type CommentWithAuthor = Comment & { author: ChannelMember };
-
-const CommentList = ({ postId, channelId }: CommentListProps) => {
+export const CommentList = ({ postId, channelId }: CommentListProps) => {
   const { data: commentsData, isLoading, isError } = useGetComments(postId);
-  const { data: myInfo } = useGetMyServerMember();
+  const myInfo = useAtomValue(serverMemberAtom);
   const currentUserId = myInfo?.memberId;
 
   const commentsWithAuthors = useMemo((): CommentWithAuthor[] => {
     const comments = commentsData?.comments || [];
-    const authors = commentsData?.authors || {};
-    
+    const authors = commentsData?.authors || [];
+
+    if (authors.length === 0 || comments.length === 0) {
+      return [];
+    }
+    const authorMap = authors.reduce(
+      (map, author) => {
+        map[author.memberId] = author;
+        return map;
+      },
+      {} as { [key: number]: ChannelMember },
+    );
+
     return comments
-      .map(comment => {
-        const author = authors[comment.authorId];
+      .map((comment) => {
+        const author = authorMap[comment.authorId];
         if (!author) return null;
         return { ...comment, author };
       })
@@ -34,20 +39,22 @@ const CommentList = ({ postId, channelId }: CommentListProps) => {
   }, [commentsData]);
 
   if (isLoading) {
-    return <>{Array.from({ length: 3 }).map((_, i) => <ItemSkeleton key={i} />)}</>;
-  }
-  
-  if (isError || commentsWithAuthors.length === 0) {
     return (
-      <p className={S.emptyMessage}>
-        {MESSAGES.NO_COMMENTS_WRITTEN}
-      </p>
+      <>
+        {Array.from({ length: 3 }).map((_, i) => (
+          <ItemSkeleton key={i} />
+        ))}
+      </>
     );
+  }
+
+  if (isError || commentsWithAuthors.length === 0) {
+    return <p className={S.emptyMessage}>{MESSAGES.NO_COMMENTS_WRITTEN}</p>;
   }
 
   return (
     <div>
-      {commentsWithAuthors.map((commentData) => (     
+      {commentsWithAuthors.map((commentData) => (
         <CommentItem
           key={commentData.commentId}
           comment={commentData}
@@ -59,5 +66,3 @@ const CommentList = ({ postId, channelId }: CommentListProps) => {
     </div>
   );
 };
-
-export default CommentList;

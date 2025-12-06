@@ -1,23 +1,30 @@
-import { useEffect } from "react";
-import { MoonLoader } from "react-spinners";
-import useSignIn from "@/hooks/auth/useSignIn";
-import * as S from "./Callback.styles";
+import { useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { toast } from 'sonner';
+import { useSignIn } from '@/hooks/auth/useSignIn';
+import { ROUTE_PATH } from '@/constants/routePaths';
 
-export default function Callback() {
-  const signInHandler = useSignIn();
+const Callback = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const { mutate: signIn, isPending } = useSignIn();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const accessToken = params.get("accessToken");
+    const token = searchParams.get('accessToken');
 
-    signInHandler(accessToken);
+    if (token) {
+      signIn(token);
+    } else {
+      toast.error('로그인 정보가 올바르지 않습니다.');
+      navigate(ROUTE_PATH.root);
+    }
+  }, [signIn, searchParams, navigate]);
 
-  }, []); 
+  if (isPending) {
+    return <div>로그인 처리 중입니다...</div>;
+  }
 
-  return (
-    <div className={S.wrapper}>
-      <p className={S.message}>로그인 중입니다. 잠시만 기다려 주세요...</p>
-      <MoonLoader />
-    </div>
-  );
-}
+  return null;
+};
+
+export default Callback;

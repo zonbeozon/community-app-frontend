@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
-import { StompContextType } from '@/types/stomp.type';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { accessTokenAtom } from '@/atoms/authAtoms';
+import { useAtomValue } from 'jotai';
+import type { StompContextType } from '@/types/stomp.type';
 import { stompClient } from './client';
 
 const StompContext = createContext<StompContextType>({
@@ -11,28 +13,35 @@ export const useStomp = () => useContext(StompContext);
 
 export const StompProvider = ({ children }: { children: React.ReactNode }) => {
   const [isConnected, setIsConnected] = useState(false);
+  const accessToken = useAtomValue(accessTokenAtom);
 
   useEffect(() => {
-    stompClient.onConnect = () => {
-      setIsConnected(true);
-    };
+    if (accessToken) {
+      stompClient.connectHeaders = {
+        Authorization: `Bearer ${accessToken}`,
+      };
+      stompClient.onConnect = () => {
+        setIsConnected(true);
+      };
 
-    stompClient.onDisconnect = () => {
-      setIsConnected(false);
-    };
+      stompClient.onDisconnect = () => {
+        setIsConnected(false);
+      };
 
-    stompClient.activate();
+      stompClient.onStompError = () => {
+        setIsConnected(false);
+      };
 
-    return () => {
-      stompClient.deactivate();
-    };
-  }, []); 
+      stompClient.activate();
 
+      return () => {
+        if (stompClient.connected) {
+          stompClient.deactivate();
+        }
+      };
+    }
+  }, [accessToken]);
   const value = useMemo(() => ({ client: stompClient, isConnected }), [isConnected]);
 
-  return (
-    <StompContext.Provider value={value}>
-      {children}
-    </StompContext.Provider>
-  );
+  return <StompContext.Provider value={value}>{children}</StompContext.Provider>;
 };
