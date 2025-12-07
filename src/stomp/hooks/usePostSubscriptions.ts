@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import type { IMessage } from "@stomp/stompjs";
-import { useStomp } from "../StompProvider";
-import { STOMP_DESTINATIONS } from "../destinations";
-import { handlePostEvent } from "../handlers/postEventHandler";
+import { useEffect } from 'react';
+import { useStomp } from '@/stomp/StompProvider';
+import { STOMP_DESTINATIONS } from '@/stomp/destinations';
+import { handlePostEvent } from '@/stomp/handlers/postEventHandler';
+import type { IMessage } from '@stomp/stompjs';
 
 export const usePostSubscription = (channelId: number | null) => {
   const { client, isConnected } = useStomp();
@@ -12,12 +12,9 @@ export const usePostSubscription = (channelId: number | null) => {
       return;
     }
 
-    const subscription = client.subscribe(
-      STOMP_DESTINATIONS.post(channelId),
-      (message: IMessage) => {
-        handlePostEvent(channelId, JSON.parse(message.body));
-      }
-    );
+    const subscription = client.subscribe(STOMP_DESTINATIONS.post(channelId), (message: IMessage) => {
+      handlePostEvent(channelId, JSON.parse(message.body));
+    });
 
     return () => {
       subscription.unsubscribe();

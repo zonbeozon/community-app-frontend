@@ -2,25 +2,18 @@ import { ReactNode } from 'react';
 import type { Page } from './common.type';
 import type { ServerMember } from './serverMember.type';
 
-export type ChannelRole = 'CHANNEL_OWNER' | 'CHANNEL_ADMIN' | 'CHANNEL_MEMBER';
+export type ChannelMemberRole = 'CHANNEL_OWNER' | 'CHANNEL_ADMIN' | 'CHANNEL_MEMBER';
+export type ChannelMemberDialogType = 'approve' | 'deny' | null;
 
 export interface ChannelMember extends ServerMember {
-  channelRole: ChannelRole;
+  channelRole: ChannelMemberRole;
 }
 
 export type ChannelMembersResponse = Page<ChannelMember>;
 
-export interface MembersData {
+export interface ChannelMembersData {
   members: ChannelMember[];
   pageInfo: Page<ChannelMember>;
-}
-
-export interface ChannelMemberProfileImageProps {
-  profile: {
-    imageUrl: string | null;
-  } | null;
-  username: string | null;
-  className?: string;
 }
 
 export interface ChannelMemberProps {
@@ -33,15 +26,15 @@ export interface ChannelMemberIdProps {
   targetMemberId: number;
 }
 
-export interface ChannelMemberRoleProps {
-  channelId: number;
-  targetMemberId: number;
-  wantToRole: ChannelRole;
-}
-
 export interface ChannelMemberItemProps {
   member: ChannelMember;
   actions: ReactNode;
+}
+
+export interface ChannelMemberRoleProps {
+  channelId: number;
+  targetMemberId: number;
+  wantToRole: ChannelMemberRole;
 }
 
 export interface ChannelMemberDialogProps {
@@ -51,6 +44,10 @@ export interface ChannelMemberDialogProps {
   targetMember: ChannelMember;
 }
 
-export type AuthorMap = {
-  [key: number]: ChannelMember;
-};
+export interface ChannelMemberProfileImageProps {
+  profile: {
+    imageUrl: string | null;
+  } | null;
+  username: string | null;
+  className?: string;
+}

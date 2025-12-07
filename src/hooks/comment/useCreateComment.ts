@@ -5,14 +5,13 @@ import { useAtomValue } from 'jotai';
 import { toast } from 'sonner';
 import { SERVER_ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/constants/messages';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import type { CreateCommentProps } from '@/types/comment.type';
 
 export const useCreateComment = () => {
   const queryClient = useQueryClient();
   const myInfo = useAtomValue(serverMemberAtom);
 
   return useMutation({
-    mutationFn: ({ postId, content }: CreateCommentProps) => createComment(postId, content),
+    mutationFn: ({ postId, content }: { postId: number; content: string }) => createComment(postId, content),
 
     onMutate: async () => {
       if (!myInfo) {

@@ -35,7 +35,12 @@ export const Chart = ({ data, fetchNextPage, hasNextPage, isFetchingNextPage, pa
     isFetchingNextPage,
   });
 
-  const latestPriceRef = useRealTimeTrade(params.symbol);
+  const realTimePrice = useRealTimeTrade(params.symbol); 
+  const latestPriceRef = useRef<number | undefined>(realTimePrice);
+
+  useEffect(() => {
+    latestPriceRef.current = realTimePrice;
+  }, [realTimePrice]);
 
   useEffect(() => {
     if (!chartContainerRef.current || chartRef.current) return;
@@ -185,6 +190,8 @@ export const Chart = ({ data, fetchNextPage, hasNextPage, isFetchingNextPage, pa
     if (!candleSeriesRef.current) return;
 
     const intervalId = setInterval(() => {
+      if (!latestPriceRef) return;
+
       const series = candleSeriesRef.current;
       const lastPrice = latestPriceRef.current;
 

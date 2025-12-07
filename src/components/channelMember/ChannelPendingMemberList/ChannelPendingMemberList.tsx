@@ -9,10 +9,6 @@ import { DEFAULT_PAGE_REQUEST } from '@/constants/constants';
 import { ChannelMember } from '@/types/channelMember.type';
 import * as S from './ChannelPendingMemberList.styles';
 
-interface ActiveDialogState {
-  type: 'approve' | 'deny' | null;
-  member: ChannelMember | null;
-}
 
 export const ChannelPendingMemberList = ({ channelId }: { channelId: number }) => {
   const { data, isLoading, isError } = useGetPendingChannelMembers(channelId, DEFAULT_PAGE_REQUEST);

@@ -1,9 +1,9 @@
 import { MAX_POST_CONTENT_LENGTH, NOT_ALLOWED_REGEX } from '@/constants/constants';
 import type { Errors } from '@/types/form.type';
-import type { PostRequest } from '@/types/post.type';
+import type { PostPayload } from '@/types/post.type';
 
-export const validatePost = (form: PostRequest): Errors<PostRequest> => {
-  const errors: Errors<PostRequest> = {};
+export const validatePost = (form:  PostPayload): Errors< PostPayload> => {
+  const errors: Errors<PostPayload> = {};
 
   const trimmedContent = form.content.trim();
 

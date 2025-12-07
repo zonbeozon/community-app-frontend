@@ -1,14 +1,14 @@
-import { Image } from "./common.type";
+import type { Image } from './common.type';
 
-export type LoginStatus = "SIGNED_IN" | "SIGNED_OUT";
-export type ServerRole = "USER" | "ADMIN";
+export type LoginStatus = 'SIGNED_IN' | 'SIGNED_OUT';
+export type ServerRole = 'USER' | 'ADMIN';
 
 export interface ServerMember {
   memberId: number;
   username: string;
   profile: Image | null;
   serverRole: ServerRole;
-};
+}
 
 export interface ServerMembersResponse {
   content: ServerMember[];
@@ -20,4 +20,4 @@ export interface ServerMembersResponse {
   isLast: boolean;
   hasNext: boolean;
   hasPrevious: boolean;
-};
+}

@@ -4,7 +4,7 @@ import { selectedChannelIdAtom } from '@/atoms/channelAtoms';
 import { useGetChannelById } from '@/queries/useGetChannelById';
 import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
 import { useAtomValue, useSetAtom } from 'jotai';
-import ChannelRoleManager from '@/utils/channelRoleManager';
+import ChannelRoleManager from '@/utils/channelMemberRoleManager';
 import { ROUTE_PATH } from '@/constants/routePaths';
 
 export const useChannelLogic = () => {

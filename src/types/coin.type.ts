@@ -12,7 +12,7 @@ export interface CoinBySymbol {
   localizedInfo: {
     name: string;
     description: string;
-  }
+  };
   website: string;
   metadataLastUpdated: string;
   currencyRank: number;
@@ -22,7 +22,12 @@ export interface CoinBySymbol {
     marketCap: number;
     fullyDilutedMarketCap: number;
     volume24h: number;
-  }
+  };
   tickerLastUpdated: string;
   chattingGroupId: number;
+}
+
+export interface CoinGroupProps {
+  title: string;
+  coinGroups: Coin[];
 }

@@ -2,13 +2,13 @@ import { getBannedChannelMembers } from '@/apis/http/channelMember.api';
 import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { ChannelMembersResponse } from '@/types/channelMember.type';
-import { MembersData } from '@/types/channelMember.type';
-import { PageRequest } from '@/types/common.type';
+import { ChannelMembersData } from '@/types/channelMember.type';
+import { PagePayload } from '@/types/common.type';
 
-export const useGetBannedChannelMembers = (channelId: number, pageRequest: PageRequest) => {
-  return useQuery<ChannelMembersResponse, Error, MembersData>({
-    queryKey: QUERY_KEYS.channelMember.bannedList(channelId, pageRequest),
-    queryFn: () => getBannedChannelMembers(channelId, pageRequest),
+export const useGetBannedChannelMembers = (channelId: number, pagePayload: PagePayload) => {
+  return useQuery<ChannelMembersResponse, Error, ChannelMembersData>({
+    queryKey: QUERY_KEYS.channelMember.bannedList(channelId, pagePayload),
+    queryFn: () => getBannedChannelMembers(channelId, pagePayload),
     enabled: !!channelId,
     select: (data) => {
       const members = data.content;

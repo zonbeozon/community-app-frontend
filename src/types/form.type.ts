@@ -1,7 +1,5 @@
 export type Errors<T> = Partial<Record<keyof T, string | undefined>>;
-
 export type Validator<T> = (values: T) => Errors<T>;
-
 export type FormHandler<T> = {
   onChange: T extends string ? (value: string) => void : <K extends keyof T>(field: K, value: T[K]) => void;
 };

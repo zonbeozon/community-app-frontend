@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useApproveChannelMember } from '@/hooks/channelMember/useApproveChannelMember';
 import type { ChannelMemberDialogProps } from '@/types/channelMember.type';
-import * as S from './ChannelMemberApproveDialog.styles'
+import * as S from './ChannelMemberApproveDialog.styles';
 
 export const ChannelMemberApproveDialog = ({ open, onOpenChange, channelId, targetMember }: ChannelMemberDialogProps) => {
   const { mutate: approveMember, isPending } = useApproveChannelMember();

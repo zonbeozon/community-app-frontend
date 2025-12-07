@@ -5,18 +5,18 @@ import { toast } from 'sonner';
 import { SERVER_ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/constants/messages';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { ROUTE_PATH } from '@/constants/routePaths';
-import type { DeletePostVars } from '@/types/post.type';
 
 export const useDeletePost = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: ({ postId }: DeletePostVars) => deletePost(postId),
+    mutationFn: ({ postId }: { channelId: number, postId: number }) => deletePost(postId),
 
     onSuccess: (_data, { postId, channelId }) => {
       queryClient.removeQueries({ queryKey: QUERY_KEYS.posts.detail(postId) });
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.posts.list(channelId) });
+      
+      queryClient.invalidateQueries({ queryKey: ['posts', 'list', channelId] });
 
       toast.success(SUCCESS_MESSAGES.POST_DELETE_SUCCESS);
       const channelPath = ROUTE_PATH.channelId.replace(':channelId', String(channelId));

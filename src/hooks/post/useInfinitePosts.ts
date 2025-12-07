@@ -1,7 +1,7 @@
 import { getPosts } from '@/apis/http/post.api';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { ChannelMember } from '@/types/channelMember.type';
+import type { ChannelMember } from '@/types/channelMember.type';
 import type { InfinitePostsData, PostsResponse } from '@/types/post.type';
 
 export const useInfinitePosts = (channelId: number | string, { enabled = true } = {}) => {
@@ -10,7 +10,8 @@ export const useInfinitePosts = (channelId: number | string, { enabled = true } 
   return useInfiniteQuery<PostsResponse, Error, InfinitePostsData>({
     queryKey: [...QUERY_KEYS.posts.lists(), numericChannelId],
 
-    queryFn: ({ pageParam }) => getPosts(numericChannelId, pageParam),
+    queryFn: ({ pageParam }) => 
+      getPosts(numericChannelId, { cursorPostId: pageParam as number | undefined }),
 
     initialPageParam: undefined,
 
@@ -20,17 +21,13 @@ export const useInfinitePosts = (channelId: number | string, { enabled = true } 
 
     select: (data) => {
       const posts = data.pages.flatMap((page) => page.posts);
-      const authors = data.pages
-        .flatMap((page) => page.authors)
-        .reduce(
-          (acc, author) => {
-            if (author && author.memberId) {
-              acc[author.memberId] = author;
-            }
-            return acc;
-          },
-          {} as Record<number, ChannelMember>,
-        );
+      
+      const authors = posts.reduce((acc, post) => {
+        if (post.author && post.author.memberId) {
+          acc[post.author.memberId] = post.author;
+        }
+        return acc;
+      }, {} as Record<number, ChannelMember>);
 
       return { posts, authors };
     },

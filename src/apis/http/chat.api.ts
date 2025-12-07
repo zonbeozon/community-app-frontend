@@ -1,9 +1,9 @@
 import { fetcher } from '@/apis/fetcher';
 import { BASE_URL, ENDPOINT } from '@/apis/url';
-import type { Chat, ChattingGroupResponse } from '@/types/chat.type';
+import type { Chat, ChatsResponse } from '@/types/chat.type';
 
-export const getChats = async (chattingGroupId: number): Promise<ChattingGroupResponse> => {
-  return fetcher.get<ChattingGroupResponse>({
+export const getChats = async (chattingGroupId: number): Promise<ChatsResponse> => {
+  return fetcher.get<ChatsResponse>({
     url: BASE_URL + ENDPOINT.CHAT_GROUP(chattingGroupId),
   });
 };

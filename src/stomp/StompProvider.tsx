@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { accessTokenAtom } from '@/atoms/authAtoms';
 import { useAtomValue } from 'jotai';
+import { accessTokenAtom } from '@/atoms/authAtoms';
+import { stompClient } from '@/stomp/client';
 import type { StompContextType } from '@/types/stomp.type';
-import { stompClient } from './client';
 
 const StompContext = createContext<StompContextType>({
   client: stompClient,

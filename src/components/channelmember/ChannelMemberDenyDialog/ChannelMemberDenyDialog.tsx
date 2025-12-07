@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useDenyChannelMember } from '@/hooks/channelMember/useDenyChannelMember';
 import type { ChannelMemberDialogProps } from '@/types/channelMember.type';
-import * as S from './ChannelMemberDenyDialog.styles'
+import * as S from './ChannelMemberDenyDialog.styles';
 
 export const ChannelMemberDenyDialog = ({ open, onOpenChange, channelId, targetMember }: ChannelMemberDialogProps) => {
   const { mutate: denyMember, isPending } = useDenyChannelMember();

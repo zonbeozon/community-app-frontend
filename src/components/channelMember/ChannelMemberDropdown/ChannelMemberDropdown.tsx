@@ -6,7 +6,10 @@ import type { ChannelMemberProps } from '@/types/channelMember.type';
 import * as S from './ChannelMemberDropdown.styles';
 
 export const ChannelMemberDropdown = ({ channelId, targetMember }: ChannelMemberProps) => {
-  const { dropdown, actions, roleDialog, banDialog } = useChannelMemberDropdown(targetMember);
+  const { dropdown, actions, roleDialog, banDialog } = useChannelMemberDropdown({
+    channelId,
+    targetMember,
+  });
 
   return (
     <>

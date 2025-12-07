@@ -1,5 +1,5 @@
-import { GetKlinesParams } from '@/types/chart.type';
-import { PageRequest } from '@/types/common.type';
+import { KlinesParams } from '@/types/chart.type';
+import { PagePayload } from '@/types/common.type';
 
 export const QUERY_KEYS = {
   all: ['all'] as const,
@@ -34,14 +34,14 @@ export const QUERY_KEYS = {
   channelMember: {
     all: ['channelMember'] as const,
     lists: () => [...QUERY_KEYS.channelMember.all, 'list'] as const,
-    list: (channelId: number, pageRequest: PageRequest) =>
-      [...QUERY_KEYS.channelMember.lists(), channelId, pageRequest] as const,
+    list: (channelId: number, pagePayload: PagePayload) =>
+      [...QUERY_KEYS.channelMember.lists(), channelId, pagePayload] as const,
     bannedLists: () => [...QUERY_KEYS.channelMember.lists(), 'banned'] as const,
-    bannedList: (channelId: number, pageRequest: PageRequest) =>
-      [...QUERY_KEYS.channelMember.bannedLists(), channelId, pageRequest] as const,
+    bannedList: (channelId: number, pagePayload: PagePayload) =>
+      [...QUERY_KEYS.channelMember.bannedLists(), channelId, pagePayload] as const,
     pendingLists: () => [...QUERY_KEYS.channelMember.lists(), 'pending'] as const,
-    pendingList: (channelId: number, pageRequest: PageRequest) =>
-      [...QUERY_KEYS.channelMember.pendingLists(), channelId, pageRequest] as const,
+    pendingList: (channelId: number, pagePayload: PagePayload) =>
+      [...QUERY_KEYS.channelMember.pendingLists(), channelId, pagePayload] as const,
     detail: () => [...QUERY_KEYS.channelMember.all, 'detail'] as const,
   },
 
@@ -60,21 +60,19 @@ export const QUERY_KEYS = {
     me: () => [...QUERY_KEYS.serverMember.details(), 'me'] as const,
   },
 
-   coins: {
+  coins: {
     all: ['coins', 'list'],
   },
 
   klines: {
-    all: ["klines"] as const,
-    lists: () => [...QUERY_KEYS.klines.all, "list"] as const,
-    list: (params: GetKlinesParams) =>
-      [...QUERY_KEYS.klines.lists(), params] as const,
+    all: ['klines'] as const,
+    lists: () => [...QUERY_KEYS.klines.all, 'list'] as const,
+    list: (params: KlinesParams) => [...QUERY_KEYS.klines.lists(), params] as const,
   },
 
-   chats: {
+  chats: {
     all: ['chats'] as const,
     lists: () => [...QUERY_KEYS.chats.all, 'list'] as const,
-    list: (chattingGroupId: number | string) => 
-      [...QUERY_KEYS.chats.lists(), chattingGroupId] as const,
+    list: (chattingGroupId: number | string) => [...QUERY_KEYS.chats.lists(), chattingGroupId] as const,
   },
 };

@@ -1,40 +1,16 @@
 import { toast } from "sonner";
 import { queryClient } from "@/lib/queryClient";
 import { QUERY_KEYS } from "@/constants/queryKeys";
-import { Notification } from "@/types/notification.type";
-
-interface NotificationData {
-  notifications: Notification[];
-  unreadCount: number;
-}
+import type { Notification } from "@/types/notification.type";
 
 export const handleNotificationEvent = (eventBody: Notification) => {
-  if (!eventBody || !eventBody.type || !eventBody.message) {
+  if (!eventBody?.type || !eventBody?.message) {
     return;
   }
-  const notificationsQueryKey = QUERY_KEYS.notifications.lists();
 
-  queryClient.setQueryData<NotificationData>(
-    notificationsQueryKey,
-    (oldData) => {
-      if (!oldData) {
-        return {
-          notifications: [eventBody],
-          unreadCount: 1,
-        };
-      }
-
-      queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.notifications.lists(),
-      });
-
-      return {
-        ...oldData,
-        notifications: [eventBody, ...oldData.notifications],
-        unreadCount: oldData.unreadCount + 1,
-      };
-    }
-  );
+  queryClient.invalidateQueries({
+    queryKey: QUERY_KEYS.notifications.lists(),
+  });
 
   const { type, message } = eventBody;
   if (type === "WARNING") {

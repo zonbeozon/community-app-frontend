@@ -3,13 +3,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { SERVER_ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/constants/messages';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import type { DeleteCommentProps } from '@/types/comment.type';
 
 export const useDeleteComment = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ commentId }: DeleteCommentProps) => deleteComment(commentId),
+    mutationFn: ({ commentId }: { postId: number, commentId: number }) => deleteComment(commentId),
 
     onSuccess: (_data, { postId }) => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.comments.list(postId, {}) });

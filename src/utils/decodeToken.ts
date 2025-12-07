@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-import { JwtPayload } from "@/types/common.type";
+import type { JwtPayload } from "@/types/common.type";
 import { SERVER_ERROR_MESSAGES } from "@/constants/messages";
 
 export const decodeToken = (token: string) => {

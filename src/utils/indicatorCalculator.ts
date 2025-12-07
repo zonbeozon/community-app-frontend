@@ -11,7 +11,7 @@ import {
 import type { CandleData } from "@/types/chart.type";
 import type { Indicator, IndicatorResults } from "@/types/chart.type";
 
-export const calculateIndicators = (
+export const indicatorCalculator = (
   configs: Indicator[],
   data: CandleData[]
 ): IndicatorResults => {

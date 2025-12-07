@@ -1,5 +1,6 @@
-import type { ChannelMember } from "./channelMember.type";
-import type { Post } from "./post.type";
+import type { ChannelMember } from './channelMember.type';
+import type { DialogProps } from './common.type';
+import type { Post } from './post.type';
 
 export type CommentWithAuthor = Comment & { author: ChannelMember };
 
@@ -10,27 +11,10 @@ export interface Comment {
   createdAt: string;
 }
 
-export interface CommentStore {
-  comments: Record<number, Comment[]>;
-  setComments: (postId: number, comments: Comment[]) => void;
-  addComment: (postId: number, newComment: Comment) => void;
-  removeComment: (postId: number, commentId: number) => void;
-}
-
 export interface CommentsResponse {
   authors: ChannelMember[];
   comments: Comment[];
   totalElements: number;
-}
-
-export interface CreateCommentProps {
-  postId: number;
-  content: string;
-}
-
-export interface DeleteCommentProps {
-  postId: number;
-  commentId: number;
 }
 
 export interface CommentItemProps {
@@ -40,9 +24,7 @@ export interface CommentItemProps {
   channelId: number;
 }
 
-export interface CommentDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+export interface CommentDialogProps extends DialogProps{
   comment: Comment;
 }
 

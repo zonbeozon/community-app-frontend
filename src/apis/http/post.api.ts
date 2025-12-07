@@ -1,6 +1,6 @@
 import { fetcher } from '@/apis/fetcher';
 import { BASE_URL, ENDPOINT } from '@/apis/url';
-import type { Post, PostRequest, PostsParams, PostsResponse, RecommendedPostResponse } from '@/types/post.type';
+import type { Post, PostPayload, PostsParams, PostsResponse, RecommendedPostsResponse } from '@/types/post.type';
 
 export const getPosts = async (channelId: number, params: PostsParams = {}): Promise<PostsResponse> => {
   const queryParams = {
@@ -20,14 +20,14 @@ export const getPost = async (postId: number): Promise<Post> => {
   });
 };
 
-export const createPost = async (channelId: number, payload: PostRequest): Promise<number> => {
+export const createPost = async (channelId: number, payload: PostPayload): Promise<number> => {
   return fetcher.post<number>({
     url: BASE_URL + ENDPOINT.POST(channelId),
     body: payload,
   });
 };
 
-export const updatePost = async (postId: number, payload: PostRequest): Promise<void> => {
+export const updatePost = async (postId: number, payload: PostPayload): Promise<void> => {
   return fetcher.patch<void>({
     url: BASE_URL + ENDPOINT.POST_BY_ID(postId),
     body: payload,
@@ -47,13 +47,13 @@ export const updatePostViewCount = async (postIds: number[]): Promise<void> => {
   });
 };
 
-export const getRecommendedPosts = async (params: PostsParams = {}): Promise<RecommendedPostResponse> => {
+export const getRecommendedPosts = async (params: PostsParams = {}): Promise<RecommendedPostsResponse> => {
   const queryParams = {
     size: 20,
     inverted: false,
     ...params,
   };
-  return fetcher.get<RecommendedPostResponse>({
+  return fetcher.get<RecommendedPostsResponse>({
     url: BASE_URL + ENDPOINT.POST_RECOMMED,
     params: queryParams,
   });

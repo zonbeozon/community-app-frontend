@@ -1,24 +1,8 @@
-export interface Image {
-  imageId: number;
-  imageUrl: string;
-};
-
-export interface ImageHandlerProps {
-  initialImageUrl?: string | null;
-}
-
-export interface JwtPayload {
-  sub: string;
-  role: string;
-  iat: number;
-  exp: number;
-}
-
 interface Sorted {
   sorted: boolean;
   empty: boolean;
   unsorted: boolean;
-};
+}
 
 interface Pageable {
   paged: boolean;
@@ -27,7 +11,7 @@ interface Pageable {
   offset: number;
   sort: Sorted;
   unpaged: boolean;
-};
+}
 
 export interface Page<T> {
   totalPages: number;
@@ -41,17 +25,29 @@ export interface Page<T> {
   first: boolean;
   last: boolean;
   empty: boolean;
-};
+}
 
-export interface PageRequest {
+export interface PagePayload {
   page: number;
   size: number;
-};
+}
+
+export interface JwtPayload {
+  sub: string;
+  role: string;
+  iat: number;
+  exp: number;
+}
+
+export interface Image {
+  imageId: number;
+  imageUrl: string;
+}
 
 export interface DialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-};
+}
 
 export interface ActionDropdownProps {
   actions: DropdownAction[];
@@ -61,7 +57,6 @@ export interface ActionDropdownProps {
   [key: string]: any;
 }
 
-
 export interface DropdownAction {
   label: string;
   onSelect: () => void;
@@ -70,7 +65,7 @@ export interface DropdownAction {
 }
 
 export interface ItemSkeletonProps {
-  count?: number; 
+  count?: number;
 }
 
 export interface LayoutProps {
@@ -79,7 +74,7 @@ export interface LayoutProps {
 
 export interface ImageUploaderInputProps {
   initialImageUrl?: string | null;
-  isUploading?: boolean; 
+  isUploading?: boolean;
   onUploadSuccess: (imageId: number | null) => void;
 }
 

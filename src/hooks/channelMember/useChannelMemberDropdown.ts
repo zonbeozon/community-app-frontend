@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { serverMemberAtom } from '@/atoms/authAtoms';
 import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
 import { useAtomValue } from 'jotai';
-import ChannelRoleManager from '@/utils/channelRoleManager';
+import ChannelRoleManager from '@/utils/channelMemberRoleManager';
 import type { ChannelMemberProps } from '@/types/channelMember.type';
 import type { DropdownAction } from '@/types/common.type';
 

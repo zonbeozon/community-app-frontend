@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDialog } from '@/hooks/common/useDialog';
-import ChannelRoleManager from '@/utils/channelRoleManager';
+import ChannelRoleManager from '@/utils/channelMemberRoleManager';
 import type { Channel } from '@/types/channel.type';
 import type { DropdownAction } from '@/types/common.type';
 

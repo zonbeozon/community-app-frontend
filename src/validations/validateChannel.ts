@@ -4,11 +4,11 @@ import {
   MIN_CHANNEL_TITLE_LENGTH,
   NOT_ALLOWED_REGEX,
 } from '@/constants/constants';
-import type { Channel, ChannelRequest } from '@/types/channel.type';
+import type { Channel, ChannelPayload } from '@/types/channel.type';
 import type { Errors } from '@/types/form.type';
 
-export const validateChannel = (form: Partial<ChannelRequest> | Partial<Channel>): Errors<ChannelRequest> => {
-  const errors: Errors<ChannelRequest> = {};
+export const validateChannel = (form: Partial<ChannelPayload> | Partial<Channel>): Errors<ChannelPayload> => {
+  const errors: Errors<ChannelPayload> = {};
 
   let title = '';
   let description = '';
@@ -17,8 +17,8 @@ export const validateChannel = (form: Partial<ChannelRequest> | Partial<Channel>
     title = form.channelInfo.title || '';
     description = form.channelInfo.description || '';
   } else {
-    title = (form as ChannelRequest).title || '';
-    description = (form as ChannelRequest).description || '';
+    title = (form as ChannelPayload).title || '';
+    description = (form as ChannelPayload).description || '';
   }
 
   const trimmedTitle = title.trim();

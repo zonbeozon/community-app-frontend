@@ -1,4 +1,4 @@
-import { Client } from "@stomp/stompjs";
+import { Client } from '@stomp/stompjs';
 
 export interface StompContextType {
   client: Client;

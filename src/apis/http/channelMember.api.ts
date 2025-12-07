@@ -1,13 +1,13 @@
 import { fetcher } from '@/apis/fetcher';
 import { api } from '@/apis/interceptor';
 import { BASE_URL, ENDPOINT } from '@/apis/url';
-import type { ChannelMembersResponse, ChannelRole } from '@/types/channelMember.type';
-import type { PageRequest } from '@/types/common.type';
+import type { ChannelMembersResponse, ChannelMemberRole } from '@/types/channelMember.type';
+import type { PagePayload } from '@/types/common.type';
 
-export const getChannelMembers = async (channelId: number, pageRequest: PageRequest): Promise<ChannelMembersResponse> => {
+export const getChannelMembers = async (channelId: number, pagePayload: PagePayload): Promise<ChannelMembersResponse> => {
   return await fetcher.get<ChannelMembersResponse>({
     url: BASE_URL + ENDPOINT.CHANNELMEMBER(channelId),
-    params: pageRequest,
+    params: pagePayload,
   });
 };
 
@@ -50,7 +50,7 @@ export const approveChannelMember = async (channelId: number, memberId: number):
 export const updateChannelMemberRole = async (
   channelId: number,
   memberId: number,
-  wantToRole: ChannelRole,
+  wantToRole: ChannelMemberRole,
 ): Promise<void> => {
   return await fetcher.patch<void>({
     url: BASE_URL + ENDPOINT.CHANNELMEMBER_ROLE(channelId, memberId),
@@ -60,20 +60,20 @@ export const updateChannelMemberRole = async (
 
 export const getPendingChannelMembers = async (
   channelId: number,
-  pageRequest: PageRequest,
+  pagePayload: PagePayload,
 ): Promise<ChannelMembersResponse> => {
   return await fetcher.get<ChannelMembersResponse>({
     url: BASE_URL + ENDPOINT.CHANNELMEMBER_PENDING(channelId),
-    params: pageRequest,
+    params: pagePayload,
   });
 };
 
 export const getBannedChannelMembers = async (
   channelId: number,
-  pageRequest: PageRequest,
+  pagePayload: PagePayload,
 ): Promise<ChannelMembersResponse> => {
   return await fetcher.get<ChannelMembersResponse>({
     url: BASE_URL + ENDPOINT.CHANNELMEMBER_BANNED(channelId),
-    params: pageRequest,
+    params: pagePayload,
   });
 };

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import type { ImageHandlerProps } from '@/types/common.type';
 
-export const useImageHandler = ({ initialImageUrl = null }: ImageHandlerProps) => {
+export const useImageHandler = ({ initialImageUrl = null }: { initialImageUrl?: string | null; }) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(initialImageUrl);
 

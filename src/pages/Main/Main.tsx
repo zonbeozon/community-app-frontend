@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import * as S from '@/pages/Main/Main.styles';
 import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
 import { useGetPosts } from '@/queries/useGetPosts';
 import { useQueryClient } from '@tanstack/react-query';
 import { Sidebar } from '@/components/common/Sidebar/Sidebar';
 import { QUERY_KEYS } from '@/constants/queryKeys';
+import * as S from './Main.styles';
 
 export default function Main() {
   const { data: channels, isSuccess: areChannelsLoaded } = useGetJoinedChannels();

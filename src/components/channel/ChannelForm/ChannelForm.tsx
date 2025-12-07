@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { MAX_CHANNEL_DESCRIPTION_LENGTH, MAX_CHANNEL_TITLE_LENGTH } from '@/constants/constants';
-import type { ChannelRequest, ContentVisibility, JoinPolicy } from '@/types/channel.type';
+import type { ChannelPayload, ContentVisibility, JoinPolicy } from '@/types/channel.type';
 import type { FormProps } from '@/types/form.type';
 import * as S from './ChannelForm.styles';
 
@@ -20,16 +20,16 @@ export const ChannelForm = ({
   onSubmit,
   imagePreview,
   isSubmitting,
-}: FormProps<ChannelRequest, string | null>) => {
+}: FormProps<ChannelPayload, string | null>) => {
   const { onChange: formOnChange } = handler;
 
   const onChange = useCallback(
-    (field: keyof ChannelRequest | `settings.${keyof ChannelRequest['settings']}`, value: any) => {
+    (field: keyof ChannelPayload | `settings.${keyof ChannelPayload['settings']}`, value: any) => {
       if (field.startsWith('settings.')) {
-        const settingKey = field.split('.')[1] as keyof ChannelRequest['settings'];
+        const settingKey = field.split('.')[1] as keyof ChannelPayload['settings'];
         formOnChange('settings', { ...content.settings, [settingKey]: value });
       } else {
-        formOnChange(field as keyof ChannelRequest, value);
+        formOnChange(field as keyof ChannelPayload, value);
       }
     },
     [formOnChange, content.settings],

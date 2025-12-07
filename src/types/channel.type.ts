@@ -21,7 +21,7 @@ export interface Channel {
   membership: ChannelMember;
 }
 
-export interface ChannelRequest {
+export interface ChannelPayload {
   title: string;
   description: string;
   imageId: number | null;
@@ -33,19 +33,9 @@ export interface JoinedChannelsResponse {
   totalElements: number;
 }
 
-export interface UpdateChannelProps {
-  channelId: number;
-  payload: ChannelRequest;
-}
-
-export interface ChannelProfileImageProps extends React.ComponentPropsWithoutRef<'div'> {
-  channelInfo: {
-    title: string;
-    profile: {
-      imageUrl: string | null;
-    } | null;
-  };
-  size: 'sm' | 'lg';
+export interface ChannelGroupProps {
+  title: string;
+  channels: Channel[];
 }
 
 export interface ChannelHeaderProps {
@@ -69,12 +59,17 @@ export interface ChannelJoinDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export interface ChannelGroupProps {
-  title: string;
-  channels: Channel[];
-}
-
 export interface ChannelJoinButtonProps {
   channel: Channel;
   onJoinSuccess: () => void;
+}
+
+export interface ChannelProfileImageProps extends React.ComponentPropsWithoutRef<'div'> {
+  channelInfo: {
+    title: string;
+    profile: {
+      imageUrl: string | null;
+    } | null;
+  };
+  size: 'sm' | 'lg';
 }

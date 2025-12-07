@@ -1,10 +1,36 @@
-import type {
-  IChartApi,
-  CandlestickData,
-  LineData,
-  Time,
-} from "lightweight-charts";
-import type { InfiniteData } from "@tanstack/react-query";
+import type { InfiniteData } from '@tanstack/react-query';
+import type { CandlestickData, IChartApi, LineData, Time } from 'lightweight-charts';
+
+export type AllowedIndicator = 'SMA' | 'EMA' | 'RSI' | 'MACD' | 'BollingerBands' | 'ATR' | 'OBV' | 'Stochastic';
+export type BinanceRestKline = [
+  number, // Kline open time
+  string, // Open price
+  string, // High price
+  string, // Low price
+  string, // Close price
+  string, // Volume
+  number, // Kline Close time
+  string, // Quote asset volume
+  number, // Number of trades
+  string, // Taker buy base asset volume
+  string, // Taker buy quote asset volume
+  string, // Unused field, ignore.
+];
+
+export interface KlinesParams {
+  symbol: string;
+  interval?: string;
+  endTime?: number;
+  limit?: number;
+}
+
+export interface KlinesData {
+  klines: BinanceRestKline[];
+}
+
+export type CandleData = CandlestickData<Time> & {
+  volume: number;
+};
 
 export interface ChartProps {
   data: InfiniteData<KlinesData> | undefined;
@@ -34,51 +60,6 @@ export interface ChartTooltipProps {
   visible: boolean;
 }
 
-export type BinanceRestKline = [
-  number, // Kline open time
-  string, // Open price
-  string, // High price
-  string, // Low price
-  string, // Close price
-  string, // Volume
-  number, // Kline Close time
-  string, // Quote asset volume
-  number, // Number of trades
-  string, // Taker buy base asset volume
-  string, // Taker buy quote asset volume
-  string // Unused field, ignore.
-];
-
-export interface KlinesData {
-  klines: BinanceRestKline[];
-}
-
-export type CandleData = CandlestickData<Time> & {
-  volume: number;
-};
-
-export interface GetKlinesParams {
-  symbol: string;
-  interval?: string;
-  endTime?: number;
-  limit?: number;
-}
-
-export interface SelectorProps {
-  value: string;
-  onChange: (value: string) => void;
-}
-
-export type AllowedIndicator =
-  | "SMA"
-  | "EMA"
-  | "RSI"
-  | "MACD"
-  | "BollingerBands"
-  | "ATR"
-  | "OBV"
-  | "Stochastic";
-
 export interface Indicator {
   id: string;
   type: AllowedIndicator;
@@ -91,6 +72,11 @@ export interface Indicator {
 
 export interface IndicatorResults {
   [id: string]: (number | undefined | any)[];
+}
+
+export interface SelectorProps {
+  value: string;
+  onChange: (value: string) => void;
 }
 
 export interface IndicatorSelectorProps {

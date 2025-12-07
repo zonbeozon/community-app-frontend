@@ -3,7 +3,7 @@ import { serverMemberAtom } from '@/atoms/authAtoms';
 import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
 import { useAtomValue } from 'jotai';
 import { ActionDropdown } from '@/components/common/ActionDropdown/ActionDropdown';
-import ChannelRoleManager from '@/utils/channelRoleManager';
+import ChannelRoleManager from '@/utils/channelMemberRoleManager';
 import type { DropdownAction } from '@/types/common.type';
 import type { PostDropdownProps } from '@/types/post.type';
 import { PostDeleteDialog } from '../PostDeleteDialog/PostDeleteDialog';

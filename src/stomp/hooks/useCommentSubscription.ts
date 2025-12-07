@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
+import { useStomp } from '@/stomp/StompProvider';
+import { STOMP_DESTINATIONS } from '@/stomp/destinations';
+import { handleCommentEvent } from '@/stomp/handlers/commentEventHandler';
 import type { IMessage } from '@stomp/stompjs';
-import { useStomp } from '../StompProvider';
-import { STOMP_DESTINATIONS } from '../destinations';
-import { handleCommentEvent } from '../handlers/commentEventHandler';
 
 export const useCommentSubscription = (postId: number | null) => {
   const { client, isConnected } = useStomp();

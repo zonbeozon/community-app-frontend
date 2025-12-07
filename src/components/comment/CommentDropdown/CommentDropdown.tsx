@@ -4,7 +4,7 @@ import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
 import { useAtomValue } from 'jotai';
 import { CommentDeleteDialog } from '@/components/comment/CommentDeleteDialog/CommentDeleteDialog';
 import { ActionDropdown } from '@/components/common/ActionDropdown/ActionDropdown';
-import ChannelRoleManager from '@/utils/channelRoleManager';
+import ChannelRoleManager from '@/utils/channelMemberRoleManager';
 import type { CommentDropdownProps } from '@/types/comment.type';
 import type { DropdownAction } from '@/types/common.type';
 import * as S from './CommentDropdown.styles';

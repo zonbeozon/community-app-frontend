@@ -6,11 +6,11 @@ import { useChannelCreate } from '@/hooks/channel/useChannelCreate';
 import { useForm } from '@/hooks/common/useForm';
 import { DEFAULT_CHANNEL_VALUES } from '@/constants/constants';
 import { validateChannel } from '@/validations/validateChannel';
-import type { ChannelDialogProps, ChannelRequest } from '@/types/channel.type';
+import type { ChannelDialogProps, ChannelPayload } from '@/types/channel.type';
 import * as S from './ChannelCreateDialog.styles';
 
 export const ChannelCreateDialog = ({ open, onOpenChange }: ChannelDialogProps) => {
-  const { values, errors, handler, isValid, reset } = useForm<ChannelRequest>(DEFAULT_CHANNEL_VALUES, validateChannel);
+  const { values, errors, handler, isValid, reset } = useForm<ChannelPayload>(DEFAULT_CHANNEL_VALUES, validateChannel);
 
   const { createChannel, isCreating } = useChannelCreate();
 

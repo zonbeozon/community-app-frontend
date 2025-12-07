@@ -1,6 +1,5 @@
-import { Coin } from './coin.type';
-import { Image } from './common.type';
-import { ServerMember } from './serverMember.type';
+import type { DialogProps, Image } from './common.type';
+import type { ServerMember } from './serverMember.type';
 
 export interface Chat {
   chatId: number;
@@ -13,7 +12,7 @@ export interface Chat {
   parentId?: number | null;
 }
 
-export interface ChattingGroupResponse {
+export interface ChatsResponse {
   chattingGroupId: number;
   content: {
     chatId: number;
@@ -33,11 +32,6 @@ export interface ChattingGroupResponse {
   };
 }
 
-export interface ChattingGroupProps {
-  title: string;
-  chattingGroups: Coin[];
-}
-
 export interface ChatInputProps {
   onSubmit: (content: string) => void;
 }
@@ -51,8 +45,6 @@ export interface CreateChatProps {
   }
 }
 
-export interface ChatDialogProps {
+export interface ChatDialogProps extends DialogProps{
   chatId: number;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
 }

@@ -5,14 +5,14 @@ import { useAtomValue } from 'jotai';
 import { toast } from 'sonner';
 import { SERVER_ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/constants/messages';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import type { CreatePostVars } from '@/types/post.type';
+import type {PostPayload } from '@/types/post.type';
 
 export const useCreatePost = () => {
   const queryClient = useQueryClient();
   const myInfo = useAtomValue(serverMemberAtom);
 
   return useMutation({
-    mutationFn: ({ channelId, payload }: CreatePostVars): Promise<number> => createPost(channelId, payload),
+    mutationFn: ({ channelId, payload }: { channelId: number; payload: PostPayload }): Promise<number> => createPost(channelId, payload),
 
     onMutate: async () => {
       if (!myInfo) {

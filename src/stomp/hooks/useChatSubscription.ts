@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
+import { useStomp } from '@/stomp/StompProvider';
+import { STOMP_DESTINATIONS } from '@/stomp/destinations';
+import { handleChatEvent } from '@/stomp/handlers/chatEventHandler';
 import type { IMessage } from '@stomp/stompjs';
-import { useStomp } from '../StompProvider';
-import { STOMP_DESTINATIONS } from '../destinations';
-import { handleChatEvent } from '../handlers/chatEventHandler';
 
 export const useChatSubscription = (chattingGroupId: number) => {
   const { client, isConnected } = useStomp();
