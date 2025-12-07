@@ -1,8 +1,8 @@
 import { Link, useParams } from 'react-router-dom';
-import * as S from './ChattingGroupItem.styles';
+import * as S from './CoinItem.styles';
 import type { Coin } from '@/types/coin.type';
 
-export const ChattingGroupItem = ({ coin }: { coin: Coin }) => {
+export const CoinItem = ({ coin }: { coin: Coin }) => {
   const { symbol: currentUrlSymbol } = useParams<{ symbol: string }>();
   
   const { name, logo, symbol } = coin;

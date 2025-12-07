@@ -4,7 +4,7 @@ import { useGetCoinList } from '@/queries/useGetCoinList';
 import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
 import { useAtomValue } from 'jotai';
 import { ChannelGroup } from '@/components/channel/ChannelGroup/ChannelGroup';
-import { ChattingGroup } from '@/components/chat/ChattingGroup/ChattingGroup';
+import { CoinGroup } from '@/components/coin/CoinGroup/CoinGroup';
 import type { Channel } from '@/types/channel.type';
 import * as S from './Sidebar.styles';
 
@@ -30,7 +30,7 @@ export const Sidebar = () => {
   return (
     <div className={S.sidebarWrapper}>
       <ul className={S.sidebarContent}>
-        <ChattingGroup title="종목 토론방" chattingGroups={coins || []} />
+        <CoinGroup title="종목 토론방" chattingGroups={coins || []} />
       </ul>
       <ul className={S.sidebarContent}>
         <ChannelGroup title="커뮤니티 채널" channels={communityChannels} />

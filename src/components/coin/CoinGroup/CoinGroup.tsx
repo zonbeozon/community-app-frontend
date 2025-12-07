@@ -1,9 +1,9 @@
 import { MESSAGES } from '@/constants/messages';
-import * as S from './ChattingGroup.styles';
-import { ChattingGroupItem } from '../ChattingGroupItem/ChattingGroupItem';
+import * as S from './CoinGroup.styles';
+import { CoinItem } from '@/components/coin/CoinItem/CoinItem';
 import type { ChattingGroupProps } from '@/types/chat.type';
 
-export const ChattingGroup = ({ title, chattingGroups }: ChattingGroupProps) => {
+export const CoinGroup = ({ title, chattingGroups }: ChattingGroupProps) => {
   if (!chattingGroups || chattingGroups.length === 0) {
     return (
       <div>
@@ -18,7 +18,7 @@ export const ChattingGroup = ({ title, chattingGroups }: ChattingGroupProps) => 
       <h3 className={S.title}>{title}</h3>
       <ul>
         {chattingGroups.map((coin) => (
-          <ChattingGroupItem 
+          <CoinItem 
             key={coin.chattingGroupId} 
             coin={coin} 
           />

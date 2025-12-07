@@ -9,14 +9,15 @@ import { IndicatorSelector } from '@/components/chart/IndicatorSelector/Indicato
 import { IntervalSelector } from '@/components/chart/IntervalSelector/IntervalSelector';
 import { Spinner } from '@/components/ui/spinner';
 import { useFormattedChartData } from '@/hooks/chart/useFormattedChartData';
-import { ChatInput } from '../ChatInput/ChatInput';
-import { ChatList } from '../ChatList/ChatList';
-import { ChattingGroupHeader } from '../ChattingGroupHeader/ChattingGroupHeader';
-import * as S from './ChattingGroupContent.styles';
+import { ChatInput } from '@/components/chat/ChatInput/ChatInput';
+import { ChatList } from '@/components/chat/ChatList/ChatList';
+import { CoinHeader } from '@/components/coin/CoinHeader/CoinHeader';
+import * as S from './CoinContent.styles';
+import { PeriodCounter } from '@/components/chart/PeriodCounter/PeriodCounter';
 
-const ChattingGroupContent = () => {
+const CoinContent = () => {
   const { symbol } = useParams<{ symbol: string }>();
-  const [timeScale, setTimeScale] = useState<string>('1m');
+  const [interval, setInterval] = useState<string>('1m');
   const [indicatorData, setIndicatorData] = useState<{
     [key: string]: LineData[];
   }>({});
@@ -26,7 +27,7 @@ const ChattingGroupContent = () => {
 
   const chartParams = {
     symbol: currentCoin?.symbol ? `${currentCoin.symbol}USDT` : '',
-    interval: '1m',
+    interval: interval,
     limit: 500,
   };
 
@@ -43,9 +44,11 @@ const ChattingGroupContent = () => {
 
   const { candlestickData } = useFormattedChartData(chartData);
 
-  const handleTimeScaleChange = (timeScale: string) => {
-    setTimeScale(timeScale);
+  const handleIntervalChange = (interval: string) => {
+    setInterval(interval);
   };
+
+  const isDisabled = Object.keys(indicatorData).length === 0;
 
   if (isCoinLoading || isChartLoading) {
     return <Spinner />;
@@ -58,13 +61,14 @@ const ChattingGroupContent = () => {
   return (
     <div className={S.layout}>
       <div className={S.headerWrapper}>
-        <ChattingGroupHeader coin={currentCoin} />
+        <CoinHeader coin={currentCoin} />
       </div>
 
       <div className={S.chartWrapper}>
-        <div className="flex">
-          <IntervalSelector value={timeScale} onChange={handleTimeScaleChange} />
+        <div className={S.selectorRow}>
+          <IntervalSelector value={interval} onChange={handleIntervalChange} />
           <IndicatorSelector candlestickData={candlestickData} period={period} onIndicatorChange={setIndicatorData} />
+          <PeriodCounter period={period} setPeriod={setPeriod} isDisabled={isDisabled}/>
         </div>
         <Chart
           key={symbol}
@@ -94,4 +98,4 @@ const ChattingGroupContent = () => {
   );
 };
 
-export default ChattingGroupContent;
+export default CoinContent;
