@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { useUnbanChannelMember } from '@/hooks/channelmember/useUnbanChannelMember';
+import { useUnbanChannelMember } from '@/hooks/channelMember/useUnbanChannelMember';
 import type { ChannelMemberDialogProps } from '@/types/channelMember.type';
 import * as S from './ChannelMemberUnbanDialog.styles';
 

@@ -1,26 +1,19 @@
-import { useState, useEffect, useMemo } from "react";
-import { MultiSelect } from "@/components/ui/multi-select";
-import { calculateIndicators } from "@/utils/indicatorSelector";
-import { INDICATORS } from "@/constants/constants";
-import type { LineData } from "lightweight-charts";
-import type { CandleData, AllowedIndicator, Indicator, IndicatorSelectorProps } from "@/types/chart.type";
-import * as S from "./IndicatorSelector.styles";
+import { useEffect, useMemo, useState } from 'react';
+import type { LineData } from 'lightweight-charts';
+import { MultiSelect } from '@/components/ui/multi-select';
+import { calculateIndicators } from '@/utils/indicatorSelector';
+import { INDICATORS } from '@/constants/constants';
+import type { AllowedIndicator, CandleData, Indicator, IndicatorSelectorProps } from '@/types/chart.type';
+import * as S from './IndicatorSelector.styles';
 
 const DEFAULT_CONFIGS: Record<string, Partial<Indicator>> = {
   MACD: { fastPeriod: 12, slowPeriod: 26, signalPeriod: 9 },
 };
 
-export const IndicatorSelector = ({
-  candlestickData,
-  period,
-  onIndicatorChange,
-}: IndicatorSelectorProps) => {
+export const IndicatorSelector = ({ candlestickData, period, onIndicatorChange }: IndicatorSelectorProps) => {
   const [activeConfigs, setActiveConfigs] = useState<Indicator[]>([]);
 
-  const selectedValues = useMemo(
-    () => activeConfigs.map((c) => c.type),
-    [activeConfigs]
-  );
+  const selectedValues = useMemo(() => activeConfigs.map((c) => c.type), [activeConfigs]);
 
   const formattedCandles = useMemo<CandleData[]>(() => {
     if (!candlestickData || candlestickData.length === 0) return [];
@@ -38,9 +31,9 @@ export const IndicatorSelector = ({
   useEffect(() => {
     setActiveConfigs((prevConfigs) =>
       prevConfigs.map((config) => {
-        if (config.type === "MACD") return config;
+        if (config.type === 'MACD') return config;
         return { ...config, period: period };
-      })
+      }),
     );
   }, [period]);
 
@@ -56,7 +49,7 @@ export const IndicatorSelector = ({
           id: `${type}_${Date.now()}`,
           type: type as AllowedIndicator,
           ...DEFAULT_CONFIGS[type],
-          period: type === "MACD" ? undefined : period,
+          period: type === 'MACD' ? undefined : period,
         } as Indicator;
       });
     });
@@ -78,20 +71,17 @@ export const IndicatorSelector = ({
               value: value ?? undefined,
               time: formattedCandles[index]?.time,
             }))
-            .filter(
-              (item): item is LineData =>
-                item.time !== undefined && item.value !== undefined
-            );
+            .filter((item): item is LineData => item.time !== undefined && item.value !== undefined);
 
           acc[key] = formattedData;
           return acc;
         },
-        {} as { [key: string]: LineData[] }
+        {} as { [key: string]: LineData[] },
       );
 
       onIndicatorChange(allFormattedData);
     } catch (error) {
-      console.error("error caused while calculating indicator:", error);
+      console.error('error caused while calculating indicator:', error);
       onIndicatorChange({});
     }
   }, [activeConfigs, formattedCandles, onIndicatorChange]);
@@ -102,7 +92,7 @@ export const IndicatorSelector = ({
         options={INDICATORS}
         onValueChange={handleSelectionChange}
         defaultValue={selectedValues}
-        placeholder="Select an indicator.."
+        placeholder="보조지표를 선택해 주세요.."
         className={S.multiSelector}
         maxCount={1}
         maxWidth="1"

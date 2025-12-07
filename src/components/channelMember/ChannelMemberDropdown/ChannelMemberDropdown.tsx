@@ -1,7 +1,7 @@
-import { ChannelMemberBanDialog } from '@/components/channelmember/ChannelMemberBanDialog/ChannelMemberBanDialog';
-import { ChannelMemberRoleChangeDialog } from '@/components/channelmember/ChannelMemberRoleChangeDialog/ChannelMemberRoleChangeDialog';
+import { ChannelMemberBanDialog } from '@/components/channelMember/ChannelMemberBanDialog/ChannelMemberBanDialog';
+import { ChannelMemberRoleChangeDialog } from '@/components/channelMember/ChannelMemberRoleChangeDialog/ChannelMemberRoleChangeDialog';
 import { ActionDropdown } from '@/components/common/ActionDropdown/ActionDropdown';
-import { useChannelMemberDropdown } from '@/hooks/channelmember/useChannelMemberDropdown';
+import { useChannelMemberDropdown } from '@/hooks/channelMember/useChannelMemberDropdown';
 import type { ChannelMemberProps } from '@/types/channelMember.type';
 import * as S from './ChannelMemberDropdown.styles';
 

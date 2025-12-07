@@ -1,7 +1,7 @@
-import { ChatDeleteDialog } from '../ChatDeleteDialog/ChatDeleteDialog';
 import { ActionDropdown } from '@/components/common/ActionDropdown/ActionDropdown';
-import * as S from './ChatDropdown.styles';
 import { useChatDropdown } from '@/hooks/chat/useChatDropdown';
+import { ChatDeleteDialog } from '../ChatDeleteDialog/ChatDeleteDialog';
+import * as S from './ChatDropdown.styles';
 
 interface ChatDropdownProps {
   chatId: number;
@@ -13,18 +13,9 @@ export const ChatDropdown = ({ chatId, chattingGroupId }: ChatDropdownProps) => 
 
   return (
     <>
-      <ActionDropdown 
-        aria-label="채팅 옵션" 
-        {...dropdown} 
-        actions={actions} 
-        triggerClassName={S.dropdownButton} 
-      />
+      <ActionDropdown aria-label="채팅 옵션" {...dropdown} actions={actions} triggerClassName={S.dropdownButton} />
 
-      <ChatDeleteDialog 
-        chatId={chatId} 
-        chattingGroupId={chattingGroupId}
-        {...deleteDialog} 
-      />
+      <ChatDeleteDialog chatId={chatId} chattingGroupId={chattingGroupId} {...deleteDialog} />
     </>
   );
 };

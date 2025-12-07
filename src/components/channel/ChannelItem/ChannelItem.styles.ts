@@ -8,12 +8,6 @@ export const itemWrapper = (isSelected: boolean) => {
   return `${baseStyle} ${isSelected ? selectedStyle : hoverStyle}`;
 };
 
-const baseProfileImage = 'w-10 h-10 rounded-full object-cover flex-shrink-0 ';
-
-export const profileImage = baseProfileImage;
-
-export const profileImageFallback = `${baseProfileImage} flex items-center justify-center bg-gray-200 text-gray-500 font-bold text-lg dark:bg-gray-700 dark:text-gray-400`;
-
 export const contentWrapper = 'flex-1 overflow-hidden';
 
 export const title = 'truncate text-sm font-medium text-black dark:text-white';

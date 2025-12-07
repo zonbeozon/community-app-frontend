@@ -1,5 +1,5 @@
 import { ChannelProfileImage } from '@/components/channel/ChannelProfileImage/ChannelProfileImage';
-import { ChannelActiveMemberList } from '@/components/channelmember/ChannelActiveMemberList/ChannelActiveMemberList';
+import { ChannelActiveMemberList } from '@/components/channelMember/ChannelActiveMemberList/ChannelActiveMemberList';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useDialog } from '@/hooks/common/useDialog';
 import type { Channel } from '@/types/channel.type';

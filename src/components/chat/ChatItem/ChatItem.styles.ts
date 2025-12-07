@@ -22,7 +22,7 @@ export const bubbleRowOther = 'flex-row';
 
 export const bubble = 'px-3.5 py-2 text-[14px] leading-relaxed break-all rounded-[18px] shadow-sm relative';
 
-export const bubbleMe = 'bg-blue-500 text-white rounded-tr-none';
+export const bubbleMe = 'bg-orange-400 text-white rounded-tr-none';
 
 export const bubbleOther = 'bg-white text-gray-900 border border-gray-200 rounded-tl-none';
 

@@ -1,9 +1,9 @@
 import { serverMemberAtom } from '@/atoms/authAtoms';
 import { useGetChannelMembers } from '@/queries/useGetChannelMembers';
 import { useAtomValue } from 'jotai';
-import { ChannelMemberDropdown } from '@/components/channelmember/ChannelMemberDropdown/ChannelMemberDropdown';
-import { ChannelMemberItem } from '@/components/channelmember/ChannelMemberItem/ChannelMemberItem';
-import { ChannelMemberRoleIcon } from '@/components/channelmember/ChannelMemberRoleIcon/ChannelMemberRoleIcon';
+import { ChannelMemberDropdown } from '@/components/channelMember/ChannelMemberDropdown/ChannelMemberDropdown';
+import { ChannelMemberItem } from '@/components/channelMember/ChannelMemberItem/ChannelMemberItem';
+import { ChannelMemberRoleIcon } from '@/components/channelMember/ChannelMemberRoleIcon/ChannelMemberRoleIcon';
 import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
 import { useChannelLogic } from '@/hooks/channel/useChannelLogic';
 import { DEFAULT_PAGE_REQUEST } from '@/constants/constants';

@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { ChannelActiveMemberList } from '@/components/channelmember/ChannelActiveMemberList/ChannelActiveMemberList';
-import { ChannelBannedMemberList } from '@/components/channelmember/ChannelBannedMemberList/ChannelBannedMemberList';
-import { ChannelPendingMemberList } from '@/components/channelmember/ChannelPendingMemberList/ChannelPendingMemberList';
+import { ChannelActiveMemberList } from '@/components/channelMember/ChannelActiveMemberList/ChannelActiveMemberList';
+import { ChannelBannedMemberList } from '@/components/channelMember/ChannelBannedMemberList/ChannelBannedMemberList';
+import { ChannelPendingMemberList } from '@/components/channelMember/ChannelPendingMemberList/ChannelPendingMemberList';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ChannelDialogProps } from '@/types/channel.type';

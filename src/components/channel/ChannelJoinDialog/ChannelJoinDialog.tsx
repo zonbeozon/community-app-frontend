@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
-import { useJoinChannel } from '@/hooks/channelmember/useJoinChannel';
+import { useJoinChannel } from '@/hooks/channelMember/useJoinChannel';
 import type { ChannelJoinDialogProps } from '@/types/channel.type';
 
 export const ChannelJoinDialog = ({ channel, onJoinSuccess, open, onOpenChange }: ChannelJoinDialogProps) => {

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { serverMemberAtom } from '@/atoms/authAtoms';
 import { useAtomValue } from 'jotai';
-import { ChannelMemberInfoDialog } from '@/components/channelmember/ChannelMemberInfoDialog/ChannelMemberInfoDialog';
+import { ChannelMemberInfoDialog } from '@/components/channelMember/ChannelMemberInfoDialog/ChannelMemberInfoDialog';
 import { CommentButton } from '@/components/comment/CommentButton/CommentButton';
 import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
 import { TimeDisplay } from '@/components/common/TimeDisplay/TimeDisplay';

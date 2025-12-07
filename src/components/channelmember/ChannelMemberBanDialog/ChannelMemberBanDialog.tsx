@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { useBanChannelMember } from '@/hooks/channelmember/useBanChannelMember';
+import { useBanChannelMember } from '@/hooks/channelMember/useBanChannelMember';
 import type { ChannelMemberDialogProps } from '@/types/channelMember.type';
 import * as S from './ChannelMemberBanDialog.styles';
 

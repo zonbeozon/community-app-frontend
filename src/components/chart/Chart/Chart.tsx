@@ -1,74 +1,55 @@
-import { useRef, useEffect, useState } from "react";
-import { createChart } from "lightweight-charts";
-import { useAtomValue } from "jotai/react";
-import { ChartTooltip } from "../ChartTooltip/ChartTooltip";
-import { useFormattedChartData } from "@/hooks/chart/useFormattedChartData";
-import { useChartInfiniteScroll } from "@/hooks/chart/useChartInfiniteScroll";
-import { useRealTimeTrade } from "@/hooks/chart/useRealTimeTrade";
-import { getRandomColor } from "@/utils/randomColorGenerator";
+import { useEffect, useRef, useState } from 'react';
+import { createChart } from 'lightweight-charts';
+import type { CandlestickData, IChartApi, ISeriesApi, LineWidth } from 'lightweight-charts';
+import { useChartInfiniteScroll } from '@/hooks/chart/useChartInfiniteScroll';
+import { useFormattedChartData } from '@/hooks/chart/useFormattedChartData';
+import { useRealTimeTrade } from '@/hooks/chart/useRealTimeTrade';
+import { getRandomColor } from '@/utils/randomColorGenerator';
 import {
   CANDLESTICK_SERIES_OPTIONS,
-  VOLUME_SERIES_OPTIONS,
-  VOLUME_SCALE_OPTIONS,
-  VOLUME_PRICE_SCALE_ID,
   INITIAL_TOOLTIP_STATE,
-} from "@/constants/constants";
-import type {
-  IChartApi,
-  ISeriesApi,
-  CandlestickData,
-  LineWidth
-} from "lightweight-charts";
-import type { ChartTooltipProps, ChartProps } from "@/types/chart.type";
-import * as S from "./Chart.styles";
+  VOLUME_PRICE_SCALE_ID,
+  VOLUME_SCALE_OPTIONS,
+  VOLUME_SERIES_OPTIONS,
+} from '@/constants/constants';
+import type { ChartProps, ChartTooltipProps } from '@/types/chart.type';
+import { ChartTooltip } from '../ChartTooltip/ChartTooltip';
+import * as S from './Chart.styles';
 
-export const Chart = ({
-  data,
-  fetchNextPage,
-  hasNextPage,
-  isFetchingNextPage,
-  params,
-  indicatorData,
-}: ChartProps) => {
+export const Chart = ({ data, fetchNextPage, hasNextPage, isFetchingNextPage, params, indicatorData }: ChartProps) => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
-  const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
-  const volumeSeriesRef = useRef<ISeriesApi<"Histogram"> | null>(null);
+  const candleSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
+  const volumeSeriesRef = useRef<ISeriesApi<'Histogram'> | null>(null);
 
-  const OSCILLATORS = ["RSI", "MACD", "Stochastic", "ATR", "OBV"];
+  const OSCILLATORS = ['RSI', 'MACD', 'Stochastic', 'ATR', 'OBV'];
 
-  const indicatorSeriesRef = useRef(new Map<string, ISeriesApi<"Line">>());
-  const [tooltipState, setTooltipState] = useState<ChartTooltipProps>(
-    INITIAL_TOOLTIP_STATE
-  );
+  const indicatorSeriesRef = useRef(new Map<string, ISeriesApi<'Line'>>());
+  const [tooltipState, setTooltipState] = useState<ChartTooltipProps>(INITIAL_TOOLTIP_STATE);
 
   const { candlestickData, volumeData } = useFormattedChartData(data);
-  const { handleVisibleLogicalRangeChange, visibleRangeRef, scrollLockRef } =
-    useChartInfiniteScroll({
-      chartRef,
-      fetchNextPage,
-      hasNextPage,
-      isFetchingNextPage,
-    });
+  const { handleVisibleLogicalRangeChange, visibleRangeRef, scrollLockRef } = useChartInfiniteScroll({
+    chartRef,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  });
 
   const latestPriceRef = useRealTimeTrade(params.symbol);
 
   useEffect(() => {
     if (!chartContainerRef.current || chartRef.current) return;
 
-    const chart = createChart(
-      chartContainerRef.current,
-      S.chartOptions
-    );
-    chart
-      .timeScale()
-      .subscribeVisibleLogicalRangeChange(handleVisibleLogicalRangeChange);
+    const chart = createChart(chartContainerRef.current, S.chartOptions);
+    chart.timeScale().subscribeVisibleLogicalRangeChange(handleVisibleLogicalRangeChange);
 
-    new ResizeObserver(entries => {
-        if (entries.length === 0 || entries[0].target !== chartContainerRef.current) { return; }
-        const newRect = entries[0].contentRect;
-        chart.applyOptions({ height: newRect.height, width: newRect.width });
-      }).observe(chartContainerRef.current);  
+    new ResizeObserver((entries) => {
+      if (entries.length === 0 || entries[0].target !== chartContainerRef.current) {
+        return;
+      }
+      const newRect = entries[0].contentRect;
+      chart.applyOptions({ height: newRect.height, width: newRect.width });
+    }).observe(chartContainerRef.current);
 
     const candleSeries = chart.addCandlestickSeries(CANDLESTICK_SERIES_OPTIONS);
     const volumeSeries = chart.addHistogramSeries(VOLUME_SERIES_OPTIONS);
@@ -99,13 +80,13 @@ export const Chart = ({
       const tooltipHeight = 70;
       const margin = 15;
 
-      const isRightSide = param.point.x > containerWidth / 2
+      const isRightSide = param.point.x > containerWidth / 2;
 
       let left;
       if (isRightSide) {
         left = chartRect.left + param.point.x - tooltipWidth - margin;
       } else {
-        left = chartRect.left + param.point.x + margin; 
+        left = chartRect.left + param.point.x + margin;
       }
 
       let top = chartRect.top + param.point.y - tooltipHeight - margin;
@@ -119,7 +100,7 @@ export const Chart = ({
     return () => {
       chart.remove();
       chartRef.current = null;
-      indicatorSeriesRef.current.clear(); 
+      indicatorSeriesRef.current.clear();
     };
   }, [handleVisibleLogicalRangeChange]);
 
@@ -134,9 +115,7 @@ export const Chart = ({
       const newFrom = visibleRangeRef.current.from + addedDataCount;
       const newTo = visibleRangeRef.current.to + addedDataCount;
 
-      chartRef.current
-        ?.timeScale()
-        .setVisibleLogicalRange({ from: newFrom, to: newTo });
+      chartRef.current?.timeScale().setVisibleLogicalRange({ from: newFrom, to: newTo });
       visibleRangeRef.current = null;
 
       setTimeout(() => {
@@ -159,11 +138,9 @@ export const Chart = ({
       }
     });
 
-    const hasOscillator = currentIndicatorKeys.some((key) =>
-      OSCILLATORS.some((type) => key.includes(type))
-    );
+    const hasOscillator = currentIndicatorKeys.some((key) => OSCILLATORS.some((type) => key.includes(type)));
 
-    chart.priceScale("right").applyOptions({
+    chart.priceScale('right').applyOptions({
       scaleMargins: {
         top: 0.1,
         bottom: hasOscillator ? 0.3 : 0.1,
@@ -184,13 +161,13 @@ export const Chart = ({
         const seriesOptions = {
           color: getRandomColor(),
           lineWidth: 2 as LineWidth,
-          priceScaleId: isOscillator ? "oscillator-scale" : "right",
+          priceScaleId: isOscillator ? 'oscillator-scale' : 'right',
         };
 
         const newSeries = chart.addLineSeries(seriesOptions);
 
         if (isOscillator) {
-          chart.priceScale("oscillator-scale").applyOptions({
+          chart.priceScale('oscillator-scale').applyOptions({
             scaleMargins: {
               top: 0.75,
               bottom: 0,

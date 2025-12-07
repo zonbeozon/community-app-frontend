@@ -1,4 +1,4 @@
-import { ChannelMemberProfileImage } from '@/components/channelmember/ChannelMemberProfileImage/ChannelMemberProfileImage';
+import { ChannelMemberProfileImage } from '@/components/channelMember/ChannelMemberProfileImage/ChannelMemberProfileImage';
 import type { ChannelMemberItemProps } from '@/types/channelMember.type';
 import * as S from './ChannelMemberItem.styles';
 

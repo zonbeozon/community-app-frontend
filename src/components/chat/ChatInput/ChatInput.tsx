@@ -2,15 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import { Send } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import * as S from './ChatInput.styles';
 import { useCreateChat } from '@/hooks/chat/useCreateChat';
+import * as S from './ChatInput.styles';
 
 export const ChatInput = ({ chattingGroupId }: { chattingGroupId: number }) => {
-  
   const inputRef = useRef<HTMLInputElement>(null);
   const [chat, setChat] = useState('');
-  
-  const { mutate: createChat } = useCreateChat(); 
+
+  const { mutate: createChat } = useCreateChat();
 
   useEffect(() => {
     if (inputRef.current) {
@@ -20,17 +19,17 @@ export const ChatInput = ({ chattingGroupId }: { chattingGroupId: number }) => {
 
   const handleSubmit = () => {
     const trimmedChat = chat.trim();
-    
+
     if (!trimmedChat || !chattingGroupId) return;
 
-    createChat({ 
-      chattingGroupId, 
-      payload: { 
+    createChat({
+      chattingGroupId,
+      payload: {
         content: trimmedChat,
         imageIds: [],
-      } 
+      },
     });
-    
+
     setChat('');
   };
 
@@ -43,19 +42,19 @@ export const ChatInput = ({ chattingGroupId }: { chattingGroupId: number }) => {
 
   return (
     <div className={S.wrapper}>
-        <>
-          <Input
-            ref={inputRef}
-            placeholder="채팅을 입력해보세요!"
-            value={chat}
-            onChange={(e) => setChat(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className={S.input}
-          />
-          <Button variant="ghost" onClick={handleSubmit} disabled={!chat.trim()} aria-label="채팅 전송">
-            <Send />
-          </Button>
-        </>
+      <>
+        <Input
+          ref={inputRef}
+          placeholder="채팅을 입력해보세요!"
+          value={chat}
+          onChange={(e) => setChat(e.target.value)}
+          onKeyDown={handleKeyDown}
+          className={S.input}
+        />
+        <Button variant="ghost" onClick={handleSubmit} disabled={!chat.trim()} aria-label="채팅 전송">
+          <Send />
+        </Button>
+      </>
     </div>
   );
 };

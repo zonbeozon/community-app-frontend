@@ -7,7 +7,3 @@ export const avatar = 'w-10 h-10 rounded-full object-cover shrink-0 cursor-point
 export const bigImg = 'w-24 h-24 rounded-full object-cover';
 
 export const username = 'text-xl font-semibold';
-
-export const userInfo = 'text-sm text-gray-600';
-
-export const closeButton = 'mt-2 px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300';

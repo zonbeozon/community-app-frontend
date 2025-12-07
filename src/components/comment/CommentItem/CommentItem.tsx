@@ -1,4 +1,4 @@
-import { ChannelMemberInfoDialog } from '@/components/channelmember/ChannelMemberInfoDialog/ChannelMemberInfoDialog';
+import { ChannelMemberInfoDialog } from '@/components/channelMember/ChannelMemberInfoDialog/ChannelMemberInfoDialog';
 import { CommentDropdown } from '@/components/comment/CommentDropdown/CommentDropdown';
 import { TimeDisplay } from '@/components/common/TimeDisplay/TimeDisplay';
 import { ServerMemberInfoDialog } from '@/components/servermember/ServerMemberInfoDialog/ServerMemberInfoDialog';

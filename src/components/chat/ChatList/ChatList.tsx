@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
-import { useGetChats } from '@/queries/useGetChats';
-import { ChatItem } from '../ChatItem/ChatItem';
-import { useAtomValue, useSetAtom } from 'jotai'; 
 import { serverMemberAtom } from '@/atoms/authAtoms';
-import { latestChatByChattingGroupAtom } from '@/atoms/chatAtoms'; 
+import { latestChatByChattingGroupAtom } from '@/atoms/chatAtoms';
+import { useGetChats } from '@/queries/useGetChats';
 import { useChatSubscription } from '@/stomp/hooks/useChatSubscription';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { ChatItem } from '../ChatItem/ChatItem';
 import * as S from './ChatList.styles';
 
 interface ChatListProps {
@@ -16,7 +16,7 @@ export const ChatList = ({ chattingGroupId }: ChatListProps) => {
   const { data: chatList, isLoading } = useGetChats(chattingGroupId);
 
   const myInfo = useAtomValue(serverMemberAtom);
-  const setLatestChatMap = useSetAtom(latestChatByChattingGroupAtom); 
+  const setLatestChatMap = useSetAtom(latestChatByChattingGroupAtom);
 
   useChatSubscription(chattingGroupId);
 
@@ -48,17 +48,17 @@ export const ChatList = ({ chattingGroupId }: ChatListProps) => {
   return (
     <ul className={S.container}>
       {chatList
-        .slice()  
-        .reverse()    
+        .slice()
+        .reverse()
         .map((chat) => (
-          <ChatItem 
-            key={chat.chatId} 
-            chat={chat} 
-            isMe={chat.author.memberId === myInfo?.memberId} 
+          <ChatItem
+            key={chat.chatId}
+            chat={chat}
+            isMe={chat.author.memberId === myInfo?.memberId}
             chattingGroupId={chattingGroupId}
           />
         ))}
-      <div ref={bottomRef} style={{ height: 0, margin: 0, padding: 0, flexShrink: 0 }}/>
+      <div ref={bottomRef} style={{ height: 0, margin: 0, padding: 0, flexShrink: 0 }} />
     </ul>
   );
 };

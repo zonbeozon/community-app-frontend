@@ -5,7 +5,7 @@ import { ROUTE_PATH } from '@/constants/routePaths';
 import { AuthGuard } from './AuthGuard';
 
 const Main = React.lazy(() => import('@/pages/Main/Main'));
-const ChattingGroupContent = React.lazy(() => import('@/components/chat/ChattingGroupContent/ChattingGroupContent'));
+const CoinContent = React.lazy(() => import('@/components/coin/CoinContent/CoinContent'));
 const ChannelContent = React.lazy(() => import('@/components/channel/ChannelContent/ChannelContent'));
 const RecommendedPostList = React.lazy(() => import('@/components/post/RecommendedPostList/RecommendedPostList'));
 const PostList = React.lazy(() => import('@/components/post/PostList/PostList'));
@@ -31,7 +31,7 @@ export const router = createBrowserRouter(
           <Route element={<AuthGuard />}>
             <Route element={<Main />}>
               <Route path={ROUTE_PATH.main} element={<RecommendedPostList />} />
-              <Route path={ROUTE_PATH.coinInfo} element={<ChattingGroupContent />}></Route>
+              <Route path={ROUTE_PATH.coinInfo} element={<CoinContent />}></Route>
               <Route path={ROUTE_PATH.channelId} element={<ChannelContent />}>
                 <Route index element={<PostList />} />
                 <Route path={ROUTE_PATH.postId} element={<PostDetail />} />

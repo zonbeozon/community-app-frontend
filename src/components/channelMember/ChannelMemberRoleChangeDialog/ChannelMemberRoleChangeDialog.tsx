@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Spinner } from '@/components/ui/spinner';
-import { useUpdateChannelMemberRole } from '@/hooks/channelmember/useUpdateChannelMemberRole';
+import { useUpdateChannelMemberRole } from '@/hooks/channelMember/useUpdateChannelMemberRole';
 import type { ChannelMemberDialogProps, ChannelRole } from '@/types/channelMember.type';
 import * as S from './ChannelMemberRoleChangeDialog.styles';
 

@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
-import { useLeaveChannel } from '@/hooks/channelmember/useLeaveChannel';
+import { useLeaveChannel } from '@/hooks/channelMember/useLeaveChannel';
 import type { ChannelDialogProps } from '@/types/channel.type';
 import * as S from './ChannelLeaveDialog.styles';
 
