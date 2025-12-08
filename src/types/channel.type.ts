@@ -18,6 +18,7 @@ export interface Channel {
     settings: ChannelSettings;
     memberCount: number;
   };
+  isJoined?: boolean;
   membership: ChannelMember;
 }
 
@@ -26,6 +27,22 @@ export interface ChannelPayload {
   description: string;
   imageId: number | null;
   settings: ChannelSettings;
+}
+
+export interface SearchChannelsParams {
+  keyword: string;
+  page?: number;   
+  size?: number;   
+}
+
+
+export interface ChannelsResponse {
+  content: Channel[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  hasNext: boolean;
 }
 
 export interface JoinedChannelsResponse {
