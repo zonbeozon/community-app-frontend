@@ -12,6 +12,11 @@ export const useRealTimeTrade = (symbol: string) => {
     ? `${WS_BASE_URL}/${symbol.toLowerCase()}usdt@trade` 
     : null;
 
+  useEffect(() => {
+    setDisplayPrice(null);      
+    latestPriceRef.current = null; 
+  }, [symbol]);
+
   useWebSocket(wsUrl, {
     onMessage: (event) => {
       const tradeData = JSON.parse(event.data);
@@ -35,7 +40,7 @@ export const useRealTimeTrade = (symbol: string) => {
     }, 15000); 
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [displayPrice]); 
 
   return displayPrice;
 };
