@@ -1,116 +1,88 @@
-import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  Command,
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-} from "@/components/ui/command";
-import { Lock } from "lucide-react";
-import { toast } from "sonner";
-import useGetAllChannels from "@/queries/useGetAllChannels";
-import { ChannelSearchResultTemp } from "@/types/channel.type";
-import * as S from "./ChannelSearchbar.styles";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useGetChannels } from '@/queries/useGetChannels';
+import { Lock } from 'lucide-react';
+import { toast } from 'sonner';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { useDebounce } from '@/hooks/common/useDebounce';
+import * as S from './ChannelSearchbar.styles';
 
 export const ChannelSearchbar = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
+  const debouncedKeyword = useDebounce(inputValue, 300);
+
   const navigate = useNavigate();
-  const {
-    data: allChannels,
-    isLoading,
-    refetch,
-  } = useGetAllChannels({
-    enabled: isOpen,
+
+  const { data, isLoading } = useGetChannels({
+    keyword: debouncedKeyword,
+    page: 0,
+    size: 10,
   });
 
-  const filteredResults = useMemo(() => {
-    if (!allChannels) return [];
+  const searchResults = data?.content || [];
 
-    const validChannels = allChannels.filter(
-      (channel) => channel && channel.title
-    );
+  const handleFocus = () => setIsOpen(true);
 
-    if (!searchQuery) return validChannels;
+  const handleBlur = () => setTimeout(() => setIsOpen(false), 200);
 
-    return validChannels.filter((channel) =>
-      channel.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [allChannels, searchQuery]);
-
-  const handleFocus = () => {
-    setIsOpen(true);
-    refetch();
-  };
-  const handleBlur = () => setTimeout(() => setIsOpen(false), 150);
-
-  const handleItemSelect = (channel: ChannelSearchResultTemp) => {
+  const handleItemSelect = (channelData: any) => {
     setIsOpen(false);
 
-    const isPublic = channel.settings?.contentVisibility === "PUBLIC";
+    const { channelInfo } = channelData;
+    const isPublic = channelInfo.settings.contentVisibility === 'PUBLIC';
 
     if (isPublic) {
-      navigate(`/channels/${channel.channelId}`);
+      navigate(`/channels/${channelInfo.channelId}`);
     } else {
-      toast.error("비공개 채널에는 검색을 통해 참여할 수 없습니다.");
+      toast.error('비공개 채널에는 검색을 통해 참여할 수 없습니다.');
     }
   };
 
   return (
     <div className={S.container}>
-      <Command className={S.command} onBlur={handleBlur} shouldFilter={false}>
+      <Command className={S.command} shouldFilter={false}>
         <CommandInput
-          placeholder="모든 채널 검색하기..."
+          placeholder="채널 검색..."
           onFocus={handleFocus}
-          onValueChange={setSearchQuery}
-          value={searchQuery}
+          onBlur={handleBlur}
+          onValueChange={setInputValue}
+          value={inputValue}
         />
 
         {isOpen && (
           <div className={S.dropdownContainer}>
             <CommandList>
-              {isLoading && (
-                <CommandEmpty>채널 목록을 불러오는 중...</CommandEmpty>
+              {isLoading && <CommandEmpty>검색 중...</CommandEmpty>}
+
+              {!isLoading && searchResults.length === 0 && (
+                <CommandEmpty>
+                  {inputValue ? `"${inputValue}"에 대한 결과가 없습니다.` : '검색어를 입력하세요.'}
+                </CommandEmpty>
               )}
-              {!isLoading && allChannels?.length === 0 && (
-                <CommandEmpty>검색할 수 있는 채널이 없습니다.</CommandEmpty>
-              )}
-              {!isLoading && filteredResults.length > 0 && (
-                <CommandGroup heading="채널 목록">
-                  {filteredResults.map((channel) => {
-                    const isPublic =
-                      channel.settings?.contentVisibility === "PUBLIC";
+
+              {!isLoading && searchResults.length > 0 && (
+                <CommandGroup heading="검색 결과">
+                  {searchResults.map((item) => {
+                    const info = item.channelInfo;
+                    const isPublic = info.settings?.contentVisibility === 'PUBLIC';
 
                     return (
                       <CommandItem
-                        key={channel.channelId}
-                        value={channel.title}
-                        onSelect={() => handleItemSelect(channel)}
+                        key={info.channelId}
+                        value={String(info.channelId)}
+                        onSelect={() => handleItemSelect(item)}
                       >
                         <div className="flex items-center justify-between w-full">
-                          <span className="flex items-center truncate">
-                            {channel.title}
-                          </span>
-                          {!isPublic && (
-                            <Lock className="ml-2 h-4 w-4 flex-shrink-0 text-gray-500" />
-                          )}
+                          <span className="flex items-center truncate">{info.title}</span>
+                          {!isPublic && <Lock className="ml-2 h-4 w-4 flex-shrink-0 text-gray-500" />}
                         </div>
                       </CommandItem>
                     );
                   })}
                 </CommandGroup>
               )}
-              {!isLoading &&
-                allChannels &&
-                allChannels.length > 0 &&
-                filteredResults.length === 0 && (
-                  <CommandEmpty>
-                    "{searchQuery}"에 대한 검색 결과가 없습니다.
-                  </CommandEmpty>
-                )}
             </CommandList>
           </div>
         )}
