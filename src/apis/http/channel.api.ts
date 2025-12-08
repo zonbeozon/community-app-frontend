@@ -1,6 +1,13 @@
 import { fetcher } from '@/apis/fetcher';
 import { BASE_URL, ENDPOINT } from '@/apis/url';
-import type { Channel, ChannelPayload, JoinedChannelsResponse } from '@/types/channel.type';
+import type { Channel, ChannelPayload, ChannelsResponse, JoinedChannelsResponse, SearchChannelsParams } from '@/types/channel.type';
+
+export const getChannels = async (params: SearchChannelsParams): Promise<ChannelsResponse> => {
+  return fetcher.get<ChannelsResponse>({
+    url: BASE_URL + ENDPOINT.CHANNEL,
+    params: params,
+  });
+};
 
 export const getChannelById = async (channelId: number): Promise<Channel> => {
   return fetcher.get<Channel>({
