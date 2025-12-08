@@ -12,6 +12,8 @@ export const QUERY_KEYS = {
     joinedList: (filters: object) => [...QUERY_KEYS.channels.joinedLists(), filters] as const,
     details: () => [...QUERY_KEYS.channels.all, 'detail'] as const,
     detail: (channelId: number | string) => [...QUERY_KEYS.channels.details(), channelId] as const,
+    searches: () => [...QUERY_KEYS.channels.all, 'search'] as const,
+    search: (params: object) => [...QUERY_KEYS.channels.searches(), params] as const,
   },
 
   posts: {
