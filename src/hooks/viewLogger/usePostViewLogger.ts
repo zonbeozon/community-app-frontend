@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useAtom } from 'jotai';
 import { postViewQueueAtom } from '@/atoms/postViewsAtoms';
-import useFlushPostViews from '@/hooks/viewLogger/useFlushPostViews';
+import { useFlushPostViews } from '@/hooks/viewLogger/useFlushPostViews';
 
 export const usePostViewLogger = () => {
   const [queue, setQueue] = useAtom(postViewQueueAtom);

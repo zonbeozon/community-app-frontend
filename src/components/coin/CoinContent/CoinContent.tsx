@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import { useGetCoinBySymbol } from '@/queries/useGetCoinBySymbol';
-import { useGetInfiniteKlinesQuery } from '@/queries/useGetInfiniteKlines';
+import { useGetInfiniteKlines } from '@/queries/useGetInfiniteKlines';
 import { keepPreviousData } from '@tanstack/react-query';
 import { LineData } from 'lightweight-charts';
 import { Chart } from '@/components/chart/Chart/Chart';
@@ -37,7 +37,7 @@ const CoinContent = () => {
     hasNextPage,
     isFetchingNextPage,
     isLoading: isChartLoading,
-  } = useGetInfiniteKlinesQuery(chartParams, {
+  } = useGetInfiniteKlines(chartParams, {
     placeholderData: keepPreviousData,
     enabled: !!currentCoin?.symbol,
   });

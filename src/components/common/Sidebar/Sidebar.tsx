@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { channelActivityMapAtom } from '@/atoms/channelAtoms';
-import { useGetCoinList } from '@/queries/useGetCoins';
+import { useGetCoins } from '@/queries/useGetCoins';
 import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
 import { useAtomValue } from 'jotai';
 import { ChannelGroup } from '@/components/channel/ChannelGroup/ChannelGroup';
@@ -12,7 +12,7 @@ export const Sidebar = () => {
   const { data: channels, isLoading: isChannelsLoading } = useGetJoinedChannels();
   const activityMap = useAtomValue(channelActivityMapAtom);
 
-  const { data: coins } = useGetCoinList();
+  const { data: coins } = useGetCoins();
 
   const communityChannels: Channel[] = useMemo(() => {
     if (!channels) return [];

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { useDialog } from '@/hooks/common/useDialog';
 import { ROUTE_PATH } from '@/constants/routePaths';
 import { NotificationButton } from '../../notification/NotificationButton/NotificationButton';
-// import ChannelSearchbar from "@/components/channel/ChannelSearchbar/ChannelSearchbar";
+import { ChannelSearchbar } from "@/components/channel/ChannelSearchbar/ChannelSearchbar";
 import * as S from './Header.styles';
 
 export const Header = () => {
@@ -29,7 +29,7 @@ export const Header = () => {
 
       {isAuthenticated && (
         <div className={S.rightSection}>
-          {/* <ChannelSearchbar /> */}
+          <ChannelSearchbar />
           <ChannelCreateDialog {...dialogProps} />
           <NotificationButton />
           <ServerMemberInfoDialog />

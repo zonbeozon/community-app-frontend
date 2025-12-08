@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
-import { useChannelDelete } from '@/hooks/channel/useDeleteChannel';
+import { useDeleteChannel } from '@/hooks/channel/useDeleteChannel';
 import type { ChannelDialogProps } from '@/types/channel.type';
 import * as S from './ChannelDeleteDialog.styles';
 
 export const ChannelDeleteDialog = ({ channel, open, onOpenChange }: ChannelDialogProps) => {
-  const { deleteChannel, isDeleting } = useChannelDelete();
+  const { deleteChannel, isDeleting } = useDeleteChannel();
 
   const handleDelete = () => {
     if (!channel) return;
