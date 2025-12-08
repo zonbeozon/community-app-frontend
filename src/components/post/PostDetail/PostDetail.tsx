@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useGetComments } from '@/queries/useGetComments';
-import useGetPost from '@/queries/useGetPost';
+import { useGetPost } from '@/queries/useGetPost';
 import { useCommentSubscription } from '@/stomp/hooks/useCommentSubscription';
 import { toast } from 'sonner';
 import { CommentInput } from '@/components/comment/CommentInput/CommentInput';
