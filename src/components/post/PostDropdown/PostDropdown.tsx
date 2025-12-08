@@ -3,11 +3,11 @@ import { serverMemberAtom } from '@/atoms/authAtoms';
 import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
 import { useAtomValue } from 'jotai';
 import { ActionDropdown } from '@/components/common/ActionDropdown/ActionDropdown';
-import ChannelRoleManager from '@/utils/channelMemberRoleManager';
+import { PostDeleteDialog } from '@/components/post/PostDeleteDialog/PostDeleteDialog';
+import { PostUpdateDialog } from '@/components/post/PostUpdateDialog/PostUpdateDialog';
+import { channelMemberRoleManager } from '@/utils/channelMemberRoleManager';
 import type { DropdownAction } from '@/types/common.type';
 import type { PostDropdownProps } from '@/types/post.type';
-import { PostDeleteDialog } from '../PostDeleteDialog/PostDeleteDialog';
-import { PostUpdateDialog } from '../PostUpdateDialog/PostUpdateDialog';
 import * as S from './PostDropdown.styles';
 
 export const PostDropdown = ({ post, author, channelId }: PostDropdownProps) => {
@@ -18,7 +18,7 @@ export const PostDropdown = ({ post, author, channelId }: PostDropdownProps) => 
   const myServerInfo = useAtomValue(serverMemberAtom);
   const { data: myChannels } = useGetJoinedChannels();
 
-  const myId = myServerInfo?.memberId
+  const myId = myServerInfo?.memberId;
   const myInfoInChannel = useMemo(() => {
     if (!myChannels) return null;
     return myChannels.find((c) => c.channelInfo.channelId === channelId)?.membership;
@@ -29,7 +29,7 @@ export const PostDropdown = ({ post, author, channelId }: PostDropdownProps) => 
   }
 
   const isMyPost = myId === author.memberId;
-  const canManagePost = ChannelRoleManager.isRoleHigher(myInfoInChannel.channelRole, author.channelRole);
+  const canManagePost = channelMemberRoleManager.isRoleHigher(myInfoInChannel.channelRole, author.channelRole);
 
   const canEdit = isMyPost;
   const canDelete = isMyPost || canManagePost;

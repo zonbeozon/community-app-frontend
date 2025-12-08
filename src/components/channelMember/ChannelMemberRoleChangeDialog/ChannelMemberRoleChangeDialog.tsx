@@ -5,11 +5,11 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Spinner } from '@/components/ui/spinner';
 import { useUpdateChannelMemberRole } from '@/hooks/channelMember/useUpdateChannelMemberRole';
-import type { ChannelMemberDialogProps, ChannelRole } from '@/types/channelMember.type';
+import type { ChannelMemberDialogProps, ChannelMemberRole } from '@/types/channelMember.type';
 import * as S from './ChannelMemberRoleChangeDialog.styles';
 
 export const ChannelMemberRoleChangeDialog = ({ open, onOpenChange, channelId, targetMember }: ChannelMemberDialogProps) => {
-  const [selectedRole, setSelectedRole] = useState<ChannelRole>(targetMember.channelRole);
+  const [selectedRole, setSelectedRole] = useState<ChannelMemberRole>(targetMember.channelRole);
 
   const { mutate: updateChannelMemberRole, isPending: isUpdating } = useUpdateChannelMemberRole();
 
@@ -20,7 +20,7 @@ export const ChannelMemberRoleChangeDialog = ({ open, onOpenChange, channelId, t
   });
 
   const handleRoleChange = (value: string) => {
-    setSelectedRole(value as ChannelRole);
+    setSelectedRole(value as ChannelMemberRole);
   };
 
   const isRoleUnchanged = targetMember.channelRole === selectedRole;

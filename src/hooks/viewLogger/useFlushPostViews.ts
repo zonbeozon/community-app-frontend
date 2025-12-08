@@ -3,7 +3,7 @@ import { useSetAtom } from 'jotai';
 import { updatePostViewCount } from '@/apis/http/post.api';
 import { postViewQueueAtom } from '@/atoms/postViewsAtoms';
 
-const useFlushPostViews = () => {
+export const useFlushPostViews = () => {
   const setQueue = useSetAtom(postViewQueueAtom);
 
   return useMutation({
@@ -18,5 +18,3 @@ const useFlushPostViews = () => {
     },
   });
 };
-
-export default useFlushPostViews;

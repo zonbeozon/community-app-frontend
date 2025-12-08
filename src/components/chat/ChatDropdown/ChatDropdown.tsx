@@ -1,12 +1,8 @@
 import { ActionDropdown } from '@/components/common/ActionDropdown/ActionDropdown';
 import { useChatDropdown } from '@/hooks/chat/useChatDropdown';
-import { ChatDeleteDialog } from '../ChatDeleteDialog/ChatDeleteDialog';
+import { ChatDeleteDialog } from '@/components/chat/ChatDeleteDialog/ChatDeleteDialog';
+import type { ChatDropdownProps } from '@/types/chat.type';
 import * as S from './ChatDropdown.styles';
-
-interface ChatDropdownProps {
-  chatId: number;
-  chattingGroupId: number;
-}
 
 export const ChatDropdown = ({ chatId, chattingGroupId }: ChatDropdownProps) => {
   const { dropdown, deleteDialog, actions } = useChatDropdown(chatId);

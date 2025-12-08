@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { MAX_POST_CONTENT_LENGTH } from '@/constants/constants';
 import type { FormProps } from '@/types/form.type';
-import type { PostRequest } from '@/types/post.type';
-import * as S from '../PostForm/PostForm.styles';
+import type { PostPayload } from '@/types/post.type';
+import * as S from './PostForm.styles'
 
 export const PostForm = ({
   content,
@@ -15,7 +15,7 @@ export const PostForm = ({
   isValid,
   onSubmit,
   imagePreview,
-}: FormProps<PostRequest, string[]>) => {
+}: FormProps<PostPayload, string[]>) => {
   const { onChange } = handler;
 
   const handleUploadChange = (ids: number[]) => {

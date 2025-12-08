@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from '@/components/ui/dialog';
 import { useDeleteComment } from '@/hooks/comment/useDeleteComment';
-import { CommentDialogProps } from '@/types/comment.type';
+import type { CommentDialogProps } from '@/types/comment.type';
 import * as S from './CommentDeleteDialog.styles';
 
 export const CommentDeleteDialog = ({ open, onOpenChange, comment }: CommentDialogProps) => {

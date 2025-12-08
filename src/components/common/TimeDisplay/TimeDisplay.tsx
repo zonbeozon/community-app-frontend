@@ -1,4 +1,4 @@
-import localizeTimezone from '@/utils/localizeTimezone';
+import { localizeTimezone } from '@/utils/localizeTimezone';
 import * as S from './TimeDisplay.styles';
 
 export const TimeDisplay = ({ createdAt }: { createdAt: string }) => {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDialog } from '@/hooks/common/useDialog';
-import ChannelRoleManager from '@/utils/channelMemberRoleManager';
+import { channelMemberRoleManager } from '@/utils/channelMemberRoleManager';
 import type { Channel } from '@/types/channel.type';
 import type { DropdownAction } from '@/types/common.type';
 
@@ -12,7 +12,7 @@ export const useChannelDropdown = (channel: Channel) => {
   const leaveDialog = useDialog();
   const deleteDialog = useDialog();
 
-  const isChannelOwner = ChannelRoleManager.isOwner(channel.membership?.channelRole);
+  const isChannelOwner = channelMemberRoleManager.isOwner(channel.membership?.channelRole);
 
   const handleSelect = (openDialogFn: () => void) => {
     return () => {

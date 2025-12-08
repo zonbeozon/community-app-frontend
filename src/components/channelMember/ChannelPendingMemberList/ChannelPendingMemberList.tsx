@@ -6,14 +6,13 @@ import { ChannelMemberItem } from '@/components/channelMember/ChannelMemberItem/
 import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
 import { Button } from '@/components/ui/button';
 import { DEFAULT_PAGE_REQUEST } from '@/constants/constants';
-import { ChannelMember } from '@/types/channelMember.type';
+import { ChannelMemberDialogState } from '@/types/channelMember.type';
 import * as S from './ChannelPendingMemberList.styles';
-
 
 export const ChannelPendingMemberList = ({ channelId }: { channelId: number }) => {
   const { data, isLoading, isError } = useGetPendingChannelMembers(channelId, DEFAULT_PAGE_REQUEST);
 
-  const [activeDialog, setActiveDialog] = useState<ActiveDialogState>({ type: null, member: null });
+  const [activeDialog, setActiveDialog] = useState<ChannelMemberDialogState>({ type: null, member: null });
 
   const pendingMembers = data?.members || [];
 

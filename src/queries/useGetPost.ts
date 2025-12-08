@@ -1,24 +1,12 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getPost } from '@/apis/http/post.api';
+import { InfiniteData, useQuery, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { Post } from '@/types/post.type'; 
-import { ChannelMember } from '@/types/channelMember.type';
-import { InfiniteData } from '@tanstack/react-query'; 
+import type { InfinitePostsData, Post, PostData } from '@/types/post.type';
 
-interface PostDetailData {
-  post: Post;
-  author: ChannelMember;
-}
-
-interface PostListPage {
-  posts: Post[];
-  authors: ChannelMember[]; 
-}
-
-const useGetPost = (postId: number, channelId: number) => {
+export const useGetPost = (postId: number, channelId: number) => {
   const queryClient = useQueryClient();
 
-  return useQuery<Post, Error, PostDetailData>({
+  return useQuery<Post, Error, PostData>({
     queryKey: QUERY_KEYS.posts.detail(postId),
     queryFn: () => getPost(postId),
     enabled: !!postId && postId > 0,
@@ -26,45 +14,32 @@ const useGetPost = (postId: number, channelId: number) => {
 
     initialData: () => {
       const queryKey = [QUERY_KEYS.posts.list, channelId];
-      const cachedListData = queryClient.getQueryData<InfiniteData<PostListPage>>(queryKey);
+      const cachedListData = queryClient.getQueryData<InfiniteData<InfinitePostsData>>(queryKey);
 
       if (!cachedListData) return undefined;
-      
-      let foundPost: Post | undefined;
-      let foundAuthor: ChannelMember | undefined;
 
       for (const page of cachedListData.pages) {
-        foundPost = page.posts?.find((p) => p.postId === postId);
+        const foundPost = page.posts?.find((p) => p.postId === postId);
+
         if (foundPost) {
-          foundAuthor = page.authors?.find((a) => a.memberId === foundPost!.authorId);
-          break; 
+          const author = page.authors?.[foundPost.author.memberId];
+
+          if (author) {
+            return { ...foundPost, author };
+          }
+
+          return foundPost;
         }
       }
 
-      if (foundPost && foundAuthor) {
-        const { authorId, ...restOfPost } = foundPost;
-        
-        return {
-          ...restOfPost, 
-          author: foundAuthor, 
-        };
-      }
-      
       return undefined;
     },
 
     select: (data: Post) => {
-      
-      const { author, ...postProperties } = data;
-      
-      const post: Post = {
-        ...postProperties,
-        authorId: author.memberId,
+      return {
+        post: data,
+        author: data.author,
       };
-
-      return { post, author };
     },
   });
 };
-
-export default useGetPost;

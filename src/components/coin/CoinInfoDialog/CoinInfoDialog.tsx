@@ -1,8 +1,8 @@
-import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Coins, Globe, TrendingUp, ZoomIn } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useDialog } from '@/hooks/common/useDialog';
-import { CoinBySymbol } from '@/types/coin.type';
+import type { CoinBySymbol } from '@/types/coin.type';
 import * as S from './CoinInfoDialog.styles';
-import { TrendingUp, Coins, Globe, ZoomIn } from 'lucide-react'; 
 
 const formatCurrency = (value?: number) => {
   if (value === undefined || value === null) return '-';
@@ -16,7 +16,11 @@ const formatCurrency = (value?: number) => {
 
 const formatDate = (dateString?: string) => {
   if (!dateString) return '-';
-  return new Date(dateString).toLocaleDateString() + ' ' + new Date(dateString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  return (
+    new Date(dateString).toLocaleDateString() +
+    ' ' +
+    new Date(dateString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  );
 };
 
 export const CoinInfoDialog = ({ coin }: { coin: CoinBySymbol }) => {
@@ -29,7 +33,7 @@ export const CoinInfoDialog = ({ coin }: { coin: CoinBySymbol }) => {
   return (
     <Dialog {...dialogProps}>
       <DialogTrigger asChild>
-        <ZoomIn className='cursor-pointer w-5 h-5 text-gray-400'/>
+        <ZoomIn className="cursor-pointer w-5 h-5 text-gray-400" />
       </DialogTrigger>
 
       <DialogContent className={S.dialogContent}>
@@ -50,9 +54,7 @@ export const CoinInfoDialog = ({ coin }: { coin: CoinBySymbol }) => {
         </div>
 
         <div className={S.scrollableArea}>
-          <div className={S.description}>
-            {localizedInfo.description || "설명이 제공되지 않았습니다."}
-          </div>
+          <div className={S.description}>{localizedInfo.description || '설명이 제공되지 않았습니다.'}</div>
 
           <div>
             <h4 className={S.sectionTitle}>
@@ -98,12 +100,7 @@ export const CoinInfoDialog = ({ coin }: { coin: CoinBySymbol }) => {
         <div className={S.footer}>
           <span>Last updated: {formatDate(coin.metadataLastUpdated)}</span>
           {website && (
-            <a 
-              href={website} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className={S.linkButton}
-            >
+            <a href={website} target="_blank" rel="noopener noreferrer" className={S.linkButton}>
               <span className="flex items-center gap-1">
                 <Globe size={14} /> Official Website
               </span>

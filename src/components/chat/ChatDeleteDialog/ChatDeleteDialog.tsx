@@ -1,14 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle } from '@/components/ui/dialog';
 import { useDeleteChat } from '@/hooks/chat/useDeleteChat';
+import type { ChatDeleteDialogProps } from '@/types/chat.type';
 import * as S from './ChatDeleteDialog.styles';
-
-interface ChatDeleteDialogProps {
-  chatId: number | null;
-  chattingGroupId: number;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
 
 export const ChatDeleteDialog = ({ chatId, chattingGroupId, open, onOpenChange }: ChatDeleteDialogProps) => {
   const { mutate: deleteChatFn, isPending: isDeleting } = useDeleteChat();

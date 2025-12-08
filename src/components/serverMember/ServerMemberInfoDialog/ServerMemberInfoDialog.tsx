@@ -1,8 +1,8 @@
 import { serverMemberAtom } from '@/atoms/authAtoms';
 import { useAtomValue } from 'jotai';
 import { SignOutButton } from '@/components/common/SignOutButton/SignOutButton';
-import { ServerMemberName } from '@/components/servermember/ServerMemberName/ServerMemberName';
-import { ServerMemberProfileImage } from '@/components/servermember/ServerMemberProfileImage/ServerMemberProfileImage';
+import { ServerMemberName } from '@/components/serverMember/ServerMemberName/ServerMemberName';
+import { ServerMemberProfileImage } from '@/components/serverMember/ServerMemberProfileImage/ServerMemberProfileImage';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,

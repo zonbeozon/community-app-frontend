@@ -5,17 +5,12 @@ import { useAtomValue } from 'jotai';
 import { toast } from 'sonner';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 
-interface DeleteChatVariables {
-  chatId: number;
-  chattingGroupId: number;
-}
-
 export const useDeleteChat = () => {
   const queryClient = useQueryClient();
   const myInfo = useAtomValue(serverMemberAtom);
 
   return useMutation({
-    mutationFn: ({ chatId }: DeleteChatVariables): Promise<void> => deleteChat(chatId),
+    mutationFn: ({ chatId }: { chattingGroupId: number; chatId: number }): Promise<void> => deleteChat(chatId),
 
     onMutate: async () => {
       if (!myInfo) {

@@ -7,12 +7,12 @@ import { useSetAtom } from 'jotai';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
+import { PostItem } from '@/components/post/PostItem/PostItem';
 import { useChannelLogic } from '@/hooks/channel/useChannelLogic';
 import { useInfinitePosts } from '@/hooks/post/useInfinitePosts';
 import { useUpdateLatestPost } from '@/hooks/post/useSetLatestPost';
 import { MESSAGES } from '@/constants/messages';
 import { ROUTE_PATH } from '@/constants/routePaths';
-import { PostItem } from '../PostItem/PostItem';
 import * as S from './PostList.styles';
 
 const SCROLL_POSITION_KEY = 'post_list_scroll_position';

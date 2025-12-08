@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { PlusIcon } from 'lucide-react';
+import { PostForm } from '@/components/post/PostForm/PostForm';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useForm } from '@/hooks/common/useForm';
@@ -7,13 +8,12 @@ import { useCreatePost } from '@/hooks/post/useCreatePost';
 import { DEFAULT_POST_VALUES } from '@/constants/constants';
 import { validatePost } from '@/validations/validatePost';
 import type { DialogProps } from '@/types/common.type';
-import type { PostRequest } from '@/types/post.type';
-import { PostForm } from '../PostForm/PostForm';
+import type { PostPayload } from '@/types/post.type';
 import * as S from './PostCreateDialog.styles';
 
 export const PostCreateDialog = ({ open, onOpenChange }: DialogProps) => {
   const { channelId } = useParams();
-  const { values, errors, handler, isValid, reset } = useForm<PostRequest>(DEFAULT_POST_VALUES, validatePost);
+  const { values, errors, handler, isValid, reset } = useForm<PostPayload>(DEFAULT_POST_VALUES, validatePost);
 
   const { mutate: createPost, isPending } = useCreatePost();
 

@@ -1,5 +1,5 @@
 import { ThumbsDown } from 'lucide-react';
-import { DislikeButtonProps } from '@/types/reaction.type';
+import type { DislikeButtonProps } from '@/types/reaction.type';
 import * as S from './DislikeButton.styles';
 
 export const DislikeButton = ({ isDisliked, count, onClick }: DislikeButtonProps) => {

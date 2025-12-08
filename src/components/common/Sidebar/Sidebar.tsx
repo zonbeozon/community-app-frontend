@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { channelActivityMapAtom } from '@/atoms/channelAtoms';
-import { useGetCoinList } from '@/queries/useGetCoinList';
+import { useGetCoinList } from '@/queries/useGetCoins';
 import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
 import { useAtomValue } from 'jotai';
 import { ChannelGroup } from '@/components/channel/ChannelGroup/ChannelGroup';
@@ -30,7 +30,7 @@ export const Sidebar = () => {
   return (
     <div className={S.sidebarWrapper}>
       <ul className={S.sidebarContent}>
-        <CoinGroup title="종목 토론방" chattingGroups={coins || []} />
+        <CoinGroup title="종목 토론방" coinGroups={coins || []} />
       </ul>
       <ul className={S.sidebarContent}>
         <ChannelGroup title="커뮤니티 채널" channels={communityChannels} />

@@ -2,7 +2,7 @@ import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useDeletePost } from '@/hooks/post/useDeletePost';
-import { PostDialogProps } from '@/types/post.type';
+import type { PostDialogProps } from '@/types/post.type';
 import * as S from './PostDeleteDialog.styles';
 
 export const PostDeleteDialog = ({ open, onOpenChange, post, channelId }: PostDialogProps) => {

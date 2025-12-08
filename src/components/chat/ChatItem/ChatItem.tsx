@@ -1,14 +1,8 @@
 import { memo } from 'react';
+import { ChatDropdown } from '@/components/chat//ChatDropdown/ChatDropdown';
 import { TimeDisplay } from '@/components/common/TimeDisplay/TimeDisplay';
-import type { Chat } from '@/types/chat.type';
-import { ChatDropdown } from '../ChatDropdown/ChatDropdown';
+import type { ChatItemProps } from '@/types/chat.type';
 import * as S from './ChatItem.styles';
-
-interface ChatItemProps {
-  chat: Chat;
-  isMe: boolean;
-  chattingGroupId: number;
-}
 
 export const ChatItem = memo(({ chat, isMe, chattingGroupId }: ChatItemProps) => {
   const { chatId, content, author, createdAt } = chat;
@@ -35,5 +29,3 @@ export const ChatItem = memo(({ chat, isMe, chattingGroupId }: ChatItemProps) =>
     </li>
   );
 });
-
-ChatItem.displayName = 'ChatItem';

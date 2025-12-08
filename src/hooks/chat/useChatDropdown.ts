@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDialog } from '@/hooks/common/useDialog';
 import type { DropdownAction } from '@/types/common.type';
 
-export const useChatDropdown = (chatId: number) => {
+export const useChatDropdown = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const deleteDialog = useDialog();

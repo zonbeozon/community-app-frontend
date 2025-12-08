@@ -9,11 +9,11 @@ import { ViewCount } from '@/components/common/ViewCount/ViewCount';
 import { PostDropdown } from '@/components/post/PostDropdown/PostDropdown';
 import { DislikeButton } from '@/components/reaction/DislikeButton/DislikeButton';
 import { LikeButton } from '@/components/reaction/LikeButton/LikeButton';
-import { ServerMemberInfoDialog } from '@/components/servermember/ServerMemberInfoDialog/ServerMemberInfoDialog';
+import { ServerMemberInfoDialog } from '@/components/serverMember/ServerMemberInfoDialog/ServerMemberInfoDialog';
 import useCreateReaction from '@/hooks/reaction/useCreateReaction';
 import useDeleteReaction from '@/hooks/reaction/useDeleteReaction';
 import { usePostViewLogger } from '@/hooks/viewLogger/usePostViewLogger';
-import { Image } from '@/types/common.type';
+import type { Image } from '@/types/common.type';
 import type { PostItemProps } from '@/types/post.type';
 import * as S from './PostItem.styles';
 

@@ -45,6 +45,24 @@ export interface CreateChatProps {
   }
 }
 
+export interface ChatItemProps {
+  chat: Chat;
+  isMe: boolean;
+  chattingGroupId: number;
+}
+
+export interface ChatDropdownProps {
+  chatId: number;
+  chattingGroupId: number;
+}
+
 export interface ChatDialogProps extends DialogProps{
   chatId: number;
+}
+
+export interface ChatDeleteDialogProps {
+  chatId: number | null;
+  chattingGroupId: number;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }

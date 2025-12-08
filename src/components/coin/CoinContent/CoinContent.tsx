@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import { useGetCoinBySymbol } from '@/queries/useGetCoinBySymbol';
-import { useGetInfiniteKlinesQuery } from '@/queries/useInfiniteKlineQueries';
+import { useGetInfiniteKlinesQuery } from '@/queries/useGetInfiniteKlines';
 import { keepPreviousData } from '@tanstack/react-query';
 import { LineData } from 'lightweight-charts';
 import { Chart } from '@/components/chart/Chart/Chart';
 import { IndicatorSelector } from '@/components/chart/IndicatorSelector/IndicatorSelector';
 import { IntervalSelector } from '@/components/chart/IntervalSelector/IntervalSelector';
-import { Spinner } from '@/components/ui/spinner';
-import { useFormattedChartData } from '@/hooks/chart/useFormattedChartData';
+import { PeriodCounter } from '@/components/chart/PeriodCounter/PeriodCounter';
 import { ChatInput } from '@/components/chat/ChatInput/ChatInput';
 import { ChatList } from '@/components/chat/ChatList/ChatList';
 import { CoinHeader } from '@/components/coin/CoinHeader/CoinHeader';
+import { Spinner } from '@/components/ui/spinner';
+import { useFormattedChartData } from '@/hooks/chart/useFormattedChartData';
 import * as S from './CoinContent.styles';
-import { PeriodCounter } from '@/components/chart/PeriodCounter/PeriodCounter';
 
 const CoinContent = () => {
   const { symbol } = useParams<{ symbol: string }>();
@@ -68,7 +68,7 @@ const CoinContent = () => {
         <div className={S.selectorRow}>
           <IntervalSelector value={interval} onChange={handleIntervalChange} />
           <IndicatorSelector candlestickData={candlestickData} period={period} onIndicatorChange={setIndicatorData} />
-          <PeriodCounter period={period} setPeriod={setPeriod} isDisabled={isDisabled}/>
+          <PeriodCounter period={period} setPeriod={setPeriod} isDisabled={isDisabled} />
         </div>
         <Chart
           key={symbol}

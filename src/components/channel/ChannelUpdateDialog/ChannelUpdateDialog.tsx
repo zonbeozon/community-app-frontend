@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { ChannelForm } from '@/components/channel/ChannelForm/ChannelForm';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
-import { useUpdateChannel } from '@/hooks/channel/useChannelUpdate';
+import { useUpdateChannel } from '@/hooks/channel/useUpdateChannel';
 import { useForm } from '@/hooks/common/useForm';
 import { DEFAULT_CHANNEL_VALUES } from '@/constants/constants';
 import { validateChannel } from '@/validations/validateChannel';

@@ -4,9 +4,9 @@ import { useGetRecommendedPosts } from '@/queries/useGetRecommendedPosts';
 import { Sparkles } from 'lucide-react';
 import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
 import { PostItem } from '@/components/post/PostItem/PostItem';
-import * as S from '@/components/post/PostList/PostList.styles';
-import localizeTimezone from '@/utils/localizeTimezone';
+import { localizeTimezone } from '@/utils/localizeTimezone';
 import { MESSAGES } from '@/constants/messages';
+import * as S from './RecommendedPostList.styles';
 
 const RecommendedPostList = () => {
   const navigate = useNavigate();
@@ -52,11 +52,7 @@ const RecommendedPostList = () => {
             <h2 className="text-lg font-semibold text-gray-800">추천 포스트</h2>
           </div>
 
-          {lastUpdated && (
-            <span className="text-xs text-gray-500">
-              마지막 업데이트: {localizeTimezone(lastUpdated)}
-            </span>
-          )}
+          {lastUpdated && <span className="text-xs text-gray-500">마지막 업데이트: {localizeTimezone(lastUpdated)}</span>}
         </div>
       </div>
 

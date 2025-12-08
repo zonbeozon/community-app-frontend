@@ -1,10 +1,10 @@
 import { getKlines } from '@/apis/http/kline.api';
-import { type InfiniteData, type QueryKey, type UseInfiniteQueryOptions, useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import type { KlinesParams } from '@/types/chart.type';
-import type { KlinesData } from '@/types/chart.type';
+import type { InfiniteData, QueryKey, UseInfiniteQueryOptions } from '@tanstack/react-query';
+import type { KlinesData, KlinesParams } from '@/types/chart.type';
 
-export const useGetInfiniteKlinesQuery = (
+export const useGetInfiniteKlines = (
   params: KlinesParams,
   options?: Omit<
     UseInfiniteQueryOptions<KlinesData, Error, InfiniteData<KlinesData>, QueryKey, number | undefined>,

@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { SERVER_ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/constants/messages';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 
-export const useChannelDelete = () => {
+export const useDeleteChannel = () => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({

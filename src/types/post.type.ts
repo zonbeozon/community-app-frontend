@@ -26,6 +26,11 @@ export interface PostsParams {
   page?: number;
 }
 
+export interface PostData {
+  post: Post;
+  author: ChannelMember;
+}
+
 export interface InfinitePostsData {
   posts: Post[];
   authors: Record<number, ChannelMember>;

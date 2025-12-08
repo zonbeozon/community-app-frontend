@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
+import { PostForm } from '@/components/post/PostForm/PostForm';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { useForm } from '@/hooks/common/useForm';
 import { useUpdatePost } from '@/hooks/post/useUpdatePost';
 import { DEFAULT_POST_VALUES } from '@/constants/constants';
 import { validatePost } from '@/validations/validatePost';
-import type { PostDialogProps, PostRequest } from '@/types/post.type';
-import { PostForm } from '../PostForm/PostForm';
+import type { PostDialogProps, PostPayload } from '@/types/post.type';
 import * as S from './PostUpdateDialog.styles';
 
 export const PostUpdateDialog = ({ open, onOpenChange, post, channelId }: PostDialogProps) => {
@@ -18,7 +18,7 @@ export const PostUpdateDialog = ({ open, onOpenChange, post, channelId }: PostDi
     setValues,
     handleSubmit,
     isSubmitting: isFormSubmitting,
-  } = useForm<PostRequest>(DEFAULT_POST_VALUES, validatePost);
+  } = useForm<PostPayload>(DEFAULT_POST_VALUES, validatePost);
 
   const { mutate: updatePost, isPending: isUpdating } = useUpdatePost();
 

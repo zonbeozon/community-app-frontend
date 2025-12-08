@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { serverMemberAtom } from '@/atoms/authAtoms';
 import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
 import { useAtomValue } from 'jotai';
-import ChannelRoleManager from '@/utils/channelMemberRoleManager';
+import { channelMemberRoleManager } from '@/utils/channelMemberRoleManager';
 import type { ChannelMemberProps } from '@/types/channelMember.type';
 import type { DropdownAction } from '@/types/common.type';
 
@@ -26,7 +26,7 @@ export const useChannelMemberDropdown = ({ channelId, targetMember }: ChannelMem
     if (currentServerMember.memberId === targetMember.memberId) {
       return false;
     }
-    return ChannelRoleManager.isRoleHigher(myRequesterInfo.channelRole, targetMember.channelRole);
+    return channelMemberRoleManager.isRoleHigher(myRequesterInfo.channelRole, targetMember.channelRole);
   }, [myRequesterInfo, currentServerMember, targetMember]);
 
   const createSelectHandler = (openDialog: () => void) => {

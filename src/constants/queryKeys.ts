@@ -1,5 +1,5 @@
-import { KlinesParams } from '@/types/chart.type';
-import { PagePayload } from '@/types/common.type';
+import type { KlinesParams } from '@/types/chart.type';
+import type { PagePayload } from '@/types/common.type';
 
 export const QUERY_KEYS = {
   all: ['all'] as const,

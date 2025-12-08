@@ -1,7 +1,7 @@
 import { ItemSkeleton } from '@/components/common/ItemSkeleton/ItemSkeleton';
+import { NotificationItem } from '@/components/notification/NotificationItem/NotificationItem';
 import { DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import type { NotificationListProps } from '@/types/notification.type';
-import { NotificationItem } from '../NotificationItem/NotificationItem';
 import * as S from './NotificationList.styles';
 
 export const NotificationList = ({ notifications, isLoading, isError }: NotificationListProps) => {

@@ -4,7 +4,7 @@ import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
 import { useAtomValue } from 'jotai';
 import { CommentDeleteDialog } from '@/components/comment/CommentDeleteDialog/CommentDeleteDialog';
 import { ActionDropdown } from '@/components/common/ActionDropdown/ActionDropdown';
-import ChannelRoleManager from '@/utils/channelMemberRoleManager';
+import { channelMemberRoleManager } from '@/utils/channelMemberRoleManager';
 import type { CommentDropdownProps } from '@/types/comment.type';
 import type { DropdownAction } from '@/types/common.type';
 import * as S from './CommentDropdown.styles';
@@ -26,7 +26,7 @@ export const CommentDropdown = ({ comment, channelId }: CommentDropdownProps) =>
   }
 
   const isMyComment = myId === comment.authorId;
-  const isChannelAdminOrOwner = ChannelRoleManager.isAdmin(myInfoInChannel.channelRole);
+  const isChannelAdminOrOwner = channelMemberRoleManager.isAdmin(myInfoInChannel.channelRole);
 
   const canDelete = isMyComment || isChannelAdminOrOwner;
 

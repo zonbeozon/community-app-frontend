@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
-import type { CandlestickData, IChartApi, ISeriesApi, LineWidth } from 'lightweight-charts';
 import { useChartInfiniteScroll } from '@/hooks/chart/useChartInfiniteScroll';
 import { useFormattedChartData } from '@/hooks/chart/useFormattedChartData';
 import { useRealTimeTrade } from '@/hooks/chart/useRealTimeTrade';
-import { getRandomColor } from '@/utils/randomColorGenerator';
+import { randomColorGenerator } from '@/utils/randomColorGenerator';
 import {
   CANDLESTICK_SERIES_OPTIONS,
   INITIAL_TOOLTIP_STATE,
@@ -12,6 +11,7 @@ import {
   VOLUME_SCALE_OPTIONS,
   VOLUME_SERIES_OPTIONS,
 } from '@/constants/constants';
+import type { CandlestickData, IChartApi, ISeriesApi, LineWidth } from 'lightweight-charts';
 import type { ChartProps, ChartTooltipProps } from '@/types/chart.type';
 import { ChartTooltip } from '../ChartTooltip/ChartTooltip';
 import * as S from './Chart.styles';
@@ -164,7 +164,7 @@ export const Chart = ({ data, fetchNextPage, hasNextPage, isFetchingNextPage, pa
         existingSeries.setData(dataForSeries);
       } else {
         const seriesOptions = {
-          color: getRandomColor(),
+          color: randomColorGenerator(),
           lineWidth: 2 as LineWidth,
           priceScaleId: isOscillator ? 'oscillator-scale' : 'right',
         };

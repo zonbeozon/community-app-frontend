@@ -44,6 +44,11 @@ export interface ChannelMemberDialogProps {
   targetMember: ChannelMember;
 }
 
+export interface ChannelMemberDialogState {
+  type: ChannelMemberDialogType;
+  member: ChannelMember | null;
+}
+
 export interface ChannelMemberProfileImageProps {
   profile: {
     imageUrl: string | null;

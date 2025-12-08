@@ -3,13 +3,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { SERVER_ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/constants/messages';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import type { UpdateChannelProps } from '@/types/channel.type';
+import type { ChannelPayload } from '@/types/channel.type';
 
 export const useUpdateChannel = () => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: ({ channelId, payload }: UpdateChannelProps) => updateChannel(channelId, payload),
+    mutationFn: ({ channelId, payload }: { channelId: number; payload: ChannelPayload }) =>
+      updateChannel(channelId, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.channels.all });
       toast.success(SUCCESS_MESSAGES.CHANNEL_UPDATE_SUCCESS);

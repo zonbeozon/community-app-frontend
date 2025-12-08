@@ -1,17 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { serverMemberAtom } from '@/atoms/authAtoms';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { latestChatByChattingGroupAtom } from '@/atoms/chatAtoms';
 import { useGetChats } from '@/queries/useGetChats';
 import { useChatSubscription } from '@/stomp/hooks/useChatSubscription';
-import { useAtomValue, useSetAtom } from 'jotai';
 import { ChatItem } from '../ChatItem/ChatItem';
 import * as S from './ChatList.styles';
 
-interface ChatListProps {
-  chattingGroupId: number;
-}
-
-export const ChatList = ({ chattingGroupId }: ChatListProps) => {
+export const ChatList = ({ chattingGroupId }: { chattingGroupId: number }) => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const { data: chatList, isLoading } = useGetChats(chattingGroupId);
 

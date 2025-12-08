@@ -1,5 +1,5 @@
 import { ThumbsUp } from 'lucide-react';
-import { LikeButtonProps } from '@/types/reaction.type';
+import type { LikeButtonProps } from '@/types/reaction.type';
 import * as S from './LikeButton.styles';
 
 export const LikeButton = ({ isLiked, count, onClick }: LikeButtonProps) => {

@@ -2,7 +2,7 @@ import { PlusIcon } from 'lucide-react';
 import { ChannelForm } from '@/components/channel/ChannelForm/ChannelForm';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useChannelCreate } from '@/hooks/channel/useChannelCreate';
+import { useChannelCreate } from '@/hooks/channel/useCreateChannel';
 import { useForm } from '@/hooks/common/useForm';
 import { DEFAULT_CHANNEL_VALUES } from '@/constants/constants';
 import { validateChannel } from '@/validations/validateChannel';

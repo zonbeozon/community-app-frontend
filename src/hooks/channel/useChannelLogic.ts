@@ -4,7 +4,7 @@ import { selectedChannelIdAtom } from '@/atoms/channelAtoms';
 import { useGetChannelById } from '@/queries/useGetChannelById';
 import { useGetJoinedChannels } from '@/queries/useGetJoinedChannel';
 import { useAtomValue, useSetAtom } from 'jotai';
-import ChannelRoleManager from '@/utils/channelMemberRoleManager';
+import { channelMemberRoleManager } from '@/utils/channelMemberRoleManager';
 import { ROUTE_PATH } from '@/constants/routePaths';
 
 export const useChannelLogic = () => {
@@ -44,7 +44,7 @@ export const useChannelLogic = () => {
   }, [currentChannelData, setSelectedChannelId]);
 
   const isMember = !!selectedChannel?.membership;
-  const canCreatePost = isMember && ChannelRoleManager.isAdmin(selectedChannel.membership.channelRole);
+  const canCreatePost = isMember && channelMemberRoleManager.isAdmin(selectedChannel.membership.channelRole);
 
   return {
     channelData: currentChannelData,
